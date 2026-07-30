@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visit Wolaita — Experience Southern Ethiopia</title>
+
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- External CSS File -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Top Announcement Strip -->
+    <div class="top-bar">
+        ✨ Plan your dream trip to Southern Ethiopia today! <span>Special Tour Packages Available</span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-compass"></i></div>
+                <div class="logo-text">Visit <span>Wolaita</span></div>
+            </a>
+
+            <!-- Mobile Toggle Button -->
+            <div class="menu-toggle" id="mobile-menu"><i class="fa-solid fa-bars"></i></div>
+
+            <!-- Corner Navigation Links -->
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#attractions">Attractions</a></li>
+                <li><a href="#why-visit">Why Visit</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact" class="nav-btn" onclick="openModal()">Plan Trip</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="badge"><i class="fa-solid fa-location-dot"></i> Southern Ethiopia</div>
+            <h1>Discover the Heart of Beauty & Culture</h1>
+            <p>Immerse yourself in lush green mountain vistas, pristine waterfalls, rich traditions, and unmatched hospitality.</p>
+            <div class="hero-actions">
+                <a href="#attractions" class="btn btn-gold"><i class="fa-solid fa-compass"></i> Explore Destinations</a>
+                <button class="btn btn-glass" onclick="openModal()"><i class="fa-solid fa-paper-plane"></i> Contact Guide</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Stats Overlay Strip -->
+    <div class="stats-overlay">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h4>2,900m</h4>
+                <p>Mount Damota Peak</p>
+            </div>
+            <div class="stat-item">
+                <h4>100%</h4>
+                <p>Authentic Culture</p>
+            </div>
+            <div class="stat-item">
+                <h4>Year-Round</h4>
+                <p>Optimal Eco-Climate</p>
+            </div>
+            <div class="stat-item">
+                <h4>Top 10</h4>
+                <p>Ethiopian Destinations</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="about-grid">
+            <div class="about-text">
+                <h2>Welcome to Wolaita Zone</h2>
+                <p>Located in the heart of Southern Ethiopia, Wolaita is celebrated for its fertile green valleys, dramatic mountain ranges, and rich cultural heritage.</p>
+                <p>Whether you're seeking high-altitude hiking, tranquil waterfalls, or authentic cultural festivities like Gifata, Wolaita promises an incredible travel adventure.</p>
+
+                <ul class="feature-list">
+                    <li><i class="fa-solid fa-check"></i> Breath-taking mountain trekking routes</li>
+                    <li><i class="fa-solid fa-check"></i> Traditional culinary & coffee ceremonies</li>
+                    <li><i class="fa-solid fa-check"></i> Vibrant ancient cultural heritage</li>
+                </ul>
+            </div>
+            <div class="about-image-stack">
+                <img src="wolaita.jpeg" alt="Scenic Wolaita" class="about-img-main">
+                <div class="about-card-badge">
+                    <i class="fa-solid fa-heart"></i>
+                    <div>
+                        <strong>Warm Hospitality</strong>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">Welcoming visitors every day</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filterable Attractions Section -->
+    <section id="attractions">
+        <div class="section-header">
+            <h2>Top Attractions</h2>
+            <p>Curated experiences tailored for every traveler</p>
+        </div>
+
+        <div class="filter-tabs">
+            <button class="tab-btn active" onclick="filterAttractions(event, 'all')">All</button>
+            <button class="tab-btn" onclick="filterAttractions(event, 'nature')">Nature</button>
+            <button class="tab-btn" onclick="filterAttractions(event, 'culture')">Culture</button>
+            <button class="tab-btn" onclick="filterAttractions(event, 'food')">Food</button>
+        </div>
+
+        <div class="attractions-grid" id="attractions-grid">
+            <div class="attraction-card" data-category="nature">
+                <div class="card-body">
+                    <span class="card-tag">Nature</span>
+                    <h3>⛰️ Mount Damota</h3>
+                    <p>The highest peak in Wolaita offering 360-degree panoramic views of Sodo city and surrounding green valleys.</p>
+                </div>
+            </div>
+
+            <div class="attraction-card" data-category="nature">
+                <div class="card-body">
+                    <span class="card-tag">Nature</span>
+                    <h3>🌊 Waterfalls & Hot Springs</h3>
+                    <p>Discover secluded waterfalls nestled in lush rainforests and therapeutic natural hot springs.</p>
+                </div>
+            </div>
+
+            <div class="attraction-card" data-category="culture">
+                <div class="card-body">
+                    <span class="card-tag">Culture</span>
+                    <h3>🎉 Gifata Festival</h3>
+                    <p>Experience the New Year celebration marked by traditional music, dances, and togetherness.</p>
+                </div>
+            </div>
+
+            <div class="attraction-card" data-category="food">
+                <div class="card-body">
+                    <span class="card-tag">Food</span>
+                    <h3>🍲 Traditional Cuisine</h3>
+                    <p>Taste authentic Wolaita dishes including Mucho, organic wild honey, and rich local coffees.</p>
+                </div>
+            </div>
+
+            <div class="attraction-card" data-category="culture">
+                <div class="card-body">
+                    <span class="card-tag">Culture</span>
+                    <h3>🏛️ Sodo Cultural Center</h3>
+                    <p>Immerse yourself in centuries of history, artifacts, traditional crafts, and royal heritage.</p>
+                </div>
+            </div>
+
+            <div class="attraction-card" data-category="nature">
+                <div class="card-body">
+                    <span class="card-tag">Nature</span>
+                    <h3>🌿 Lake Abaya Shores</h3>
+                    <p>Explore scenic shores, bird watching opportunities, and tranquil water landscapes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Visit Section -->
+    <section id="why-visit">
+        <div class="section-header">
+            <h2>Why Choose Wolaita?</h2>
+            <p>Three unique pillars that make your travel memorable</p>
+        </div>
+
+        <div class="attractions-grid">
+            <div class="attraction-card card-center">
+                <div class="card-body">
+                    <div class="card-icon primary-icon"><i class="fa-solid fa-tree"></i></div>
+                    <h3>Eco-Tourism Paradise</h3>
+                    <p>Pristine biodiversity, organic farming, and crisp high-altitude mountain climate.</p>
+                </div>
+            </div>
+
+            <div class="attraction-card card-center">
+                <div class="card-body">
+                    <div class="card-icon gold-icon"><i class="fa-solid fa-masks-theater"></i></div>
+                    <h3>Rich Cultural Tapestry</h3>
+                    <p>Unmatched music, unique architecture, traditional weaving, and historical folklore.</p>
+                </div>
+            </div>
+
+            <div class="attraction-card card-center">
+                <div class="card-body">
+                    <div class="card-icon accent-icon"><i class="fa-solid fa-handshake-angle"></i></div>
+                    <h3>Unmatched Hospitality</h3>
+                    <p>Feel genuinely welcomed everywhere you go with deep-rooted traditions of caring for guests.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <div class="section-header">
+            <h2>Photo Gallery</h2>
+            <p>Click any image for full-screen view</p>
+        </div>
+
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openLightbox('wolaita.jpeg')">
+                <img src="wolaita.jpeg" alt="Nature">
+                <div class="gallery-overlay">
+                    <h4>Serene Landscapes</h4>
+                    <p>Click to view</p>
+                </div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox('wolaita1.jpeg')">
+                <img src="wolaita1.jpeg" alt="Culture">
+                <div class="gallery-overlay">
+                    <h4>Cultural Heritage</h4>
+                    <p>Click to view</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Accordion -->
+    <section id="faq">
+        <div class="section-header">
+            <h2>Frequently Asked Questions</h2>
+            <p>Everything you need to know before visiting</p>
+        </div>
+
+        <div class="faq-accordion">
+            <div class="faq-item">
+                <button class="faq-question">
+                    When is the best time to visit Wolaita?
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Wolaita has a pleasant climate year-round. However, September to February is ideal for clear skies, hiking, and attending regional festivals like Gifata.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    How do I get to Wolaita (Sodo)?
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>You can fly from Addis Ababa to nearby airports (like Hawassa or Arba Minch) followed by a short drive, or enjoy a scenic highway road trip directly to Sodo.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    Are guided tours available?
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes! Local certified tourist guides are available for mountain trekking, cultural immersion, and historic site visits.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="logo logo-footer">
+                    <div class="logo-icon"><i class="fa-solid fa-compass"></i></div>
+                    <div class="logo-text">Visit <span>Wolaita</span></div>
+                </a>
+                <p>Promoting sustainable eco-tourism, cultural preservation, and memorable experiences in Southern Ethiopia.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="#about">About Region</a></li>
+                    <li><a href="#attractions">Top Places</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Experiences</h4>
+                <ul class="footer-links">
+                    <li><a href="#attractions">Damota Trekking</a></li>
+                    <li><a href="#attractions">Gifata Festival</a></li>
+                    <li><a href="#attractions">Coffee Tours</a></li>
+                    <li><a href="#attractions">Eco Lodges</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Contact Info</h4>
+                <p class="contact-line"><i class="fa-solid fa-envelope"></i> visitwolaita@example.com</p>
+                <p class="contact-line"><i class="fa-solid fa-phone"></i> +251 900 000 000</p>
+                <button class="btn btn-gold btn-sm" onclick="openModal()">Plan Your Trip</button>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 Visit Wolaita Tourism Portal. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Travel Modal -->
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h3 class="modal-title">Plan Your Journey</h3>
+            <p class="modal-subtitle">Send us a message and our local guide team will help organize your trip!</p>
+
+            <form onsubmit="handleFormSubmit(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="john@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>What would you like to explore?</label>
+                    <textarea rows="3" placeholder="Trekking, Cultural events, Local food..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-gold btn-full">Send Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="Full view">
+    </div>
+
+    <!-- Interactive JavaScript -->
+    <script>
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        function filterAttractions(e, category) {
+            const cards = document.querySelectorAll('#attractions-grid .attraction-card');
+            const buttons = document.querySelectorAll('.tab-btn');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                faqItem.classList.toggle('active');
+            });
+        });
+
+        function openModal() {
+            document.getElementById('contactModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('contactModal').style.display = 'none';
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            alert('Thank you! Your travel request has been sent. Our team will contact you shortly.');
+            closeModal();
+        }
+
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('contactModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
