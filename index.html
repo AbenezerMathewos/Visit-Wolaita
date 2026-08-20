@@ -3,13 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Visit Wolaita — The official interactive guide to Southern Ethiopia. Explore Mount Damota, Ajora Twin Falls, UNESCO Gifaataa Festival, Enset gastronomy, and community homestays." />
+  <meta name="description" content="Visit Wolaita — The official interactive guide to Southern Ethiopia. Explore Mount Damota, Ajora Twin Falls, UNESCO Gifaataa Festival, Enset gastronomy, and real satellite/Google Earth maps." />
   <title>Visit Wolaita — Land of Peaks, Living Heritage & Generous Tables</title>
   
   <!-- Preconnect & Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,600&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet Real Geographic Map Styles -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -54,7 +57,7 @@
 
     <!-- Navigation Menu Links -->
     <nav id="mainNav" class="nav-menu" aria-label="Main Navigation">
-      <a href="#map-section" class="nav-link">Zone Map</a>
+      <a href="#map-section" class="nav-link">Live Real Map</a>
       <a href="#destinations" class="nav-link">Landmarks</a>
       <a href="#experiences" class="nav-link">Experiences</a>
       <a href="#itineraries" class="nav-link">Itineraries</a>
@@ -86,7 +89,7 @@
         </p>
 
         <div class="hero-actions">
-          <a class="button primary" href="#destinations">Explore Landmarks <span>↓</span></a>
+          <a class="button primary" href="#map-section">Explore Real Map & 3D <span>↓</span></a>
           <button class="sound-player-btn" id="soundButton" aria-pressed="false" title="Listen to ambient highland soundscape">
             <span class="sound-icon" aria-hidden="true">
               <span class="eq-bar bar1"></span>
@@ -151,64 +154,49 @@
       </div>
     </section>
 
-    <!-- SECTION 1: Interactive Geographic Vector Map of Wolaita -->
+    <!-- SECTION 1: REAL GEOGRAPHIC MAP WITH GOOGLE EARTH 3D INTEGRATION -->
     <section class="section map-section" id="map-section">
       <div class="section-header">
         <div>
-          <p class="eyebrow">Interactive Territory Explorer</p>
-          <h2>The geography of<br><i>wonder & highlands.</i></h2>
+          <p class="eyebrow">Real Geospatial Explorer · Satellite & 3D</p>
+          <h2>The living geography<br><i>of Wolaita Zone.</i></h2>
         </div>
         <p class="section-lead">
-          Click any landmark on the vector map to inspect real elevation, travel distance from Sodo city center, hiking difficulty, and route details.
+          Explore real satellite imagery, elevation contours, and road networks across Wolaita. Click pins for directions or launch Google Earth for realistic 3D flyovers!
         </p>
       </div>
 
+      <!-- Real Map Control Toolbar -->
+      <div class="map-toolbar">
+        <div class="map-layer-selector" role="tablist">
+          <span class="toolbar-label">Map Mode:</span>
+          <button class="layer-btn active" data-layer="satellite">🛰️ Real Satellite (Esri HD)</button>
+          <button class="layer-btn" data-layer="topo">⛰️ Topographic & Terrain</button>
+          <button class="layer-btn" data-layer="streets">🗺️ Roads & Settlements</button>
+        </div>
+
+        <div class="map-quick-actions">
+          <button class="recenter-btn" id="recenterMapBtn" title="Recenter map to Wolaita Sodo">
+            🎯 Recenter Sodo Hub
+          </button>
+          <a href="https://earth.google.com/web/@6.8583,37.7611,2100a,8000d,35y,0h,55t,0r" target="_blank" rel="noopener noreferrer" class="google-earth-global-btn" id="globalGoogleEarthBtn">
+            🌐 Open Zone in Google Earth 3D <span>↗</span>
+          </a>
+        </div>
+      </div>
+
       <div class="map-container-layout">
-        <!-- Interactive Vector Map Box -->
-        <div class="interactive-map-box" id="interactiveMapBox">
-          <div class="map-bg-topography">
-            <!-- Simulated Mountain Contour SVG -->
-            <svg viewBox="0 0 800 600" class="map-svg-canvas" id="mapSvgCanvas" aria-label="Map of Wolaita Zone">
-              <!-- Topographic Contours -->
-              <defs>
-                <linearGradient id="mapGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#244534" stop-opacity="0.9"/>
-                  <stop offset="100%" stop-color="#14261d" stop-opacity="0.95"/>
-                </linearGradient>
-                <radialGradient id="sodoGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stop-color="#e0a93b" stop-opacity="0.8"/>
-                  <stop offset="100%" stop-color="#e0a93b" stop-opacity="0"/>
-                </radialGradient>
-              </defs>
-
-              <rect width="100%" height="100%" fill="url(#mapGrad)" rx="16"/>
-
-              <!-- Contour Elevation Paths -->
-              <path d="M 50,300 Q 200,100 400,280 T 750,250" fill="none" stroke="rgba(224, 169, 59, 0.15)" stroke-width="1.5" stroke-dasharray="4,4"/>
-              <path d="M 80,450 Q 300,350 500,480 T 780,400" fill="none" stroke="rgba(224, 169, 59, 0.12)" stroke-width="1.5"/>
-              <path d="M 250,80 Q 400,180 600,100 T 780,180" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5"/>
-
-              <!-- Lake Abaya Shoreline Simulation -->
-              <path d="M 550,450 C 600,420 700,440 780,520 L 800,600 L 500,600 Z" fill="rgba(195, 90, 50, 0.25)" stroke="#c85a32" stroke-width="1.5"/>
-              <text x="660" y="540" fill="#e8bc62" font-size="13" font-family="'Fraunces', serif" font-style="italic">Lake Abaya Basin (Red Waters)</text>
-
-              <!-- Central Route Connecting Lines from Sodo -->
-              <g id="routeLinesGroup"></g>
-            </svg>
-
-            <!-- Dynamic Pin Markers Injected by JS -->
-            <div class="map-pins-layer" id="mapPinsLayer"></div>
-
-            <!-- Map Legend Overlay -->
-            <div class="map-legend">
-              <div class="legend-item"><span class="pin-icon-dot sodo-dot"></span> Sodo City (Hub)</div>
-              <div class="legend-item"><span class="pin-icon-dot peak-dot"></span> Peaks & Caves</div>
-              <div class="legend-item"><span class="pin-icon-dot water-dot"></span> Falls & Springs</div>
-            </div>
+        <!-- Live Real Leaflet Map Canvas -->
+        <div class="interactive-map-box real-map-box">
+          <div id="realLeafletMap" class="real-leaflet-map-canvas" aria-label="Real Leaflet Map of Wolaita Zone"></div>
+          
+          <div class="map-status-overlay">
+            <span class="pulse-icon"></span>
+            <span>Live GPS Coordinates · Southern Ethiopia (06°51'N 37°45'E)</span>
           </div>
         </div>
 
-        <!-- Live Map Inspector Card -->
+        <!-- Live Map Inspector Card with 3D Flyover Launch -->
         <div class="map-inspector-card" id="mapInspectorCard">
           <div class="inspector-header">
             <span class="inspector-badge" id="inspBadge">Highlands & Peaks</span>
@@ -239,8 +227,12 @@
           </div>
 
           <div class="inspector-actions">
+            <!-- Direct Google Earth 3D Flyover Button -->
+            <a id="inspGoogleEarthLink" href="https://earth.google.com/web/@6.9142,37.7889,2890a,3500d,35y,45h,60t,0r" target="_blank" rel="noopener noreferrer" class="button google-earth-btn" style="width: 100%; justify-content: center; margin-bottom: 8px;">
+              <span>🌐 Launch 3D Flyover in Google Earth</span> <span>↗</span>
+            </a>
             <button class="button primary" id="inspExploreBtn" style="font-size: 13px; width: 100%; justify-content: center;">
-              View Full Landmark Details <span>→</span>
+              View Full Landmark Insights <span>→</span>
             </button>
           </div>
         </div>
@@ -770,7 +762,7 @@
     <div class="footer-col">
       <h4>Platform Directory</h4>
       <ul class="footer-links">
-        <li><a href="#map-section">Zone Vector Map</a></li>
+        <li><a href="#map-section">Real Geospatial Map & 3D</a></li>
         <li><a href="#destinations">Key Landmarks</a></li>
         <li><a href="#experiences">Experiential Activities</a></li>
         <li><a href="#itineraries">Multi-Day Routes</a></li>
@@ -802,6 +794,8 @@
     </div>
   </footer>
 
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="app.js"></script>
 </body>
 </html>
