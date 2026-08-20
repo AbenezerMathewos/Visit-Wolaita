@@ -16,7 +16,10 @@ const destinations = [
     elevation: '2,900 m',
     distanceFromSodo: '12 km (25 min)',
     category: 'Highlands & Peaks',
-    mapCoords: { x: 48, y: 32 }, // Percentage on interactive vector map
+    lat: 6.9142,
+    lng: 37.7889,
+    mapCoords: { x: 48, y: 32 },
+    googleEarthUrl: 'https://earth.google.com/web/@6.9142,37.7889,2890a,3500d,35y,45h,60t,0r',
     image: 'walaita1.jpeg',
     summary: 'A towering volcanic massif offering 360-degree vistas over the Great Rift Valley, Lake Abaya, and lush terraced hillsides. Revered for centuries as a sacred site of ancient kings.',
     highlights: ['Breathtaking dawn cloud inversions', 'Hiking trails through indigenous afro-alpine flora', 'Mochena Borago archaeological shelter nearby', 'Paragliding vantage points'],
@@ -31,7 +34,10 @@ const destinations = [
     elevation: '1,750 m',
     distanceFromSodo: '35 km (1 hr)',
     category: 'Waterfalls & Gorges',
+    lat: 7.0833,
+    lng: 37.5167,
     mapCoords: { x: 26, y: 22 },
+    googleEarthUrl: 'https://earth.google.com/web/@7.0833,37.5167,1750a,2800d,35y,120h,55t,0r',
     image: 'wolaita.jpeg',
     summary: 'Formed by the roaring confluence of the Soke and Ajancho rivers, these twin waterfalls plunge over 100 meters into a prehistoric jungle canyon filled with ferns and rare hornbills.',
     highlights: ['Twin waterfalls dropping side-by-side', 'Lush rainforest canyon trekking', 'Natural mist-sprayed picnic spots', 'Rich monkey and bird species'],
@@ -46,7 +52,10 @@ const destinations = [
     elevation: '1,285 m',
     distanceFromSodo: '45 km (1 hr 15 min)',
     category: 'Lakes & Wildlife',
+    lat: 6.6500,
+    lng: 37.9500,
     mapCoords: { x: 74, y: 78 },
+    googleEarthUrl: 'https://earth.google.com/web/@6.6500,37.9500,1285a,6000d,35y,0h,45t,0r',
     image: 'walaita1.jpeg',
     summary: 'Ethiopia’s second-largest lake with distinctive reddish-copper waters, framed by dramatic escarpments. A sanctuary for hundreds of bird species, Nile crocodiles, and freshwater fish.',
     highlights: ['Canoe excursions with local fishermen', 'Pelican and fish eagle birdwatching', 'Sunset views against the Gamo-Wolaita ridges', 'Fresh grilled tilapia by the shore'],
@@ -61,7 +70,10 @@ const destinations = [
     elevation: '1,420 m',
     distanceFromSodo: '32 km (50 min)',
     category: 'Wellness & Springs',
+    lat: 6.6833,
+    lng: 37.8333,
     mapCoords: { x: 62, y: 55 },
+    googleEarthUrl: 'https://earth.google.com/web/@6.6833,37.8333,1420a,2000d,35y,60h,50t,0r',
     image: 'wolaita.jpeg',
     summary: 'Natural thermal springs emerging from volcanic subterranean fissures in Abala Abaya, known for soothing mineral qualities and centuries of traditional restorative retreats.',
     highlights: ['Therapeutic mineral bathing pools', 'Natural steam vents in tropical greenery', 'Traditional herbal tea post-bath', 'Peaceful rural retreat setting'],
@@ -76,7 +88,10 @@ const destinations = [
     elevation: '2,200 m',
     distanceFromSodo: '8 km (15 min)',
     category: 'Archaeology & Heritage',
+    lat: 6.8950,
+    lng: 37.7550,
     mapCoords: { x: 44, y: 40 },
+    googleEarthUrl: 'https://earth.google.com/web/@6.8950,37.7550,2200a,1500d,35y,30h,65t,0r',
     image: 'walaita1.jpeg',
     summary: 'A world-famous archaeological site situated under a massive rock overhang on Mount Damota, uncovering human habitation and obsidian tool-making dating back over 50,000 years.',
     highlights: ['Paleolithic excavation sites and cave formations', 'Guided historical narrative by local scholars', 'Stunning views overlooking Sodo city basin', 'Native wildlife sightings along the slope trail'],
@@ -91,7 +106,10 @@ const destinations = [
     elevation: '2,050 m',
     distanceFromSodo: '18 km (35 min)',
     category: 'Archaeology & Heritage',
+    lat: 6.8200,
+    lng: 37.7100,
     mapCoords: { x: 38, y: 64 },
+    googleEarthUrl: 'https://earth.google.com/web/@6.8200,37.7100,2050a,2000d,35y,200h,50t,0r',
     image: 'wolaita.jpeg',
     summary: 'Massive defensive earthworks, trenches, and stone fortifications constructed under King Kawo Tona, the legendary 19th-century warrior king of the Kingdom of Wolaita.',
     highlights: ['Ancient defensive moats and stone masonry', 'Oral history sessions with village elders', 'Panoramic viewpoint across historical battlegrounds', 'Trek along the King’s ceremonial trails'],
@@ -100,6 +118,15 @@ const destinations = [
     wildlife: 'Highland falcons, wild sage vegetation'
   }
 ];
+
+const hubLocation = {
+  id: 'sodo-hub',
+  name: 'Wolaita Sodo (City Center)',
+  lat: 6.8583,
+  lng: 37.7611,
+  elevation: '2,100 m',
+  googleEarthUrl: 'https://earth.google.com/web/@6.8583,37.7611,2100a,4000d,35y,0h,45t,0r'
+};
 
 const experiences = [
   {
@@ -427,6 +454,7 @@ app.use(express.static(__dirname));
 
 // REST API Endpoints
 app.get('/api/destinations', (_req, res) => res.json(destinations));
+app.get('/api/hub', (_req, res) => res.json(hubLocation));
 app.get('/api/experiences', (req, res) => {
   const { category } = req.query;
   if (category && category !== 'all') {
