@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Visit Wolaita — Unified Design System & Responsive Stylesheet
+   Visit Wolaita — Unified Design System & Real Geospatial Stylesheet
    ========================================================================== */
 
 :root {
@@ -635,7 +635,7 @@ img {
 }
 
 /* ==========================================================================
-   SECTION 1: Interactive Geographic Vector Map of Wolaita
+   SECTION 1: REAL GEOSPATIAL MAP & GOOGLE EARTH 3D INTEGRATION
    ========================================================================== */
 
 .map-section {
@@ -645,129 +645,210 @@ img {
   margin-bottom: 40px;
 }
 
+.map-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--paper);
+  padding: 12px 20px;
+  border-radius: 14px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.map-layer-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.toolbar-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+
+.layer-btn {
+  background: var(--sand);
+  border: 1px solid var(--sand-dark);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 16px;
+  transition: all 0.2s ease;
+}
+
+.layer-btn:hover,
+.layer-btn.active {
+  background: var(--ink);
+  color: #ffffff;
+  border-color: var(--ink);
+}
+
+.map-quick-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.recenter-btn {
+  background: var(--sand);
+  border: 1px solid var(--sand-dark);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  transition: all 0.2s ease;
+}
+
+.recenter-btn:hover {
+  background: var(--ochre-light);
+  border-color: var(--ochre);
+}
+
+.google-earth-global-btn {
+  background: #1a73e8;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.3);
+  transition: all 0.2s ease;
+}
+
+.google-earth-global-btn:hover {
+  background: #1557b0;
+  transform: translateY(-1px);
+}
+
 .map-container-layout {
   display: grid;
   grid-template-columns: 1.6fr 1fr;
-  gap: 32px;
-  align-items: center;
+  gap: 28px;
+  align-items: stretch;
 }
 
-.interactive-map-box {
+.real-map-box {
   background: var(--leaf-dark);
   border-radius: 20px;
   overflow: hidden;
   box-shadow: var(--shadow-lg);
   border: 2px solid rgba(224, 169, 59, 0.3);
   position: relative;
-  min-height: 480px;
-}
-
-.map-bg-topography {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 480px;
-}
-
-.map-svg-canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.map-pins-layer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.map-pin {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  pointer-events: auto;
-  cursor: pointer;
-  z-index: 10;
+  min-height: 520px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  transition: transform 0.25s ease;
 }
 
-.map-pin:hover,
-.map-pin.active {
-  transform: translate(-50%, -50%) scale(1.15);
-  z-index: 20;
+.real-leaflet-map-canvas {
+  width: 100%;
+  height: 100%;
+  min-height: 520px;
+  z-index: 1;
 }
 
-.pin-marker {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: 12px;
-  box-shadow: 0 0 16px rgba(0, 0, 0, 0.6);
-  position: relative;
-}
-
-.pin-marker::after {
-  content: '';
+.map-status-overlay {
   position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  border: 2px solid currentColor;
-  opacity: 0.6;
-  animation: radarRing 2s infinite ease-out;
-}
-
-@keyframes radarRing {
-  0% { transform: scale(0.6); opacity: 0.8; }
-  100% { transform: scale(1.6); opacity: 0; }
-}
-
-.pin-marker.sodo { background: var(--ochre); color: var(--ink); border: 2px solid #fff; }
-.pin-marker.peak { background: #e74c3c; color: #fff; border: 2px solid #fff; }
-.pin-marker.water { background: #3498db; color: #fff; border: 2px solid #fff; }
-.pin-marker.history { background: #9b59b6; color: #fff; border: 2px solid #fff; }
-
-.pin-name {
-  background: rgba(20, 36, 29, 0.92);
-  color: #fff;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(20, 36, 29, 0.88);
+  backdrop-filter: blur(8px);
+  padding: 6px 14px;
+  border-radius: 20px;
   font-size: 11px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 10px;
-  margin-top: 4px;
-  white-space: nowrap;
+  color: #ffffff;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.map-legend {
-  position: absolute;
-  bottom: 16px;
-  left: 16px;
-  background: rgba(20, 36, 29, 0.85);
-  backdrop-filter: blur(8px);
-  padding: 10px 14px;
-  border-radius: 10px;
-  font-size: 11px;
-  color: #fff;
-  display: flex;
-  gap: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.pin-icon-dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
+.pulse-icon {
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  margin-right: 4px;
+  background: #2ecc71;
+  animation: pulseDot 1.5s infinite;
 }
 
-.pin-icon-dot.sodo-dot { background: var(--ochre); }
-.pin-icon-dot.peak-dot { background: #e74c3c; }
-.pin-icon-dot.water-dot { background: #3498db; }
+/* Custom Leaflet Marker Styling */
+.custom-leaflet-marker {
+  display: grid;
+  place-items: center;
+}
+
+.custom-marker-pin {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--earth);
+  color: #fff;
+  border: 2px solid #fff;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease;
+}
+
+.custom-marker-pin:hover,
+.custom-marker-pin.active {
+  transform: scale(1.25);
+  background: var(--ochre);
+  color: var(--ink);
+}
+
+.custom-marker-pin.sodo {
+  background: var(--ochre);
+  color: var(--ink);
+}
+
+/* Leaflet Custom Popup */
+.leaflet-popup-content-wrapper {
+  background: var(--cream);
+  border-radius: 14px;
+  padding: 6px;
+  box-shadow: var(--shadow-lg);
+  font-family: var(--sans);
+  border: 1px solid var(--border-light);
+}
+
+.leaflet-popup-content h4 {
+  font-family: var(--serif);
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+
+.leaflet-popup-content p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.leaflet-popup-content .popup-btn {
+  background: var(--earth);
+  color: #fff;
+  border: 0;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
 
 /* Map Inspector Card */
 .map-inspector-card {
@@ -821,7 +902,7 @@ img {
   background: var(--sand);
   padding: 16px;
   border-radius: 12px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .insp-metric span {
@@ -833,6 +914,18 @@ img {
 .insp-metric strong {
   font-size: 13px;
   color: var(--ink);
+}
+
+.google-earth-btn {
+  background: #1a73e8;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(26, 115, 232, 0.35);
+  font-size: 13px;
+}
+
+.google-earth-btn:hover {
+  background: #1557b0;
+  box-shadow: 0 6px 18px rgba(26, 115, 232, 0.45);
 }
 
 /* ==========================================================================
@@ -2367,6 +2460,7 @@ img {
   margin-top: 24px;
   padding-top: 20px;
   border-top: 1px solid var(--border-light);
+  flex-wrap: wrap;
 }
 
 /* Confirmation Voucher Card */
@@ -2599,6 +2693,6 @@ img {
   }
   .site-footer {
     grid-template-columns: 1fr;
-    padding-bottom: 90px; /* Space for mobile bar */
+    padding-bottom: 90px;
   }
 }
