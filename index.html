@@ -3,52 +3,74 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Visit Wolaita — Official soulful travel guide to Southern Ethiopia. Discover Mount Damota, Ajora Falls, UNESCO Gifaataa festival, and ancient Enset gastronomy." />
+  <meta name="description" content="Visit Wolaita — The official interactive guide to Southern Ethiopia. Explore Mount Damota, Ajora Twin Falls, UNESCO Gifaataa Festival, Enset gastronomy, and community homestays." />
   <title>Visit Wolaita — Land of Peaks, Living Heritage & Generous Tables</title>
+  
+  <!-- Preconnect & Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,600&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="grain"></div>
+  <!-- Grain Atmosphere Overlay -->
+  <div class="grain" aria-hidden="true"></div>
 
-  <!-- Announcement Bar -->
+  <!-- Announcement Bar with Live Microclimate & Currency Switcher -->
   <aside class="announcement-bar" role="complementary">
-    <span>✦ Gifaataa Cultural Festival Celebrations & Trekking Season Open · Plan your autumn & winter journeys</span>
-    <div class="lang-switch" aria-label="Language selector">
-      <button class="lang-btn active" data-lang="en">EN</button>
-      <button class="lang-btn" data-lang="wol">WOL</button>
-      <button class="lang-btn" data-lang="am">አማ</button>
+    <div class="bar-left">
+      <span class="live-pulse"></span>
+      <span class="announce-text">✦ Gifaataa Season & Autumn Trekking Open · Sodo: <b id="barTemp">22°C</b> (<span id="barCondition">Partly Sunny</span>)</span>
+    </div>
+    <div class="bar-right">
+      <!-- Currency Switcher -->
+      <div class="currency-toggle" aria-label="Select currency">
+        <span class="curr-label">Currency:</span>
+        <button class="curr-btn active" data-curr="USD">USD ($)</button>
+        <button class="curr-btn" data-curr="ETB">ETB (ብር)</button>
+      </div>
+
+      <!-- Language Selector -->
+      <div class="lang-switch" aria-label="Language selector">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="wol">WOL</button>
+        <button class="lang-btn" data-lang="am">አማ</button>
+      </div>
     </div>
   </aside>
 
-  <!-- Navigation Header -->
-  <header class="site-header">
+  <!-- Sticky Navigation Header -->
+  <header class="site-header" id="siteHeader">
     <a class="brand" href="#top" aria-label="Visit Wolaita Home">
       <span class="brand-mark">W</span>
-      <span>Visit<br><em>Wolaita</em></span>
+      <span class="brand-text">Visit<br><em>Wolaita</em></span>
     </a>
     
+    <!-- Mobile Hamburger Button -->
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
 
-    <nav id="mainNav" class="nav-menu">
-      <a href="#destinations" class="nav-link">Destinations</a>
+    <!-- Navigation Menu Links -->
+    <nav id="mainNav" class="nav-menu" aria-label="Main Navigation">
+      <a href="#map-section" class="nav-link">Zone Map</a>
+      <a href="#destinations" class="nav-link">Landmarks</a>
       <a href="#experiences" class="nav-link">Experiences</a>
       <a href="#itineraries" class="nav-link">Itineraries</a>
-      <a href="#culture" class="nav-link">Culture & Enset</a>
+      <a href="#enset-workshop" class="nav-link">Enset Lab</a>
+      <a href="#culture" class="nav-link">Culture</a>
+      <a href="#calculator" class="nav-link">Cost Calculator</a>
       <a href="#guides" class="nav-link">Local Guides</a>
-      <a href="#travel-info" class="nav-link">Travel Guide</a>
     </nav>
 
+    <!-- Header Actions -->
     <div class="header-actions">
-      <a href="#plan" class="journey-cart-btn" id="journeyCartBtn" title="View your planned journey">
+      <button class="journey-cart-btn" id="journeyDrawerBtn" title="Open My Planned Journey">
         <span class="cart-icon">🎒</span>
         <span class="cart-label">My Journey</span>
         <span class="cart-badge" id="journeyCount">0</span>
-      </a>
+      </button>
       <a class="header-cta button primary" href="#plan">Plan a Trip <span>↗</span></a>
     </div>
   </header>
@@ -60,13 +82,13 @@
         <p class="eyebrow" id="heroEyebrow">Southern Ethiopia · 06°50′ N · Kingdom of Wolaita</p>
         <h1 id="heroHeadline">Come for the<br><i>landscape.</i><br>Stay for the soul.</h1>
         <p class="intro" id="heroIntro">
-          Wolaita is a highland sanctuary of green volcanic ridges, rushing twin waterfalls, UNESCO living traditions, and tables centered around the ancient sacred Enset. Let local hosts shape your unhurried journey.
+          Wolaita is a highland sanctuary of emerald volcanic ridges, cascading twin waterfalls, UNESCO living traditions, and generous tables centered around the ancient sacred Enset. Let verified local hosts shape your unhurried journey.
         </p>
 
         <div class="hero-actions">
-          <a class="button primary" href="#destinations">Explore Destinations <span>↓</span></a>
-          <button class="sound-player-btn" id="soundButton" aria-pressed="false" title="Play ambient highland soundscape">
-            <span class="sound-icon">
+          <a class="button primary" href="#destinations">Explore Landmarks <span>↓</span></a>
+          <button class="sound-player-btn" id="soundButton" aria-pressed="false" title="Listen to ambient highland soundscape">
+            <span class="sound-icon" aria-hidden="true">
               <span class="eq-bar bar1"></span>
               <span class="eq-bar bar2"></span>
               <span class="eq-bar bar3"></span>
@@ -75,10 +97,11 @@
           </button>
         </div>
 
+        <!-- Metric Stat Badges -->
         <div class="hero-stats">
           <div class="stat-pill">
             <strong>2,900 m</strong>
-            <span>Mount Damota Summit</span>
+            <span>Mount Damota Peak</span>
           </div>
           <div class="stat-pill">
             <strong>UNESCO</strong>
@@ -88,13 +111,17 @@
             <strong>100+ m</strong>
             <span>Ajora Twin Falls</span>
           </div>
+          <div class="stat-pill">
+            <strong>50+ Kings</strong>
+            <span>Dynasty History</span>
+          </div>
         </div>
       </div>
 
       <div class="hero-visual">
         <div class="sun-orb"></div>
         <div class="arch-frame">
-          <img src="walaita1.jpeg" alt="Lush landscape and culture of Wolaita Sodo" class="hero-img">
+          <img src="walaita1.jpeg" alt="Scenic green mountains and culture of Wolaita Sodo" class="hero-img">
         </div>
         <p class="vertical-tag">WOLAITTA SODO / ETHIOPIA</p>
         <div class="photo-badge">
@@ -103,56 +130,151 @@
       </div>
 
       <div class="hero-foot">
-        <span>Scroll to wander</span>
+        <span>Scroll to explore</span>
         <span class="scroll-line"></span>
-        <span>01 / 07</span>
+        <span>01 / 09</span>
       </div>
     </section>
 
-    <!-- Highlight Marquee -->
-    <section class="marquee" aria-label="Key Highlights">
+    <!-- Marquee Highlights -->
+    <section class="marquee" aria-label="Wolaita Highlights">
       <div class="marquee-track">
-        <span>Mount Damota Sunrise</span> <b>✦</b>
+        <span>Mount Damota Dawn Trek</span> <b>✦</b>
         <span>Ajora Twin Cascades</span> <b>✦</b>
-        <span>UNESCO Gifaataa Festival</span> <b>✦</b>
-        <span>The Ancient Enset Table</span> <b>✦</b>
+        <span>UNESCO Gifaataa New Year</span> <b>✦</b>
+        <span>The Sacred Enset Table</span> <b>✦</b>
         <span>Tricolor Shemma Weaving</span> <b>✦</b>
-        <span>Bilbo Natural Hot Springs</span> <b>✦</b>
+        <span>Bilbo Geothermal Hot Springs</span> <b>✦</b>
         <span>Lake Abaya Wetlands</span> <b>✦</b>
-        <span>Kawo Tona Fortress Walls</span> <b>✦</b>
+        <span>Kawo Tona Fortress Moats</span> <b>✦</b>
+        <span>Mochena Borago Caves</span> <b>✦</b>
       </div>
     </section>
 
-    <!-- Section 1: Destinations Explorer -->
+    <!-- SECTION 1: Interactive Geographic Vector Map of Wolaita -->
+    <section class="section map-section" id="map-section">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Interactive Territory Explorer</p>
+          <h2>The geography of<br><i>wonder & highlands.</i></h2>
+        </div>
+        <p class="section-lead">
+          Click any landmark on the vector map to inspect real elevation, travel distance from Sodo city center, hiking difficulty, and route details.
+        </p>
+      </div>
+
+      <div class="map-container-layout">
+        <!-- Interactive Vector Map Box -->
+        <div class="interactive-map-box" id="interactiveMapBox">
+          <div class="map-bg-topography">
+            <!-- Simulated Mountain Contour SVG -->
+            <svg viewBox="0 0 800 600" class="map-svg-canvas" id="mapSvgCanvas" aria-label="Map of Wolaita Zone">
+              <!-- Topographic Contours -->
+              <defs>
+                <linearGradient id="mapGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#244534" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="#14261d" stop-opacity="0.95"/>
+                </linearGradient>
+                <radialGradient id="sodoGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#e0a93b" stop-opacity="0.8"/>
+                  <stop offset="100%" stop-color="#e0a93b" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+
+              <rect width="100%" height="100%" fill="url(#mapGrad)" rx="16"/>
+
+              <!-- Contour Elevation Paths -->
+              <path d="M 50,300 Q 200,100 400,280 T 750,250" fill="none" stroke="rgba(224, 169, 59, 0.15)" stroke-width="1.5" stroke-dasharray="4,4"/>
+              <path d="M 80,450 Q 300,350 500,480 T 780,400" fill="none" stroke="rgba(224, 169, 59, 0.12)" stroke-width="1.5"/>
+              <path d="M 250,80 Q 400,180 600,100 T 780,180" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5"/>
+
+              <!-- Lake Abaya Shoreline Simulation -->
+              <path d="M 550,450 C 600,420 700,440 780,520 L 800,600 L 500,600 Z" fill="rgba(195, 90, 50, 0.25)" stroke="#c85a32" stroke-width="1.5"/>
+              <text x="660" y="540" fill="#e8bc62" font-size="13" font-family="'Fraunces', serif" font-style="italic">Lake Abaya Basin (Red Waters)</text>
+
+              <!-- Central Route Connecting Lines from Sodo -->
+              <g id="routeLinesGroup"></g>
+            </svg>
+
+            <!-- Dynamic Pin Markers Injected by JS -->
+            <div class="map-pins-layer" id="mapPinsLayer"></div>
+
+            <!-- Map Legend Overlay -->
+            <div class="map-legend">
+              <div class="legend-item"><span class="pin-icon-dot sodo-dot"></span> Sodo City (Hub)</div>
+              <div class="legend-item"><span class="pin-icon-dot peak-dot"></span> Peaks & Caves</div>
+              <div class="legend-item"><span class="pin-icon-dot water-dot"></span> Falls & Springs</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Map Inspector Card -->
+        <div class="map-inspector-card" id="mapInspectorCard">
+          <div class="inspector-header">
+            <span class="inspector-badge" id="inspBadge">Highlands & Peaks</span>
+            <h3 id="inspTitle">Mount Damota</h3>
+            <p class="inspector-tagline" id="inspTagline">The Sacred Roof of Wolaita</p>
+          </div>
+          <p class="inspector-desc" id="inspDesc">
+            A towering volcanic massif offering 360-degree vistas over the Great Rift Valley, Lake Abaya, and lush terraced hillsides. Revered for centuries as a sacred site of ancient kings.
+          </p>
+
+          <div class="inspector-metrics">
+            <div class="insp-metric">
+              <span>⛰ Elevation</span>
+              <strong id="inspElevation">2,900 m</strong>
+            </div>
+            <div class="insp-metric">
+              <span>📍 Distance</span>
+              <strong id="inspDistance">12 km (25 min)</strong>
+            </div>
+            <div class="insp-metric">
+              <span>🌤 Best Time</span>
+              <strong id="inspBestTime">Oct – Feb (Dawn)</strong>
+            </div>
+            <div class="insp-metric">
+              <span>🥾 Difficulty</span>
+              <strong id="inspDifficulty">Moderate</strong>
+            </div>
+          </div>
+
+          <div class="inspector-actions">
+            <button class="button primary" id="inspExploreBtn" style="font-size: 13px; width: 100%; justify-content: center;">
+              View Full Landmark Details <span>→</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: Destinations & Landmarks Grid -->
     <section class="section destinations-section" id="destinations">
       <div class="section-header">
         <div>
-          <p class="eyebrow">Highlands & Waterways</p>
+          <p class="eyebrow">Highland Wonders</p>
           <h2>Landmarks that take<br><i>your breath</i> away.</h2>
         </div>
         <p class="section-lead">
-          From the cloud-wrapped volcanic summit of Damota to deep rainforest gorges and geothermal springs, discover the geographic wonders of Wolaita.
+          From prehistoric volcanic massifs to mist-covered twin canyons, discover the natural and archaeological marvels of Wolaita.
         </p>
       </div>
 
       <!-- Filter Tabs -->
       <div class="filter-bar" id="destinationFilterBar" role="tablist">
         <button class="filter-pill active" data-filter="all">All Landmarks</button>
-        <button class="filter-pill" data-filter="Highlands">Highlands</button>
+        <button class="filter-pill" data-filter="Highlands">Highlands & Peaks</button>
         <button class="filter-pill" data-filter="Waterfalls">Waterfalls & Gorges</button>
-        <button class="filter-pill" data-filter="Archaeology">History & Archaeology</button>
+        <button class="filter-pill" data-filter="Archaeology">Archaeology & Forts</button>
         <button class="filter-pill" data-filter="Wellness">Hot Springs & Wellness</button>
         <button class="filter-pill" data-filter="Lakes">Lakes & Wetlands</button>
       </div>
 
       <div class="destinations-grid" id="destinationsGrid">
-        <div class="skeleton-card"></div>
-        <div class="skeleton-card"></div>
-        <div class="skeleton-card"></div>
+        <!-- Rendered via JS -->
       </div>
     </section>
 
-    <!-- Section 2: Filterable Experiences -->
+    <!-- SECTION 3: Filterable Experiences & Activities -->
     <section class="section experiences-section" id="experiences">
       <div class="section-header">
         <div>
@@ -160,7 +282,7 @@
           <h2>Choose your pace &<br><i>move beyond</i> the postcard.</h2>
         </div>
         <p class="section-lead">
-          Handcrafted immersive experiences guided by certified local community hosts. Click any card to customize and add to your journey.
+          Handcrafted immersive experiences guided by certified local community hosts. Click "+ Add to Journey" to build your personalized itinerary.
         </p>
       </div>
 
@@ -183,7 +305,7 @@
       </div>
     </section>
 
-    <!-- Section 3: Curated Multi-Day Itineraries -->
+    <!-- SECTION 4: Curated Multi-Day Itineraries -->
     <section class="section itineraries-section" id="itineraries">
       <div class="section-header">
         <div>
@@ -191,7 +313,7 @@
           <h2>Crafted itineraries for<br><i>every duration.</i></h2>
         </div>
         <p class="section-lead">
-          Whether visiting for a weekend escape or embarking on a week-long southern odyssey, explore these curated route templates.
+          Whether visiting for a weekend escape or embarking on a 5-day southern odyssey, explore these curated route templates.
         </p>
       </div>
 
@@ -200,12 +322,62 @@
       </div>
     </section>
 
-    <!-- Section 4: Living Culture, Enset & Stories -->
+    <!-- SECTION 5: Interactive Enset Culinary Lab & Culture Simulator -->
+    <section class="section enset-workshop-section" id="enset-workshop">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Living Gastronomy Lab</p>
+          <h2>The sacred Enset:<br><i>From harvest</i> to feast.</h2>
+        </div>
+        <p class="section-lead">
+          Known as the "Tree Against Hunger," *Ensete ventricosum* is the architectural foundation of Wolaita culture. Experience the 4 traditional steps interactively.
+        </p>
+      </div>
+
+      <div class="enset-simulator-card">
+        <!-- Step Navigation Pills -->
+        <div class="enset-step-nav" id="ensetStepNav" role="tablist">
+          <button class="enset-step-btn active" data-step="1">
+            <span class="step-num">01</span>
+            <span class="step-label">Decortication & Scraping</span>
+          </button>
+          <button class="enset-step-btn" data-step="2">
+            <span class="step-num">02</span>
+            <span class="step-label">Pit Fermentation</span>
+          </button>
+          <button class="enset-step-btn" data-step="3">
+            <span class="step-num">03</span>
+            <span class="step-label">Baking Kocho</span>
+          </button>
+          <button class="enset-step-btn" data-step="4">
+            <span class="step-num">04</span>
+            <span class="step-label">Pure Bulla Feast</span>
+          </button>
+        </div>
+
+        <!-- Active Step Display Canvas -->
+        <div class="enset-step-content" id="ensetStepContent">
+          <!-- Dynamically populated by JS -->
+        </div>
+
+        <div class="enset-step-footer">
+          <div class="step-progress-bar">
+            <div class="step-progress-fill" id="ensetProgressFill" style="width: 25%;"></div>
+          </div>
+          <div class="step-controls">
+            <button class="button" id="prevEnsetStep" style="background: var(--sand); color: var(--ink);">← Previous Step</button>
+            <button class="button primary" id="nextEnsetStep">Next Step →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: Living Culture Stories & Audio Phrasebook -->
     <section class="section culture-section" id="culture">
       <div class="story-layout">
         <div class="story-visual">
           <div class="story-image-wrap">
-            <img src="wolaita.jpeg" alt="Traditional Wolaita cottage and Enset garden" id="storyImage">
+            <img src="wolaita.jpeg" alt="Traditional Wolaita compound and Enset garden" id="storyImage">
           </div>
           <div class="story-seal">
             <span>ROOTED<br>IN SOUL<br><small>EST. ANCIENT</small></span>
@@ -213,7 +385,7 @@
         </div>
 
         <div class="story-content">
-          <p class="eyebrow">Living Traditions & Gastronomy</p>
+          <p class="eyebrow">Living Traditions & Royalty</p>
           <h2>The heart of Wolaita is<br><i>the table & the clan.</i></h2>
 
           <div class="story-tabs" id="storyTabs">
@@ -226,22 +398,107 @@
         </div>
       </div>
 
-      <!-- Phrasebook & Language Connection -->
+      <!-- Phrasebook & Audio Pronunciation Hub -->
       <div class="phrasebook-banner">
         <div class="phrasebook-header">
           <div>
-            <p class="eyebrow" style="color: var(--ochre);">Wolayttatto Phrasebook</p>
-            <h3>Connect with locals in their native tongue</h3>
+            <p class="eyebrow" style="color: var(--ochre);">Audio Phrasebook</p>
+            <h3>Connect with locals in Wolayttatto</h3>
           </div>
-          <p>Wolayttatto is an Omotic language spoken with warmth. A few kind words open every door.</p>
+          <p>Wolayttatto is an Omotic language spoken with great warmth. Click the 🔊 button to hear how words are spoken!</p>
         </div>
         <div class="phrasebook-grid" id="phrasebookGrid">
-          <!-- Phrases loaded from /api/phrases -->
+          <!-- Phrases loaded from /api/phrases with audio trigger -->
         </div>
       </div>
     </section>
 
-    <!-- Section 5: Verified Local Guides -->
+    <!-- SECTION 7: Interactive Live Trip Cost & Budget Calculator -->
+    <section class="section calculator-section" id="calculator">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Budget & Logistics Estimator</p>
+          <h2>Plan your budget in<br><i>real time.</i></h2>
+        </div>
+        <p class="section-lead">
+          Adjust group size, travel duration, lodging comfort, and transport options to see transparent, real-time cost estimates in both USD and ETB.
+        </p>
+      </div>
+
+      <div class="calculator-grid">
+        <div class="calc-controls-card">
+          <div class="calc-group">
+            <label for="calcTravelers">👥 Number of Travelers: <b id="calcTravelersVal">2 people</b></label>
+            <input type="range" id="calcTravelers" min="1" max="10" value="2" class="calc-slider">
+          </div>
+
+          <div class="calc-group">
+            <label for="calcDays">📅 Trip Duration: <b id="calcDaysVal">3 days</b></label>
+            <input type="range" id="calcDays" min="1" max="10" value="3" class="calc-slider">
+          </div>
+
+          <div class="calc-row">
+            <div class="calc-group">
+              <label for="calcLodging">🏡 Lodging Comfort</label>
+              <select id="calcLodging" class="calc-select">
+                <option value="homestay">Traditional Bamboo Homestay ($35/day)</option>
+                <option value="ecolodge" selected>Eco-Lodge & Homestay Mix ($55/day)</option>
+                <option value="hotel">Sodo Premium City Hotel ($75/day)</option>
+              </select>
+            </div>
+            <div class="calc-group">
+              <label for="calcTransport">🚙 Local Transport</label>
+              <select id="calcTransport" class="calc-select">
+                <option value="private4x4" selected>Dedicated 4x4 Land Cruiser ($60/day)</option>
+                <option value="minibus">Local Minibus & TukTuk ($15/day)</option>
+                <option value="shuttle">Private Minivan Shuttle ($40/day)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="calc-basket-reminder">
+            <span>🎒 Selected Activities: <b id="calcActCount">0 activities selected</b></span>
+            <a href="#experiences" class="calc-add-link">+ Browse more experiences</a>
+          </div>
+        </div>
+
+        <div class="calc-result-card">
+          <span class="calc-badge">Transparent Community Rates</span>
+          <h3>Estimated Journey Budget</h3>
+          
+          <div class="calc-price-display">
+            <div class="price-primary" id="calcTotalPrimary">$420 USD</div>
+            <div class="price-secondary" id="calcTotalSecondary">~50,400 ETB</div>
+            <p class="price-per-person" id="calcPerPerson">($210 USD per traveler for 3 days)</p>
+          </div>
+
+          <div class="calc-breakdown-list">
+            <div class="breakdown-item">
+              <span>Lodging & Organic Meals</span>
+              <strong id="calcBreakdownLodging">$165</strong>
+            </div>
+            <div class="breakdown-item">
+              <span>Transport & Fuel</span>
+              <strong id="calcBreakdownTransport">$180</strong>
+            </div>
+            <div class="breakdown-item">
+              <span>Curated Activities & Fees</span>
+              <strong id="calcBreakdownActivities">$75</strong>
+            </div>
+            <div class="breakdown-item">
+              <span>Local Guide & Community Fund</span>
+              <strong style="color: var(--leaf);">Included ✓</strong>
+            </div>
+          </div>
+
+          <a href="#plan" class="button primary" style="width: 100%; justify-content: center; margin-top: 20px;">
+            Apply Estimate to Journey Note <span>→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 8: Verified Guides & Community Hosts -->
     <section class="section guides-section" id="guides">
       <div class="section-header">
         <div>
@@ -249,12 +506,29 @@
           <h2>Guided by those who<br><i>know every ridge.</i></h2>
         </div>
         <p class="section-lead">
-          Meet certified local storytellers, naturalists, and culture guardians dedicated to regenerative tourism that benefits local families.
+          Meet certified local storytellers, naturalists, and culture guardians dedicated to regenerative tourism that directly benefits local families.
         </p>
       </div>
 
       <div class="guides-grid" id="guidesGrid">
         <!-- Guides rendered via JavaScript -->
+      </div>
+    </section>
+
+    <!-- SECTION 9: Verified Traveler Testimonials -->
+    <section class="section reviews-section" id="reviews">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Traveler Stories</p>
+          <h2>Loved by soulful<br><i>wanderers.</i></h2>
+        </div>
+        <p class="section-lead">
+          Read authentic reflections from trekkers, researchers, and families who walked the paths of Wolaita.
+        </p>
+      </div>
+
+      <div class="reviews-grid" id="reviewsGrid">
+        <!-- Reviews rendered via JavaScript -->
       </div>
     </section>
 
@@ -266,13 +540,13 @@
       <cite>— A Wolaita Proverb & Welcome</cite>
     </section>
 
-    <!-- Section 6: Interactive Custom Journey Builder & Plan -->
+    <!-- SECTION 10: Interactive Multi-Step Journey Planner -->
     <section class="section plan-section" id="plan">
       <div class="plan-info">
         <p class="eyebrow">Personal Trip Customizer</p>
         <h2>Shape your Wolaita<br><i>journey note.</i></h2>
         <p>
-          Tell us your ideal dates, travel style, and the experiences you’ve selected. Our local coordination desk in Sodo will connect you directly with your verified host.
+          Tell us your ideal arrival dates, travel preferences, and the activities you’ve picked. Our local coordination desk in Sodo will connect you directly with your verified host.
         </p>
 
         <div class="plan-perks">
@@ -280,7 +554,7 @@
             <span class="perk-icon">✦</span>
             <div>
               <strong>100% Community-Rooted</strong>
-              <p>Direct payments support local guides, weavers, and family homestays.</p>
+              <p>Direct payments support local guides, weaver cooperatives, and family homesteads.</p>
             </div>
           </div>
           <div class="perk-item">
@@ -293,17 +567,17 @@
           <div class="perk-item">
             <span class="perk-icon">✦</span>
             <div>
-              <strong>Instant Digital Itinerary Summary</strong>
+              <strong>Instant Digital Travel Summary</strong>
               <p>Receive your personalized reference pass and itinerary overview instantly.</p>
             </div>
           </div>
         </div>
 
-        <!-- Selected items drawer in form -->
+        <!-- Selected Items Basket in Form -->
         <div class="selected-basket-card">
           <h4>Your Selected Experiences (<span id="basketCount">0</span>)</h4>
           <ul class="selected-items-list" id="selectedItemsList">
-            <li class="empty-basket-hint">No activities selected yet. Explore experiences above and click "+ Add to journey".</li>
+            <li class="empty-basket-hint">No activities selected yet. Explore experiences above and click "+ Add to Journey".</li>
           </ul>
         </div>
       </div>
@@ -350,7 +624,7 @@
               <label for="travelersCount">Number of Travelers</label>
               <select id="travelersCount" name="travelers">
                 <option value="1">Solo Traveler (1)</option>
-                <option value="2">2 Travelers (Couple/Friends)</option>
+                <option value="2" selected>2 Travelers (Couple/Friends)</option>
                 <option value="3">3 – 5 Travelers (Small Group)</option>
                 <option value="6">6+ Travelers (Family / Team)</option>
               </select>
@@ -366,14 +640,24 @@
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="guidePreference">Guide & Host Preference</label>
-            <select id="guidePreference" name="guidePreference">
-              <option value="Any Certified Host">Match with Best Available Host</option>
-              <option value="Tariku Bancha (Trekking & Nature)">Tariku Bancha (Trekking & Nature)</option>
-              <option value="Selamawit Kassa (Culture & Gastronomy)">Selamawit Kassa (Culture & Gastronomy)</option>
-              <option value="Mathewos Wolde (Archaeology & Wildlife)">Mathewos Wolde (Archaeology & Wildlife)</option>
-            </select>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="transportStyle">Local Transport Option</label>
+              <select id="transportStyle" name="transportStyle">
+                <option value="Private 4x4" selected>Dedicated 4x4 Land Cruiser</option>
+                <option value="Private Minibus">Private Minibus Shuttle</option>
+                <option value="Local Minibus & TukTuk">Local Minibus & TukTuk (Adventurous)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="guidePreference">Guide & Host Preference</label>
+              <select id="guidePreference" name="guidePreference">
+                <option value="Any Certified Host">Match with Best Available Host</option>
+                <option value="Tariku Bancha (Trekking & Nature)">Tariku Bancha (Trekking & Nature)</option>
+                <option value="Selamawit Kassa (Culture & Gastronomy)">Selamawit Kassa (Culture & Gastronomy)</option>
+                <option value="Mathewos Wolde (Archaeology & Wildlife)">Mathewos Wolde (Archaeology & Wildlife)</option>
+              </select>
+            </div>
           </div>
 
           <div class="form-group">
@@ -391,7 +675,7 @@
       </div>
     </section>
 
-    <!-- Section 7: Practical Travel Essentials -->
+    <!-- SECTION 11: Practical Travel Essentials -->
     <section class="section travel-info-section" id="travel-info">
       <div class="section-header">
         <div>
@@ -399,7 +683,7 @@
           <h2>Everything you need<br><i>to know</i> before you arrive.</h2>
         </div>
         <p class="section-lead">
-          Essential details on transport routes from Addis Ababa, best travel seasons, packing recommendations, and cultural etiquette.
+          Essential details on transportation from Addis Ababa, seasonal climate forecasts, packing gear, and cultural etiquette.
         </p>
       </div>
 
@@ -408,6 +692,37 @@
       </div>
     </section>
   </main>
+
+  <!-- Slide-out Journey Cart Drawer -->
+  <aside class="journey-drawer" id="journeyDrawer" aria-labelledby="drawerTitle" aria-hidden="true">
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <div class="drawer-panel">
+      <div class="drawer-header">
+        <div class="drawer-title-wrap">
+          <span class="drawer-icon">🎒</span>
+          <h3 id="drawerTitle">My Planned Journey</h3>
+        </div>
+        <button class="drawer-close" id="drawerCloseBtn" aria-label="Close journey drawer">✕</button>
+      </div>
+
+      <div class="drawer-body">
+        <div class="drawer-basket-items" id="drawerBasketItems">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="drawer-cost-summary" id="drawerCostSummary">
+          <!-- Cost summary by JS -->
+        </div>
+      </div>
+
+      <div class="drawer-footer">
+        <a href="#plan" class="button primary drawer-checkout-btn" id="drawerCheckoutBtn">
+          Proceed to Journey Registration <span>→</span>
+        </a>
+        <button class="button drawer-clear-btn" id="drawerClearBtn">Clear All Activities</button>
+      </div>
+    </div>
+  </aside>
 
   <!-- Interactive Detail Modal -->
   <dialog class="detail-modal" id="detailModal" aria-labelledby="modalTitle">
@@ -419,7 +734,7 @@
     </div>
   </dialog>
 
-  <!-- Journey Confirmation Modal -->
+  <!-- Journey Confirmation Voucher Modal -->
   <dialog class="detail-modal" id="confirmationModal">
     <div class="modal-card confirmation-card">
       <button class="modal-close" id="confirmCloseBtn" aria-label="Close confirmation">✕</button>
@@ -429,49 +744,60 @@
     </div>
   </dialog>
 
+  <!-- Sticky Mobile Action Bar -->
+  <div class="mobile-action-bar" id="mobileActionBar">
+    <button class="mobile-bar-btn" id="mobileDrawerTrigger">
+      <span>🎒 My Journey (<b id="mobileJourneyCount">0</b>)</span>
+    </button>
+    <a href="#plan" class="button primary mobile-bar-cta">Plan Trip <span>↗</span></a>
+  </div>
+
   <!-- Site Footer -->
   <footer class="site-footer">
     <div class="footer-col brand-col">
       <a class="brand" href="#top">
         <span class="brand-mark">W</span>
-        <span>Visit<br><em>Wolaita</em></span>
+        <span class="brand-text">Visit<br><em>Wolaita</em></span>
       </a>
       <p class="footer-tagline">
-        Travel with care. Leave with lifelong stories. Celebrating the living heritage, green ridges, and generous spirit of Wolaita.
+        Travel with care. Leave with lifelong stories. Celebrating the living heritage, green volcanic ridges, and generous tables of Wolaita.
       </p>
       <div class="footer-sodo-badge">
-        <span>📍 Tourism Desk: Wolaita Sodo, Southern Ethiopia</span>
+        <span>📍 Tourism Coordination Desk: Wolaita Sodo, Southern Ethiopia</span>
       </div>
     </div>
 
     <div class="footer-col">
-      <h4>Navigation</h4>
+      <h4>Platform Directory</h4>
       <ul class="footer-links">
+        <li><a href="#map-section">Zone Vector Map</a></li>
         <li><a href="#destinations">Key Landmarks</a></li>
         <li><a href="#experiences">Experiential Activities</a></li>
-        <li><a href="#itineraries">Multi-Day Itineraries</a></li>
-        <li><a href="#culture">Gifaataa & Enset Culture</a></li>
+        <li><a href="#itineraries">Multi-Day Routes</a></li>
+        <li><a href="#enset-workshop">Enset Gastronomy Lab</a></li>
+        <li><a href="#culture">Gifaataa & Heritage</a></li>
+        <li><a href="#calculator">Trip Cost Calculator</a></li>
         <li><a href="#guides">Community Guides</a></li>
-        <li><a href="#travel-info">Travel Guide</a></li>
       </ul>
     </div>
 
     <div class="footer-col">
-      <h4>Cultural Pledge</h4>
+      <h4>Cultural & Eco Pledge</h4>
       <p class="footer-pledge">
-        Every journey booked through Visit Wolaita directly compensates local guides, weaver cooperatives, and agricultural households.
+        100% of community guide stipends and homestay fees directly benefit local agrarian households and artisan weaving cooperatives in Wolaita Zone.
       </p>
       <div class="footer-socials">
         <a href="#top" class="social-tag">#VisitWolaita</a>
-        <a href="#top" class="social-tag">#Gifaataa</a>
+        <a href="#top" class="social-tag">#UNESCOGifaataa</a>
         <a href="#top" class="social-tag">#MountDamota</a>
+        <a href="#top" class="social-tag">#EnsetCulture</a>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <small>© 2026 Visit Wolaita Tourism Initiative. All rights reserved. Crafted with authentic highland spirit.</small>
+      <small>© 2026 Visit Wolaita Tourism Initiative. All rights reserved. Built with authentic highland spirit.</small>
       <div class="footer-status-pill">
-        <span class="status-dot"></span> System Status: Online & Accepting Bookings
+        <span class="status-dot"></span> System Live & Verified Guides On Duty
       </div>
     </div>
   </footer>

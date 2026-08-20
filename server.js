@@ -16,10 +16,13 @@ const destinations = [
     elevation: '2,900 m',
     distanceFromSodo: '12 km (25 min)',
     category: 'Highlands & Peaks',
+    mapCoords: { x: 48, y: 32 }, // Percentage on interactive vector map
     image: 'walaita1.jpeg',
     summary: 'A towering volcanic massif offering 360-degree vistas over the Great Rift Valley, Lake Abaya, and lush terraced hillsides. Revered for centuries as a sacred site of ancient kings.',
     highlights: ['Breathtaking dawn cloud inversions', 'Hiking trails through indigenous afro-alpine flora', 'Mochena Borago archaeological shelter nearby', 'Paragliding vantage points'],
-    bestTime: 'October to February (Early Mornings)'
+    bestTime: 'October to February (Early Mornings)',
+    difficulty: 'Moderate to Challenging',
+    wildlife: 'Colobus monkeys, Lammergeier eagles, endemic butterflies'
   },
   {
     id: 'ajora',
@@ -28,10 +31,13 @@ const destinations = [
     elevation: '1,750 m',
     distanceFromSodo: '35 km (1 hr)',
     category: 'Waterfalls & Gorges',
+    mapCoords: { x: 26, y: 22 },
     image: 'wolaita.jpeg',
     summary: 'Formed by the roaring confluence of the Soke and Ajancho rivers, these twin waterfalls plunge over 100 meters into a prehistoric jungle canyon filled with ferns and rare hornbills.',
     highlights: ['Twin waterfalls dropping side-by-side', 'Lush rainforest canyon trekking', 'Natural mist-sprayed picnic spots', 'Rich monkey and bird species'],
-    bestTime: 'September to January (Peak river volume)'
+    bestTime: 'September to January (Peak river volume)',
+    difficulty: 'Active canyon hiking',
+    wildlife: 'Silvery-cheeked hornbills, Vervet monkeys, wild orchids'
   },
   {
     id: 'abaya',
@@ -40,10 +46,13 @@ const destinations = [
     elevation: '1,285 m',
     distanceFromSodo: '45 km (1 hr 15 min)',
     category: 'Lakes & Wildlife',
+    mapCoords: { x: 74, y: 78 },
     image: 'walaita1.jpeg',
     summary: 'Ethiopia’s second-largest lake with distinctive reddish-copper waters, framed by dramatic escarpments. A sanctuary for hundreds of bird species, Nile crocodiles, and freshwater fish.',
     highlights: ['Canoe excursions with local fishermen', 'Pelican and fish eagle birdwatching', 'Sunset views against the Gamo-Wolaita ridges', 'Fresh grilled tilapia by the shore'],
-    bestTime: 'Year-round (Best sunsets Nov–March)'
+    bestTime: 'Year-round (Best sunsets Nov–March)',
+    difficulty: 'Gentle & Relaxed',
+    wildlife: 'Great white pelicans, African fish eagles, Nile monitor lizards'
   },
   {
     id: 'bilbo',
@@ -52,10 +61,13 @@ const destinations = [
     elevation: '1,420 m',
     distanceFromSodo: '32 km (50 min)',
     category: 'Wellness & Springs',
+    mapCoords: { x: 62, y: 55 },
     image: 'wolaita.jpeg',
     summary: 'Natural thermal springs emerging from volcanic subterranean fissures in Abala Abaya, known for soothing mineral qualities and centuries of traditional restorative retreats.',
     highlights: ['Therapeutic mineral bathing pools', 'Natural steam vents in tropical greenery', 'Traditional herbal tea post-bath', 'Peaceful rural retreat setting'],
-    bestTime: 'November to May'
+    bestTime: 'November to May',
+    difficulty: 'Easy & Therapeutic',
+    wildlife: 'Sunbirds, weaver birds, giant wild fig trees'
   },
   {
     id: 'mochena',
@@ -64,10 +76,13 @@ const destinations = [
     elevation: '2,200 m',
     distanceFromSodo: '8 km (15 min)',
     category: 'Archaeology & Heritage',
+    mapCoords: { x: 44, y: 40 },
     image: 'walaita1.jpeg',
     summary: 'A world-famous archaeological site situated under a massive rock overhang on Mount Damota, uncovering human habitation and obsidian tool-making dating back over 50,000 years.',
     highlights: ['Paleolithic excavation sites and cave formations', 'Guided historical narrative by local scholars', 'Stunning views overlooking Sodo city basin', 'Native wildlife sightings along the slope trail'],
-    bestTime: 'Dry season (October to May)'
+    bestTime: 'Dry season (October to May)',
+    difficulty: 'Moderate walk',
+    wildlife: 'Rock hyrax, mountain swallows'
   },
   {
     id: 'tona-fortress',
@@ -76,10 +91,13 @@ const destinations = [
     elevation: '2,050 m',
     distanceFromSodo: '18 km (35 min)',
     category: 'Archaeology & Heritage',
+    mapCoords: { x: 38, y: 64 },
     image: 'wolaita.jpeg',
     summary: 'Massive defensive earthworks, trenches, and stone fortifications constructed under King Kawo Tona, the legendary 19th-century warrior king of the Kingdom of Wolaita.',
     highlights: ['Ancient defensive moats and stone masonry', 'Oral history sessions with village elders', 'Panoramic viewpoint across historical battlegrounds', 'Trek along the King’s ceremonial trails'],
-    bestTime: 'October to April'
+    bestTime: 'October to April',
+    difficulty: 'Moderate exploration',
+    wildlife: 'Highland falcons, wild sage vegetation'
   }
 ];
 
@@ -90,9 +108,13 @@ const experiences = [
     type: 'Highland Trekking',
     duration: '5 hours',
     difficulty: 'Moderate',
-    price: '$35 / 3,500 ETB',
+    priceUSD: 35,
+    priceETB: 4200,
+    price: '$35 / 4,200 ETB',
     note: 'Ascend the highest peak of Wolaita before first light. Savor freshly brewed highland coffee while watching morning clouds roll across the Great Rift Valley.',
-    included: ['Certified mountain guide', 'Highland sunrise coffee ceremony', 'Snack pack with local fruits & honey', 'Walking poles on request']
+    included: ['Certified mountain guide', 'Highland sunrise coffee ceremony', 'Snack pack with local fruits & honey', 'Walking poles on request'],
+    rating: 4.9,
+    reviewsCount: 38
   },
   {
     id: 'ajora-canyon-trek',
@@ -100,9 +122,13 @@ const experiences = [
     type: 'Highland Trekking',
     duration: 'Full Day (7 hrs)',
     difficulty: 'Active',
-    price: '$50 / 5,000 ETB',
+    priceUSD: 50,
+    priceETB: 6000,
+    price: '$50 / 6,000 ETB',
     note: 'Descend through dense rainforest canyons to the mist-covered base of the 100m twin cascades. Spot colobus monkeys and exotic birdlife.',
-    included: ['Round-trip scenic transport', 'Eco-trail escort & safety gear', 'Local community trail fee', 'Riverside picnic lunch']
+    included: ['Round-trip scenic transport', 'Eco-trail escort & safety gear', 'Local community trail fee', 'Riverside picnic lunch'],
+    rating: 5.0,
+    reviewsCount: 44
   },
   {
     id: 'gifataa-culture',
@@ -110,9 +136,13 @@ const experiences = [
     type: 'Living Culture',
     duration: 'Full Day',
     difficulty: 'Easy',
-    price: '$45 / 4,500 ETB',
+    priceUSD: 45,
+    priceETB: 5400,
+    price: '$45 / 5,400 ETB',
     note: 'Experience the UNESCO-recognized Wolaita New Year traditions. Learn dynamic Gereessa dance steps, hear ancient folklore, and wear hand-woven celebratory shemma.',
-    included: ['Elder storytelling session', 'Traditional attire dressing & photoshoot', 'Gereessa dance workshop', 'Festive banquet with local delicacies']
+    included: ['Elder storytelling session', 'Traditional attire dressing & photoshoot', 'Gereessa dance workshop', 'Festive banquet with local delicacies'],
+    rating: 4.9,
+    reviewsCount: 29
   },
   {
     id: 'enset-masterclass',
@@ -120,9 +150,13 @@ const experiences = [
     type: 'Enset & Gastronomy',
     duration: '4 hours',
     difficulty: 'Easy',
-    price: '$30 / 3,000 ETB',
+    priceUSD: 30,
+    priceETB: 3600,
+    price: '$30 / 3,600 ETB',
     note: 'Step inside a lush homestead to harvest and decorticate the ancient false banana plant. Bake crisp Kocho over clay griddles and taste steaming Bulla porridge.',
-    included: ['Hands-on Enset scraping demo', 'Kocho flatbread baking', 'Bulla porridge & spiced butter tasting', 'Organic coffee roasting ritual']
+    included: ['Hands-on Enset scraping demo', 'Kocho flatbread baking', 'Bulla porridge & spiced butter tasting', 'Organic coffee roasting ritual'],
+    rating: 5.0,
+    reviewsCount: 52
   },
   {
     id: 'shemma-weaving',
@@ -130,9 +164,13 @@ const experiences = [
     type: 'Artisan Crafts',
     duration: '3 hours',
     difficulty: 'Easy',
-    price: '$25 / 2,500 ETB',
+    priceUSD: 25,
+    priceETB: 3000,
+    price: '$25 / 3,000 ETB',
     note: 'Sit alongside master cotton weavers as they interlace vibrant red, black, and yellow geometric patterns on traditional wooden foot-pedal looms.',
-    included: ['Guided loom trial', 'Organic cotton spinning lesson', 'Artisan community stipend', 'Custom woven bookmark/coaster gift']
+    included: ['Guided loom trial', 'Organic cotton spinning lesson', 'Artisan community stipend', 'Custom woven bookmark/coaster gift'],
+    rating: 4.8,
+    reviewsCount: 21
   },
   {
     id: 'bilbo-spa',
@@ -140,9 +178,13 @@ const experiences = [
     type: 'Wellness & Nature',
     duration: 'Half Day (4 hrs)',
     difficulty: 'Easy',
-    price: '$35 / 3,500 ETB',
+    priceUSD: 35,
+    priceETB: 4200,
+    price: '$35 / 4,200 ETB',
     note: 'Soak in mineral-rich volcanic warm pools nestled beneath wild fig trees, followed by traditional herbal steam and spiced honey infusions.',
-    included: ['Private mineral pool access', 'Local herbal steam treatment', 'Organic forest honey tea', 'Local wellness host guide']
+    included: ['Private mineral pool access', 'Local herbal steam treatment', 'Organic forest honey tea', 'Local wellness host guide'],
+    rating: 4.7,
+    reviewsCount: 19
   },
   {
     id: 'homestay-tukil',
@@ -150,9 +192,13 @@ const experiences = [
     type: 'Community Homestays',
     duration: '2 Days / 1 Night',
     difficulty: 'Easy',
-    price: '$65 / 6,500 ETB',
+    priceUSD: 65,
+    priceETB: 7800,
+    price: '$65 / 7,800 ETB',
     note: 'Sleep in an authentic woven bamboo dome cottage. Share evening stories by the embers, wake up to rooster calls, and experience true southern hospitality.',
-    included: ['Overnight in traditional family compound', '3 homecooked organic meals', 'Evening campfire music & lore', 'Community host support fund']
+    included: ['Overnight in traditional family compound', '3 homecooked organic meals', 'Evening campfire music & lore', 'Community host support fund'],
+    rating: 5.0,
+    reviewsCount: 33
   }
 ];
 
@@ -207,7 +253,8 @@ const guides = [
     experience: '9 years experience',
     languages: ['English', 'Wolayttatto', 'Amharic'],
     specialties: ['Mount Damota summit trails', 'Afro-alpine botany', 'Paragliding logistics'],
-    bio: 'Born at the base of Mount Damota, Tariku has guided over 400 travelers across Southern Ethiopia’s ridges and hidden waterfalls.'
+    bio: 'Born at the base of Mount Damota, Tariku has guided over 400 travelers across Southern Ethiopia’s ridges and hidden waterfalls.',
+    phone: '+251 91 234 5678'
   },
   {
     id: 'selamawit',
@@ -216,7 +263,8 @@ const guides = [
     experience: '6 years experience',
     languages: ['English', 'Wolayttatto', 'Amharic'],
     specialties: ['Enset traditions', 'Gifaataa festival lore', 'Artisan weaving trails'],
-    bio: 'Selamawit is passionate about preserving Wolaita’s intangible heritage, empowering female agricultural cooperatives and homestay families.'
+    bio: 'Selamawit is passionate about preserving Wolaita’s intangible heritage, empowering female agricultural cooperatives and homestay families.',
+    phone: '+251 92 876 5432'
   },
   {
     id: 'mathewos',
@@ -225,7 +273,8 @@ const guides = [
     experience: '11 years experience',
     languages: ['English', 'Wolayttatto', 'Amharic', 'French'],
     specialties: ['Mochena Borago caves', 'Lake Abaya birding', 'King Tona fortress history'],
-    bio: 'Mathewos holds a background in tourism and heritage conservation, offering captivating narratives of the ancient Kingdom of Wolaita.'
+    bio: 'Mathewos holds a background in tourism and heritage conservation, offering captivating narratives of the ancient Kingdom of Wolaita.',
+    phone: '+251 93 456 7890'
   }
 ];
 
@@ -261,15 +310,97 @@ const stories = [
 ];
 
 const phrases = [
-  { wol: 'Saro ditte!', amh: 'እንኳን ደህና መጣችሁ!', eng: 'Welcome! / Peace to you!' },
-  { wol: 'Saro de’ayti?', amh: 'እንደምን አላችሁ?', eng: 'How are you?' },
-  { wol: 'Wodaasi / Wodasso', amh: 'አመሰግናለሁ', eng: 'Thank you very much' },
-  { wol: 'Ne suntsay oone?', amh: 'ስምህ/ሽ ማነው?', eng: 'What is your name?' },
-  { wol: 'Ta suntsay...', amh: 'ስሜ ... ነው', eng: 'My name is...' },
-  { wol: 'Aykeettaa', amh: 'ችግር የለም / ይቅርታ', eng: 'No problem / Excuse me' },
-  { wol: 'Aybadaa?', amh: 'ስንት ነው?', eng: 'How much is it?' },
-  { wol: 'Lo’o galla!', amh: 'መልካም ቀን!', eng: 'Have a great day!' }
+  { wol: 'Saro ditte!', amh: 'እንኳን ደህና መጣችሁ!', eng: 'Welcome! / Peace to you!', phonetic: 'Sah-roh dit-teh' },
+  { wol: 'Saro de’ayti?', amh: 'እንደምን አላችሁ?', eng: 'How are you?', phonetic: 'Sah-roh deh-eye-tee' },
+  { wol: 'Wodaasi / Wodasso', amh: 'አመሰግናለሁ', eng: 'Thank you very much', phonetic: 'Woh-dah-see' },
+  { wol: 'Ne suntsay oone?', amh: 'ስምህ/ሽ ማነው?', eng: 'What is your name?', phonetic: 'Neh soon-tsye oh-neh' },
+  { wol: 'Ta suntsay...', amh: 'ስሜ ... ነው', eng: 'My name is...', phonetic: 'Tah soon-tsye...' },
+  { wol: 'Aykeettaa', amh: 'ችግር የለም / ይቅርታ', eng: 'No problem / Excuse me', phonetic: 'Eye-kayt-tah' },
+  { wol: 'Aybadaa?', amh: 'ስንት ነው?', eng: 'How much is it?', phonetic: 'Eye-bah-dah' },
+  { wol: 'Lo’o galla!', amh: 'መልካም ቀን!', eng: 'Have a great day!', phonetic: 'Loh-oh gahl-lah' }
 ];
+
+const ensetSteps = [
+  {
+    step: 1,
+    title: 'Decortication & Scraping',
+    wolName: 'Uttaani Haaxisuwaa',
+    desc: 'The pseudo-stem leaf sheaths are stripped and firmly scraped against a wooden beam using a sharpened bamboo tool (*woshesha*) to extract the moist pulp fibers.',
+    tip: 'Observe the remarkable hand speed of local matriarchs who pass this technique across generations.'
+  },
+  {
+    step: 2,
+    title: 'Pit Fermentation',
+    wolName: 'Gatta Oosuwaa',
+    desc: 'The scraped pulp and pulverized corms are sealed in underground fermentation pits lined with fresh Enset leaves, weighed down with heavy river stones for 30 to 90 days.',
+    tip: 'Natural probiotic yeasts develop a distinctive sourdough-like earthy aroma and high nutrient profile.'
+  },
+  {
+    step: 3,
+    title: 'Baking the Kocho Flatbread',
+    wolName: 'Qocho Eeysuwaa',
+    desc: 'The fermented dough is chopped finely with a knife on a wooden board, wrapped in glossy green enset leaves, and baked over a glowing charcoal griddle.',
+    tip: 'Served steaming hot, crisp on the outside and tender inside with rich cardamom and spiced butter.'
+  },
+  {
+    step: 4,
+    title: 'Extracting Pure Bulla & Feasting',
+    wolName: 'Bullaa Mokkuwaa',
+    desc: 'The refined, silky liquid extract is squeezed out and dried into Bulla flour, cooked into a creamy restorative porridge drizzled with niter kibbeh (spiced butter).',
+    tip: 'Traditionally shared communally around the family hearth alongside hot Ethiopian highland coffee.'
+  }
+];
+
+const reviews = [
+  {
+    id: 'rev-1',
+    author: 'Elena Rostova',
+    country: 'Switzerland',
+    trip: 'Mount Damota Sunrise & Ajora Trek',
+    date: 'February 2026',
+    rating: 5,
+    text: 'Watching the dawn cloud ocean part over the Great Rift Valley from Mount Damota with Tariku was one of the most sublime hiking moments of my life. Authentic, uncommercial, pure magic.'
+  },
+  {
+    id: 'rev-2',
+    author: 'Samuel Abera',
+    country: 'Addis Ababa, Ethiopia',
+    trip: 'Enset Masterclass & Bamboo Tukil Homestay',
+    date: 'January 2026',
+    rating: 5,
+    text: 'As an Ethiopian diaspora visiting with my family, staying in the bamboo Tukil and learning the Enset harvest with Selamawit reconnected us deeply with our roots. The food was unforgettable.'
+  },
+  {
+    id: 'rev-3',
+    author: 'Dr. Marcus & Sarah Thorne',
+    country: 'United Kingdom',
+    trip: '5-Day Grand Wolaita Odyssey',
+    date: 'November 2025',
+    rating: 5,
+    text: 'Ajora Twin Falls felt like an untouched Jurassic gorge. The local guides were punctual, warm, and exceptionally knowledgeable about both birdlife and royal history.'
+  }
+];
+
+const weatherData = {
+  sodo: {
+    location: 'Wolaita Sodo Town',
+    altitude: '2,100 m',
+    currentTemp: '22°C / 72°F',
+    condition: 'Partly Sunny & Mild Highland Breeze',
+    humidity: '58%',
+    rainProb: '10%',
+    trailStatus: 'Clear & Open'
+  },
+  damota: {
+    location: 'Mount Damota Summit',
+    altitude: '2,900 m',
+    currentTemp: '14°C / 57°F',
+    condition: 'Crisp Mist & Clear Ridge Visibility',
+    humidity: '72%',
+    rainProb: '15%',
+    trailStatus: 'Optimal for Dawn Hiking'
+  }
+};
 
 const travelInfo = {
   gettingThere: [
@@ -308,6 +439,9 @@ app.get('/api/itineraries', (_req, res) => res.json(itineraries));
 app.get('/api/guides', (_req, res) => res.json(guides));
 app.get('/api/stories', (_req, res) => res.json(stories));
 app.get('/api/phrases', (_req, res) => res.json(phrases));
+app.get('/api/enset-steps', (_req, res) => res.json(ensetSteps));
+app.get('/api/reviews', (_req, res) => res.json(reviews));
+app.get('/api/weather', (_req, res) => res.json(weatherData));
 app.get('/api/travel-info', (_req, res) => res.json(travelInfo));
 
 // Enquiry Handler with Custom Journey Builder
@@ -320,6 +454,7 @@ app.post('/api/enquiries', (req, res) => {
     durationDays = 3,
     travelers = 1,
     stayStyle = 'Eco-Lodge & Homestay',
+    transportStyle = 'Private 4x4',
     guidePreference = 'Any Certified Host',
     selectedExperienceIds = [],
     specialRequests = ''
@@ -331,6 +466,13 @@ app.post('/api/enquiries', (req, res) => {
 
   const selectedExpList = experiences.filter(exp => (selectedExperienceIds || []).includes(exp.id));
 
+  // Compute estimate
+  const baseDayCostUSD = stayStyle === '100% Rural Homestay' ? 35 : stayStyle === 'Eco-Lodge & Homestay' ? 55 : 75;
+  const transportDayUSD = transportStyle === 'Private 4x4' ? 60 : transportStyle === 'Local Minibus & TukTuk' ? 15 : 40;
+  const activitiesTotalUSD = selectedExpList.reduce((acc, curr) => acc + (curr.priceUSD || 30), 0);
+  const totalEstUSD = ((baseDayCostUSD + transportDayUSD) * Number(durationDays) * Number(travelers)) + (activitiesTotalUSD * Number(travelers));
+  const totalEstETB = totalEstUSD * 120;
+
   const enquiry = {
     id: `VW-${String(enquiries.length + 1).padStart(4, '0')}`,
     name: name.trim(),
@@ -340,8 +482,13 @@ app.post('/api/enquiries', (req, res) => {
     durationDays: Number(durationDays),
     travelers: Number(travelers),
     stayStyle,
+    transportStyle,
     guidePreference,
-    selectedExperiences: selectedExpList.map(e => ({ id: e.id, name: e.name, price: e.price })),
+    selectedExperiences: selectedExpList.map(e => ({ id: e.id, name: e.name, price: e.price, priceUSD: e.priceUSD, priceETB: e.priceETB })),
+    estimatedCost: {
+      usd: totalEstUSD,
+      etb: totalEstETB
+    },
     specialRequests: specialRequests.trim(),
     status: 'Confirmed & Assigned to Host',
     createdAt: new Date().toISOString()
@@ -357,8 +504,10 @@ app.post('/api/enquiries', (req, res) => {
       travelers: enquiry.travelers,
       durationDays: enquiry.durationDays,
       stayStyle: enquiry.stayStyle,
+      transportStyle: enquiry.transportStyle,
       experiencesCount: enquiry.selectedExperiences.length,
-      experiences: enquiry.selectedExperiences
+      experiences: enquiry.selectedExperiences,
+      estimatedTotal: `$${totalEstUSD} USD (~${totalEstETB.toLocaleString()} ETB)`
     }
   });
 });
