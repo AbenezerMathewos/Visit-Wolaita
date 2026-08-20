@@ -1,5 +1,5 @@
 /**
- * Visit Wolaita — Interactive Tourism Platform Engine
+ * Visit Wolaita — Interactive Geospatial Tourism Platform Engine
  */
 
 // Global State
@@ -14,6 +14,14 @@ const state = {
   reviews: [],
   weatherData: null,
   travelInfo: null,
+  hubLocation: {
+    id: 'sodo-hub',
+    name: 'Wolaita Sodo (City Center)',
+    lat: 6.8583,
+    lng: 37.7611,
+    elevation: '2,100 m',
+    googleEarthUrl: 'https://earth.google.com/web/@6.8583,37.7611,2100a,4000d,35y,0h,45t,0r'
+  },
   selectedExperienceIds: new Set(),
   activeStoryId: null,
   activeEnsetStep: 1,
@@ -23,7 +31,14 @@ const state = {
   isAudioPlaying: false,
   audioCtx: null,
   audioNodes: [],
-  currentLang: 'en'
+  currentLang: 'en',
+  
+  // Real Leaflet Map Instances
+  leafletMap: null,
+  mapMarkers: {},
+  mapRoutePolyline: null,
+  currentTileLayer: null,
+  tileLayers: {}
 };
 
 // Language Dictionary for Hero & Key Elements
@@ -83,8 +98,6 @@ const drawerCostSummary = document.querySelector('#drawerCostSummary');
 const drawerClearBtn = document.querySelector('#drawerClearBtn');
 
 // Map Elements
-const mapPinsLayer = document.querySelector('#mapPinsLayer');
-const routeLinesGroup = document.querySelector('#routeLinesGroup');
 const inspBadge = document.querySelector('#inspBadge');
 const inspTitle = document.querySelector('#inspTitle');
 const inspTagline = document.querySelector('#inspTagline');
@@ -94,6 +107,8 @@ const inspDistance = document.querySelector('#inspDistance');
 const inspBestTime = document.querySelector('#inspBestTime');
 const inspDifficulty = document.querySelector('#inspDifficulty');
 const inspExploreBtn = document.querySelector('#inspExploreBtn');
+const inspGoogleEarthLink = document.querySelector('#inspGoogleEarthLink');
+const recenterMapBtn = document.querySelector('#recenterMapBtn');
 
 // Enset Lab Elements
 const ensetStepNav = document.querySelector('#ensetStepNav');
@@ -133,6 +148,7 @@ async function init() {
     fetchReviews(),
     fetchTravelInfo()
   ]);
+  initRealLeafletMap();
   updateCalculator();
 }
 
@@ -161,7 +177,6 @@ async function fetchDestinations() {
     const res = await fetch('/api/destinations');
     state.destinations = await res.json();
     renderDestinations(state.destinations);
-    renderInteractiveMap();
   } catch (err) {
     console.error('Error fetching destinations:', err);
   }
@@ -254,64 +269,141 @@ async function fetchTravelInfo() {
 }
 
 // --------------------------------------------------------------------------
-// Vector Map Renderer
+// Real Geographic Leaflet Map Engine
 // --------------------------------------------------------------------------
 
-function renderInteractiveMap() {
-  if (!mapPinsLayer || !state.destinations || state.destinations.length === 0) return;
+function initRealLeafletMap() {
+  const mapContainer = document.querySelector('#realLeafletMap');
+  if (!mapContainer || typeof L === 'undefined') return;
 
-  // Render Sodo Central Hub Marker
-  let pinsHTML = `
-    <div class="map-pin active" style="left: 42%; top: 50%;" onclick="selectMapLandmark('sodo-hub')">
-      <div class="pin-marker sodo">★</div>
-      <span class="pin-name">Wolaita Sodo (Hub)</span>
-    </div>
-  `;
+  // Center on Wolaita Sodo coordinates
+  const sodoLat = 6.8583;
+  const sodoLng = 37.7611;
 
-  // Render Landmark Markers
-  state.destinations.forEach(dest => {
-    const pinType = dest.category.includes('Highland') ? 'peak' : dest.category.includes('Water') ? 'water' : 'history';
-    const icon = dest.category.includes('Highland') ? '⛰' : dest.category.includes('Water') ? '💧' : '🏛';
-    pinsHTML += `
-      <div class="map-pin ${dest.id === state.activeLandmarkId ? 'active' : ''}" 
-           style="left: ${dest.mapCoords.x}%; top: ${dest.mapCoords.y}%;" 
-           onclick="selectMapLandmark('${dest.id}')">
-        <div class="pin-marker ${pinType}">${icon}</div>
-        <span class="pin-name">${dest.name}</span>
-      </div>
-    `;
+  state.leafletMap = L.map('realLeafletMap', {
+    center: [sodoLat, sodoLng],
+    zoom: 10,
+    zoomControl: true,
+    attributionControl: true
   });
 
-  mapPinsLayer.innerHTML = pinsHTML;
-  drawMapRouteLines();
+  // Base Map Layer Providers
+  state.tileLayers = {
+    satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 18,
+      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    }),
+    topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+      maxZoom: 17,
+      attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap (CC-BY-SA)'
+    }),
+    streets: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    })
+  };
+
+  // Start with High-Resolution Satellite imagery
+  state.currentTileLayer = state.tileLayers.satellite;
+  state.currentTileLayer.addTo(state.leafletMap);
+
+  // Add Sodo Central Hub Marker
+  const sodoIcon = L.divIcon({
+    className: 'custom-leaflet-marker',
+    html: '<div class="custom-marker-pin sodo">★</div>',
+    iconSize: [32, 32],
+    iconAnchor: [16, 16]
+  });
+
+  const sodoMarker = L.marker([sodoLat, sodoLng], { icon: sodoIcon }).addTo(state.leafletMap);
+  sodoMarker.bindPopup(`
+    <div style="padding:4px;">
+      <h4>📍 Wolaita Sodo (Hub)</h4>
+      <p>City of 7 Gates · Elevation: 2,100 m</p>
+      <button class="popup-btn" onclick="selectMapLandmark('sodo-hub')">Inspect Hub Details</button>
+    </div>
+  `);
+  sodoMarker.on('click', () => selectMapLandmark('sodo-hub'));
+  state.mapMarkers['sodo-hub'] = sodoMarker;
+
+  // Add Landmark Markers
+  state.destinations.forEach(dest => {
+    const iconSymbol = dest.category.includes('Highland') ? '⛰' : dest.category.includes('Water') ? '💧' : '🏛';
+    const markerIcon = L.divIcon({
+      className: 'custom-leaflet-marker',
+      html: `<div class="custom-marker-pin">${iconSymbol}</div>`,
+      iconSize: [32, 32],
+      iconAnchor: [16, 16]
+    });
+
+    const marker = L.marker([dest.lat, dest.lng], { icon: markerIcon }).addTo(state.leafletMap);
+    marker.bindPopup(`
+      <div style="padding:4px;">
+        <h4>${dest.name}</h4>
+        <p>${dest.tagline} · ${dest.elevation}</p>
+        <button class="popup-btn" onclick="selectMapLandmark('${dest.id}')">Inspect & 3D Flyover</button>
+      </div>
+    `);
+    marker.on('click', () => selectMapLandmark(dest.id));
+    state.mapMarkers[dest.id] = marker;
+  });
+
   updateMapInspector(state.activeLandmarkId);
+  drawLeafletRoute(state.activeLandmarkId);
 }
 
-function drawMapRouteLines() {
-  if (!routeLinesGroup) return;
-  // Sodo coordinates on 800x600 SVG canvas: (336, 300)
-  const sodoX = 336;
-  const sodoY = 300;
-  
-  let linesHTML = '';
-  state.destinations.forEach(dest => {
-    const destX = (dest.mapCoords.x / 100) * 800;
-    const destY = (dest.mapCoords.y / 100) * 600;
-    const isSelected = dest.id === state.activeLandmarkId;
-    linesHTML += `
-      <line x1="${sodoX}" y1="${sodoY}" x2="${destX}" y2="${destY}" 
-            stroke="${isSelected ? '#e0a93b' : 'rgba(224, 169, 59, 0.25)'}" 
-            stroke-width="${isSelected ? '2.5' : '1'}" 
-            stroke-dasharray="${isSelected ? 'none' : '4,4'}" />
-    `;
-  });
+function switchMapTileLayer(layerKey) {
+  if (!state.leafletMap || !state.tileLayers[layerKey]) return;
+  if (state.currentTileLayer) {
+    state.leafletMap.removeLayer(state.currentTileLayer);
+  }
+  state.currentTileLayer = state.tileLayers[layerKey];
+  state.currentTileLayer.addTo(state.leafletMap);
+}
 
-  routeLinesGroup.innerHTML = linesHTML;
+function drawLeafletRoute(destId) {
+  if (!state.leafletMap || typeof L === 'undefined') return;
+
+  if (state.mapRoutePolyline) {
+    state.leafletMap.removeLayer(state.mapRoutePolyline);
+    state.mapRoutePolyline = null;
+  }
+
+  if (destId === 'sodo-hub') return;
+
+  const dest = state.destinations.find(d => d.id === destId);
+  if (!dest) return;
+
+  const sodoCoords = [6.8583, 37.7611];
+  const destCoords = [dest.lat, dest.lng];
+
+  state.mapRoutePolyline = L.polyline([sodoCoords, destCoords], {
+    color: '#e0a93b',
+    weight: 3.5,
+    opacity: 0.9,
+    dashArray: '6, 8',
+    lineCap: 'round'
+  }).addTo(state.leafletMap);
 }
 
 window.selectMapLandmark = function(id) {
   state.activeLandmarkId = id;
-  renderInteractiveMap();
+  updateMapInspector(id);
+  drawLeafletRoute(id);
+
+  if (state.leafletMap) {
+    if (id === 'sodo-hub') {
+      state.leafletMap.flyTo([6.8583, 37.7611], 12, { duration: 1.2 });
+    } else {
+      const dest = state.destinations.find(d => d.id === id);
+      if (dest) {
+        state.leafletMap.flyTo([dest.lat, dest.lng], 13, { duration: 1.2 });
+        if (state.mapMarkers[dest.id]) {
+          state.mapMarkers[dest.id].openPopup();
+        }
+      }
+    }
+  }
 };
 
 function updateMapInspector(id) {
@@ -325,6 +417,7 @@ function updateMapInspector(id) {
     inspDistance.textContent = '0 km (Central Hub)';
     inspBestTime.textContent = 'Year-round';
     inspDifficulty.textContent = 'City Walking';
+    if (inspGoogleEarthLink) inspGoogleEarthLink.href = 'https://earth.google.com/web/@6.8583,37.7611,2100a,4000d,35y,0h,45t,0r';
     inspExploreBtn.onclick = () => window.location.hash = '#destinations';
     return;
   }
@@ -340,6 +433,7 @@ function updateMapInspector(id) {
   inspDistance.textContent = dest.distanceFromSodo;
   inspBestTime.textContent = dest.bestTime;
   inspDifficulty.textContent = dest.difficulty || 'Moderate';
+  if (inspGoogleEarthLink) inspGoogleEarthLink.href = dest.googleEarthUrl;
   inspExploreBtn.onclick = () => openDestinationModal(dest.id);
 }
 
@@ -523,15 +617,12 @@ function renderPhrases(phrases) {
 }
 
 window.playPhraseAudio = function(phraseText, idx) {
-  // Use Web Speech API if supported or pleasant acoustic synthesized chime
   if ('speechSynthesis' in window) {
     const utterance = new SpeechSynthesisUtterance(decodeURIComponent(phraseText));
     utterance.rate = 0.85;
     utterance.pitch = 1.1;
     window.speechSynthesis.speak(utterance);
   }
-  
-  // Provide gentle harmonic tone feedback
   playHarmonicChime(440 + (idx * 50));
 };
 
@@ -826,10 +917,13 @@ window.openDestinationModal = function(id) {
     </div>
 
     <div style="font-size:13px; color:var(--leaf-dark); font-weight:600; margin-top:14px;">
-      📍 Distance: ${dest.distanceFromSodo} · ⛰ Altitude: ${dest.elevation} · 🌤 Best Time: ${dest.bestTime}
+      📍 Distance: ${dest.distanceFromSodo} · ⛰ Altitude: ${dest.elevation} · 🌤 Best Time: ${dest.bestTime} · 🧭 GPS: ${dest.lat}°N, ${dest.lng}°E
     </div>
 
     <div class="modal-actions">
+      <a href="${dest.googleEarthUrl}" target="_blank" rel="noopener noreferrer" class="button google-earth-btn">
+        <span>🌐 Open 3D in Google Earth</span> <span>↗</span>
+      </a>
       <a href="#plan" class="button primary" onclick="detailModal.close()">
         Include in Custom Journey <span>↗</span>
       </a>
@@ -866,7 +960,6 @@ function startSoundscape() {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     state.audioCtx = new AudioContext();
 
-    // Gentle highland wind noise node
     const bufferSize = state.audioCtx.sampleRate * 2;
     const noiseBuffer = state.audioCtx.createBuffer(1, bufferSize, state.audioCtx.sampleRate);
     const output = noiseBuffer.getChannelData(0);
@@ -878,7 +971,6 @@ function startSoundscape() {
     whiteNoise.buffer = noiseBuffer;
     whiteNoise.loop = true;
 
-    // Filter to simulate soft mountain breeze
     const filter = state.audioCtx.createBiquadFilter();
     filter.type = 'lowpass';
     filter.frequency.setValueAtTime(320, state.audioCtx.currentTime);
@@ -886,10 +978,9 @@ function startSoundscape() {
     const gainNode = state.audioCtx.createGain();
     gainNode.gain.setValueAtTime(0.04, state.audioCtx.currentTime);
 
-    // Warm harmonic drone (representing sacred highland serenity)
     const osc = state.audioCtx.createOscillator();
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(220, state.audioCtx.currentTime); // A3
+    osc.frequency.setValueAtTime(220, state.audioCtx.currentTime);
 
     const oscGain = state.audioCtx.createGain();
     oscGain.gain.setValueAtTime(0.02, state.audioCtx.currentTime);
@@ -938,6 +1029,25 @@ function setupEventListeners() {
   // Sound Button
   if (soundButton) {
     soundButton.addEventListener('click', toggleSoundscape);
+  }
+
+  // Real Map Toolbar Layer Switchers
+  document.querySelectorAll('.map-layer-selector .layer-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.map-layer-selector .layer-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const layer = btn.getAttribute('data-layer');
+      switchMapTileLayer(layer);
+    });
+  });
+
+  // Recenter Map Button
+  if (recenterMapBtn) {
+    recenterMapBtn.addEventListener('click', () => {
+      if (state.leafletMap) {
+        state.leafletMap.flyTo([6.8583, 37.7611], 10, { duration: 1 });
+      }
+    });
   }
 
   // Drawer Toggles
