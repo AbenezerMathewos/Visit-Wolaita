@@ -38,7 +38,27 @@ const state = {
   mapMarkers: {},
   mapRoutePolyline: null,
   currentTileLayer: null,
-  tileLayers: {}
+  tileLayers: {},
+
+  // Smart Studio State
+  trails: [],
+  panoramas: [],
+  culturalCalendar: null,
+  activeStudioTab: 'concierge',
+  activePersona: 'trekker',
+  activePanoramaId: 'damota-summit',
+  activePanoramaLighting: 'Dawn Cloud Inversion',
+  panoramaPanX: 0,
+  isPanoDragging: false,
+  panoStartX: 0,
+  isPanoAudioPlaying: false,
+  panoAudioCtx: null,
+  panoAudioNodes: [],
+  activeTrailId: 'damota-summit',
+  shemmaRed: 2,
+  shemmaYellow: 2,
+  shemmaBlack: 2,
+  gifaataaInterval: null
 };
 
 // Language Dictionary for Hero & Key Elements
@@ -146,9 +166,13 @@ async function init() {
     fetchPhrases(),
     fetchGuides(),
     fetchReviews(),
-    fetchTravelInfo()
+    fetchTravelInfo(),
+    fetchTrails(),
+    fetchPanoramas(),
+    fetchCulturalCalendar()
   ]);
   initRealLeafletMap();
+  initSmartStudio();
   updateCalculator();
 }
 
@@ -265,6 +289,33 @@ async function fetchTravelInfo() {
     renderTravelInfo(state.travelInfo);
   } catch (err) {
     console.error('Error fetching travel info:', err);
+  }
+}
+
+async function fetchTrails() {
+  try {
+    const res = await fetch('/api/trails');
+    state.trails = await res.json();
+  } catch (err) {
+    console.error('Error fetching trails:', err);
+  }
+}
+
+async function fetchPanoramas() {
+  try {
+    const res = await fetch('/api/panoramas');
+    state.panoramas = await res.json();
+  } catch (err) {
+    console.error('Error fetching panoramas:', err);
+  }
+}
+
+async function fetchCulturalCalendar() {
+  try {
+    const res = await fetch('/api/cultural-calendar');
+    state.culturalCalendar = await res.json();
+  } catch (err) {
+    console.error('Error fetching cultural calendar:', err);
   }
 }
 
@@ -1251,6 +1302,788 @@ async function handleJourneySubmit(event) {
   }
 }
 
+// ==========================================================================
+// Smart Trip Studio & 360° Virtual Trail Explorer Engine
+// ==========================================================================
+
+function initSmartStudio() {
+  setupStudioTabNavigation();
+  initConciergeAI();
+  initPanoramaViewer();
+  initElevationProfile();
+  initCulturalCalendar();
+}
+
+function setupStudioTabNavigation() {
+  const tabBtns = document.querySelectorAll('.studio-tab-btn');
+  const panels = {
+    concierge: document.querySelector('#studioPanelConcierge'),
+    panoramas: document.querySelector('#studioPanelPanoramas'),
+    trails: document.querySelector('#studioPanelTrails'),
+    calendar: document.querySelector('#studioPanelCalendar')
+  };
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.dataset.tab;
+      if (!targetTab) return;
+
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      Object.keys(panels).forEach(key => {
+        if (panels[key]) {
+          panels[key].style.display = key === targetTab ? 'block' : 'none';
+          if (key === targetTab) {
+            panels[key].classList.add('active');
+          } else {
+            panels[key].classList.remove('active');
+          }
+        }
+      });
+
+      state.activeStudioTab = targetTab;
+    });
+  });
+}
+
+// --------------------------------------------------------------------------
+// 1. AI Concierge & Dynamic Persona Planner
+// --------------------------------------------------------------------------
+
+function initConciergeAI() {
+  const personaChips = document.querySelectorAll('.persona-chip');
+  const qqChips = document.querySelectorAll('.qq-chip');
+  const conciergeForm = document.querySelector('#conciergeForm');
+  const queryInput = document.querySelector('#conciergeQueryInput');
+
+  personaChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      personaChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      state.activePersona = chip.dataset.persona || 'trekker';
+      executeConciergeQuery(state.activePersona, '');
+    });
+  });
+
+  qqChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const q = chip.dataset.q || '';
+      if (queryInput) queryInput.value = q;
+      executeConciergeQuery(state.activePersona, q);
+    });
+  });
+
+  if (conciergeForm) {
+    conciergeForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const q = queryInput ? queryInput.value.trim() : '';
+      executeConciergeQuery(state.activePersona, q);
+    });
+  }
+
+  // Load initial trekker persona plan
+  executeConciergeQuery('trekker', '');
+}
+
+async function executeConciergeQuery(persona, queryText) {
+  const loadingEl = document.querySelector('#conciergeLoading');
+  const resultContent = document.querySelector('#conciergeResultContent');
+
+  if (loadingEl) loadingEl.style.display = 'flex';
+  if (resultContent) resultContent.style.display = 'none';
+
+  try {
+    const days = calcDays ? Number(calcDays.value) : 3;
+    const travelers = calcTravelers ? Number(calcTravelers.value) : 2;
+
+    const res = await fetch('/api/ai/concierge', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ persona, query: queryText, days, travelers })
+    });
+
+    const data = await res.json();
+    renderConciergeResult(data);
+  } catch (err) {
+    console.error('Concierge query error:', err);
+    if (resultContent) {
+      resultContent.innerHTML = `<p style="color:var(--earth);">Could not retrieve concierge recommendation at this time.</p>`;
+    }
+  } finally {
+    if (loadingEl) loadingEl.style.display = 'none';
+    if (resultContent) resultContent.style.display = 'block';
+  }
+}
+
+function renderConciergeResult(data) {
+  const container = document.querySelector('#conciergeResultContent');
+  if (!container || !data) return;
+
+  const pricing = data.pricing || {};
+  const isCurrencyUSD = state.currency === 'USD';
+  const priceDisplay = isCurrencyUSD ? `$${pricing.totalUSD || 0} USD` : `~${(pricing.totalETB || 0).toLocaleString()} ETB`;
+  const perPersonDisplay = isCurrencyUSD ? `$${pricing.perTravelerUSD || 0} USD / traveler` : `~${Math.round((pricing.totalETB || 0) / (pricing.travelers || 1)).toLocaleString()} ETB / traveler`;
+
+  const timelineHtml = (data.itineraryDays || []).map(day => `
+    <div class="timeline-item">
+      <div class="timeline-day-badge">Day ${day.day}</div>
+      <div class="timeline-details">
+        <h4>${day.title}</h4>
+        <p><strong>🌅 Morning:</strong> ${day.morning}</p>
+        <p><strong>🌄 Afternoon:</strong> ${day.afternoon}</p>
+      </div>
+    </div>
+  `).join('');
+
+  const gearTagsHtml = (data.packingGear || []).map(g => `<span class="gear-tag">✓ ${g}</span>`).join('');
+
+  const expCount = (data.recommendedExperiences || []).length;
+
+  container.innerHTML = `
+    <div class="concierge-result-header">
+      <div>
+        <span class="concierge-badge-tag">${data.badge || 'Tailored Plan'}</span>
+        <h3 style="font-size:20px; margin-top:6px;">${data.personaTitle}</h3>
+      </div>
+      <div class="assigned-guide-pill" style="font-size:12px; background:var(--sand); padding:6px 12px; border-radius:var(--radius-pill);">
+        <span>Certified Host: <strong>${data.assignedGuide ? data.assignedGuide.name : 'Tariku Bancha'}</strong></span>
+      </div>
+    </div>
+
+    <div class="concierge-ai-speech">
+      <p>💡 <strong>Kawo Advisor:</strong> ${data.conciergeAnswer}</p>
+    </div>
+
+    <h4 style="font-size:15px; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.5px; color:var(--muted);">Suggested Day-by-Day Timeline (${pricing.days || 3} Days)</h4>
+    <div class="itinerary-timeline">
+      ${timelineHtml}
+    </div>
+
+    <div class="concierge-perks-grid">
+      <div class="concierge-perk-box">
+        <h5>🎒 Recommended Expedition Gear</h5>
+        <div class="gear-tags">
+          ${gearTagsHtml}
+        </div>
+      </div>
+      <div class="concierge-perk-box">
+        <h5>🌿 Community Host Benefits</h5>
+        <p style="font-size:12px; color:var(--muted); line-height:1.5;">
+          Direct stipend supports local agrarian guides and homestead cooperatives in Wolaita Zone.
+        </p>
+      </div>
+    </div>
+
+    <div class="concierge-actions-footer">
+      <div class="concierge-pricing-calc">
+        <strong>${priceDisplay}</strong>
+        <small>${perPersonDisplay} (${pricing.days || 3} days · ${pricing.travelers || 2} travelers)</small>
+      </div>
+      <button class="button primary" id="addAllExpBtn">
+        <span>+ Add All (${expCount}) Activities to Journey</span>
+        <span>🎒</span>
+      </button>
+    </div>
+  `;
+
+  // Attach "+ Add All Activities to Journey" listener
+  const addAllBtn = container.querySelector('#addAllExpBtn');
+  if (addAllBtn && data.recommendedExperiences) {
+    addAllBtn.addEventListener('click', () => {
+      data.recommendedExperiences.forEach(exp => {
+        state.selectedExperienceIds.add(exp.id);
+      });
+      saveJourneyState();
+      updateBasketUI();
+      updateDrawer();
+      updateCalculator();
+      renderExperiences(state.experiences);
+
+      addAllBtn.innerHTML = `<span>✓ All Activities Added to Journey!</span>`;
+      addAllBtn.style.background = 'var(--leaf)';
+
+      // Trigger drawer open to show added items
+      openJourneyDrawer();
+    });
+  }
+}
+
+// --------------------------------------------------------------------------
+// 2. Interactive 360° Virtual Panorama Viewer
+// --------------------------------------------------------------------------
+
+function initPanoramaViewer() {
+  const scenePillsWrap = document.querySelector('#panoramaScenePills');
+  const lightingWrap = document.querySelector('#lightingButtons');
+  const viewport = document.querySelector('#panoramaViewport');
+  const canvasWrap = document.querySelector('#panoramaCanvasWrap');
+  const panoImg = document.querySelector('#panoramaImg');
+  const panoLeftBtn = document.querySelector('#panoLeftBtn');
+  const panoRightBtn = document.querySelector('#panoRightBtn');
+  const panoResetBtn = document.querySelector('#panoResetBtn');
+  const ambianceBtn = document.querySelector('#panoAmbianceBtn');
+
+  if (!viewport || !canvasWrap) return;
+
+  // Render Scene Pills
+  if (scenePillsWrap && state.panoramas && state.panoramas.length > 0) {
+    scenePillsWrap.innerHTML = state.panoramas.map(pano => `
+      <button class="scene-pill-btn ${pano.id === state.activePanoramaId ? 'active' : ''}" data-id="${pano.id}">
+        ${pano.name.split('(')[0].trim()}
+      </button>
+    `).join('');
+
+    scenePillsWrap.querySelectorAll('.scene-pill-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        scenePillsWrap.querySelectorAll('.scene-pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.activePanoramaId = btn.dataset.id;
+        state.panoramaPanX = 0;
+        updatePanoramaScene();
+      });
+    });
+  }
+
+  // Panning Event Listeners (Mouse & Touch)
+  let isDown = false;
+  let startX = 0;
+  let initialPanX = 0;
+
+  viewport.addEventListener('mousedown', e => {
+    isDown = true;
+    startX = e.pageX;
+    initialPanX = state.panoramaPanX;
+  });
+
+  window.addEventListener('mouseup', () => {
+    isDown = false;
+  });
+
+  viewport.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    const deltaX = e.pageX - startX;
+    const deltaPercent = (deltaX / viewport.offsetWidth) * 40;
+    state.panoramaPanX = Math.max(-50, Math.min(0, initialPanX + deltaPercent));
+    applyPanoramaTransform();
+  });
+
+  // Touch handlers
+  viewport.addEventListener('touchstart', e => {
+    if (e.touches.length > 0) {
+      isDown = true;
+      startX = e.touches[0].pageX;
+      initialPanX = state.panoramaPanX;
+    }
+  }, { passive: true });
+
+  viewport.addEventListener('touchmove', e => {
+    if (!isDown || e.touches.length === 0) return;
+    const deltaX = e.touches[0].pageX - startX;
+    const deltaPercent = (deltaX / viewport.offsetWidth) * 40;
+    state.panoramaPanX = Math.max(-50, Math.min(0, initialPanX + deltaPercent));
+    applyPanoramaTransform();
+  }, { passive: true });
+
+  viewport.addEventListener('touchend', () => {
+    isDown = false;
+  });
+
+  // Navigation Control Buttons
+  if (panoLeftBtn) {
+    panoLeftBtn.addEventListener('click', () => {
+      state.panoramaPanX = Math.min(0, state.panoramaPanX + 10);
+      applyPanoramaTransform();
+    });
+  }
+
+  if (panoRightBtn) {
+    panoRightBtn.addEventListener('click', () => {
+      state.panoramaPanX = Math.max(-50, state.panoramaPanX - 10);
+      applyPanoramaTransform();
+    });
+  }
+
+  if (panoResetBtn) {
+    panoResetBtn.addEventListener('click', () => {
+      state.panoramaPanX = 0;
+      applyPanoramaTransform();
+    });
+  }
+
+  if (ambianceBtn) {
+    ambianceBtn.addEventListener('click', () => {
+      togglePanoramaAmbiance();
+    });
+  }
+
+  updatePanoramaScene();
+}
+
+function applyPanoramaTransform() {
+  const canvasWrap = document.querySelector('#panoramaCanvasWrap');
+  const compassNeedle = document.querySelector('#compassNeedle');
+  const compassLabel = document.querySelector('#compassLabel');
+
+  if (canvasWrap) {
+    canvasWrap.style.transform = `translateX(${state.panoramaPanX}%)`;
+  }
+
+  // Calculate compass degrees
+  const deg = Math.round(Math.abs(state.panoramaPanX) * 7.2) % 360;
+  if (compassNeedle) compassNeedle.style.transform = `rotate(${deg}deg)`;
+
+  if (compassLabel) {
+    const headings = ['N 000°', 'NE 045°', 'E 090°', 'SE 135°', 'S 180°', 'SW 225°', 'W 270°', 'NW 315°'];
+    const idx = Math.round(deg / 45) % 8;
+    compassLabel.textContent = headings[idx] || `Heading ${deg}°`;
+  }
+}
+
+function updatePanoramaScene() {
+  const pano = (state.panoramas || []).find(p => p.id === state.activePanoramaId) || (state.panoramas || [])[0];
+  if (!pano) return;
+
+  const panoImg = document.querySelector('#panoramaImg');
+  const hotspotsLayer = document.querySelector('#panoramaHotspotsLayer');
+  const lightingWrap = document.querySelector('#lightingButtons');
+  const photoLocation = document.querySelector('#panoPhotoLocation');
+  const photoTips = document.querySelector('#panoPhotoTips');
+
+  if (panoImg) {
+    panoImg.src = pano.image || 'walaita1.jpeg';
+    panoImg.alt = pano.name;
+    panoImg.className = 'panorama-bg-img filter-dawn';
+  }
+
+  if (photoLocation) photoLocation.textContent = pano.name;
+  if (photoTips) photoTips.textContent = pano.photoTips;
+
+  // Render Lighting Buttons
+  if (lightingWrap && pano.lightingModes) {
+    lightingWrap.innerHTML = pano.lightingModes.map((mode, i) => `
+      <button class="lighting-btn ${i === 0 ? 'active' : ''}" data-mode="${mode}">
+        ${mode}
+      </button>
+    `).join('');
+
+    lightingWrap.querySelectorAll('.lighting-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        lightingWrap.querySelectorAll('.lighting-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const mode = btn.dataset.mode || '';
+        applyLightingFilter(mode);
+      });
+    });
+  }
+
+  // Render Hotspots Layer
+  if (hotspotsLayer && pano.hotspots) {
+    hotspotsLayer.innerHTML = pano.hotspots.map(hs => `
+      <div class="pano-hotspot-pin" style="top: ${hs.y}%; left: ${hs.x}%;" data-id="${hs.id}" title="${hs.title}">
+        <div class="pano-pin-dot">✦</div>
+      </div>
+    `).join('');
+
+    hotspotsLayer.querySelectorAll('.pano-hotspot-pin').forEach(pin => {
+      pin.addEventListener('click', () => {
+        const hs = pano.hotspots.find(h => h.id === pin.dataset.id);
+        if (hs) {
+          inspectHotspot(hs);
+        }
+      });
+    });
+
+    if (pano.hotspots.length > 0) {
+      inspectHotspot(pano.hotspots[0]);
+    }
+  }
+
+  applyPanoramaTransform();
+}
+
+function applyLightingFilter(mode) {
+  const panoImg = document.querySelector('#panoramaImg');
+  if (!panoImg) return;
+
+  panoImg.className = 'panorama-bg-img';
+  const m = mode.toLowerCase();
+  if (m.includes('dawn') || m.includes('morning')) {
+    panoImg.classList.add('filter-dawn');
+  } else if (m.includes('golden') || m.includes('sunset') || m.includes('dusk')) {
+    panoImg.classList.add('filter-golden');
+  } else if (m.includes('night') || m.includes('starlight')) {
+    panoImg.classList.add('filter-night');
+  } else {
+    panoImg.classList.add('filter-midday');
+  }
+}
+
+function inspectHotspot(hs) {
+  const title = document.querySelector('#panoHotspotTitle');
+  const desc = document.querySelector('#panoHotspotDesc');
+  const badge = document.querySelector('#panoHotspotBadge');
+
+  if (title) title.textContent = hs.title;
+  if (desc) desc.textContent = hs.desc;
+  if (badge) badge.textContent = `📍 Discovery Hotspot`;
+}
+
+// Procedural Nature Audio Synthesizer for Panoramas
+function togglePanoramaAmbiance() {
+  const btn = document.querySelector('#panoAmbianceBtn');
+  const label = document.querySelector('#panoAmbianceLabel');
+  const pano = (state.panoramas || []).find(p => p.id === state.activePanoramaId);
+
+  if (state.isPanoAudioPlaying) {
+    // Stop audio
+    state.panoAudioNodes.forEach(node => {
+      try {
+        node.stop && node.stop();
+        node.disconnect && node.disconnect();
+      } catch (e) {}
+    });
+    state.panoAudioNodes = [];
+    state.isPanoAudioPlaying = false;
+    if (btn) btn.setAttribute('aria-pressed', 'false');
+    if (label) label.textContent = 'Ambient Highland Audio: Off';
+    return;
+  }
+
+  // Start procedural ambiance
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!state.panoAudioCtx) state.panoAudioCtx = new AudioContext();
+    const ctx = state.panoAudioCtx;
+    if (ctx.state === 'suspended') ctx.resume();
+
+    const bufferSize = ctx.sampleRate * 2;
+    const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = Math.random() * 2 - 1;
+    }
+
+    const whiteNoise = ctx.createBufferSource();
+    whiteNoise.buffer = noiseBuffer;
+    whiteNoise.loop = true;
+
+    // Filter based on active landmark atmosphere
+    const filter = ctx.createBiquadFilter();
+    const soundType = pano ? pano.ambientSound : 'highland-wind';
+
+    if (soundType === 'waterfall-roar') {
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(320, ctx.currentTime);
+    } else if (soundType === 'cave-echoes') {
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(280, ctx.currentTime);
+      filter.Q.setValueAtTime(4, ctx.currentTime);
+    } else {
+      // Gentle mountain wind
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(450, ctx.currentTime);
+      filter.Q.setValueAtTime(1.5, ctx.currentTime);
+    }
+
+    const gainNode = ctx.createGain();
+    gainNode.gain.setValueAtTime(0.08, ctx.currentTime);
+
+    whiteNoise.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    whiteNoise.start();
+    state.panoAudioNodes = [whiteNoise, filter, gainNode];
+    state.isPanoAudioPlaying = true;
+
+    if (btn) btn.setAttribute('aria-pressed', 'true');
+    if (label) label.textContent = 'Ambient Highland Audio: Playing 🔊';
+  } catch (err) {
+    console.error('Audio synthesizer error:', err);
+  }
+}
+
+// --------------------------------------------------------------------------
+// 3. Trail Elevation Profiles & GPS Track Downloader
+// --------------------------------------------------------------------------
+
+function initElevationProfile() {
+  const selectorBar = document.querySelector('#trailSelectorBar');
+  const downloadBtn = document.querySelector('#downloadGpxBtn');
+
+  if (selectorBar && state.trails && state.trails.length > 0) {
+    selectorBar.innerHTML = state.trails.map(trail => `
+      <button class="trail-pill-btn ${trail.id === state.activeTrailId ? 'active' : ''}" data-id="${trail.id}">
+        ⛰️ ${trail.name.split('&')[0].trim()}
+      </button>
+    `).join('');
+
+    selectorBar.querySelectorAll('.trail-pill-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        selectorBar.querySelectorAll('.trail-pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.activeTrailId = btn.dataset.id;
+        updateTrailView();
+      });
+    });
+  }
+
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', () => {
+      downloadActiveTrailGPX();
+    });
+  }
+
+  updateTrailView();
+}
+
+function updateTrailView() {
+  const trail = (state.trails || []).find(t => t.id === state.activeTrailId) || (state.trails || [])[0];
+  if (!trail) return;
+
+  const diffBadge = document.querySelector('#trailDiffBadge');
+  const nameDisplay = document.querySelector('#trailNameDisplay');
+  const terrainDisplay = document.querySelector('#trailTerrainDisplay');
+  const distDisplay = document.querySelector('#trailDistDisplay');
+  const gainDisplay = document.querySelector('#trailGainDisplay');
+  const peakDisplay = document.querySelector('#trailPeakDisplay');
+  const timeDisplay = document.querySelector('#trailTimeDisplay');
+  const waterDisplay = document.querySelector('#trailWaterDisplay');
+
+  if (diffBadge) diffBadge.textContent = trail.difficulty || 'Moderate';
+  if (nameDisplay) nameDisplay.textContent = trail.name;
+  if (terrainDisplay) terrainDisplay.textContent = trail.terrain;
+  if (distDisplay) distDisplay.textContent = trail.distance;
+  if (gainDisplay) gainDisplay.textContent = trail.elevationGain;
+  if (peakDisplay) peakDisplay.textContent = `${trail.peakElevation} m`;
+  if (timeDisplay) timeDisplay.textContent = trail.duration;
+  if (waterDisplay) waterDisplay.textContent = (trail.waterPoints || []).join(', ');
+
+  renderElevationSvg(trail);
+}
+
+function renderElevationSvg(trail) {
+  const svgWrap = document.querySelector('#elevationSvgWrap');
+  const scrubInfo = document.querySelector('#elevationScrubInfo');
+  if (!svgWrap || !trail || !trail.elevationProfile) return;
+
+  const pts = trail.elevationProfile;
+  const maxKm = pts[pts.length - 1].km || 8.4;
+  const minAlt = Math.min(...pts.map(p => p.alt)) - 100;
+  const maxAlt = Math.max(...pts.map(p => p.alt)) + 100;
+
+  const width = 800;
+  const height = 220;
+  const padL = 60;
+  const padR = 40;
+  const padT = 30;
+  const padB = 40;
+
+  const plotW = width - padL - padR;
+  const plotH = height - padT - padB;
+
+  const getX = km => padL + (km / maxKm) * plotW;
+  const getY = alt => padT + plotH - ((alt - minAlt) / (maxAlt - minAlt)) * plotH;
+
+  // Build SVG Path string
+  const pathD = pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${getX(p.km).toFixed(1)} ${getY(p.alt).toFixed(1)}`).join(' ');
+  const areaD = `${pathD} L ${getX(pts[pts.length - 1].km).toFixed(1)} ${padT + plotH} L ${padL} ${padT + plotH} Z`;
+
+  // Grid lines
+  const gridSteps = 4;
+  let gridLines = '';
+  for (let i = 0; i <= gridSteps; i++) {
+    const altVal = Math.round(minAlt + (i / gridSteps) * (maxAlt - minAlt));
+    const y = getY(altVal);
+    gridLines += `
+      <line x1="${padL}" y1="${y}" x2="${width - padR}" y2="${y}" stroke="rgba(20,36,29,0.08)" stroke-dasharray="4,4" />
+      <text x="${padL - 10}" y="${y + 4}" font-size="11" fill="#5e6b63" text-anchor="end">${altVal}m</text>
+    `;
+  }
+
+  // Waypoints dots & labels
+  const waypointsSvg = pts.map(p => {
+    const x = getX(p.km);
+    const y = getY(p.alt);
+    return `
+      <g class="svg-waypoint-group" style="cursor: pointer;" data-km="${p.km}" data-alt="${p.alt}" data-label="${p.label}">
+        <circle cx="${x}" cy="${y}" r="6" fill="#e0a93b" stroke="#14241d" stroke-width="2" />
+        <text x="${x}" y="${y - 12}" font-size="11" font-weight="600" fill="#14241d" text-anchor="middle">${p.label}</text>
+      </g>
+    `;
+  }).join('');
+
+  svgWrap.innerHTML = `
+    <svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="elevGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#c85a32" stop-opacity="0.45" />
+          <stop offset="100%" stop-color="#c85a32" stop-opacity="0.02" />
+        </linearGradient>
+      </defs>
+      ${gridLines}
+      <path d="${areaD}" fill="url(#elevGrad)" />
+      <path d="${pathD}" fill="none" stroke="#c85a32" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+      ${waypointsSvg}
+    </svg>
+  `;
+
+  // Attach hover events to waypoint groups
+  svgWrap.querySelectorAll('.svg-waypoint-group').forEach(group => {
+    group.addEventListener('mouseenter', () => {
+      const km = group.dataset.km;
+      const alt = group.dataset.alt;
+      const label = group.dataset.label;
+      if (scrubInfo) {
+        scrubInfo.innerHTML = `<span>Km ${km}</span> · <span>Altitude: ${alt} m</span> · <strong>📍 ${label}</strong>`;
+      }
+    });
+  });
+}
+
+function downloadActiveTrailGPX() {
+  const trail = (state.trails || []).find(t => t.id === state.activeTrailId) || (state.trails || [])[0];
+  if (!trail) return;
+
+  const gpx = trail.gpxData || {};
+  const latStart = gpx.latMin || 6.8583;
+  const latEnd = gpx.latMax || 6.9142;
+  const lngStart = gpx.lngMin || 37.7611;
+  const lngEnd = gpx.lngMax || 37.7889;
+
+  // Build valid GPX XML content
+  const gpxContent = `<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="Visit Wolaita Tourism Engine (https://visitwolaita.et)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>${trail.name}</name>
+    <desc>Official GPS Waypoints for ${trail.name}, Wolaita Zone, Southern Ethiopia</desc>
+    <time>${new Date().toISOString()}</time>
+  </metadata>
+  <trk>
+    <name>${trail.name}</name>
+    <type>Hiking / Trekking</type>
+    <trkseg>
+      ${trail.elevationProfile.map((p, i) => {
+        const ratio = i / (trail.elevationProfile.length - 1);
+        const lat = (latStart + (latEnd - latStart) * ratio).toFixed(6);
+        const lng = (lngStart + (lngEnd - lngStart) * ratio).toFixed(6);
+        return `      <trkpt lat="${lat}" lon="${lng}">
+        <ele>${p.alt}</ele>
+        <name>${p.label}</name>
+      </trkpt>`;
+      }).join('\n')}
+    </trkseg>
+  </trk>
+</gpx>`;
+
+  const blob = new Blob([gpxContent], { type: 'application/gpx+xml' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `VisitWolaita-${trail.id}-Trail.gpx`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// --------------------------------------------------------------------------
+// 4. Cultural Calendar & Shemma Loom Studio
+// --------------------------------------------------------------------------
+
+function initCulturalCalendar() {
+  startGifaataaCountdown();
+  renderAgrarianCalendar();
+  initShemmaWeaver();
+}
+
+function startGifaataaCountdown() {
+  if (state.gifaataaInterval) clearInterval(state.gifaataaInterval);
+
+  const cdDays = document.querySelector('#cdDays');
+  const cdHours = document.querySelector('#cdHours');
+  const cdMinutes = document.querySelector('#cdMinutes');
+  const cdSeconds = document.querySelector('#cdSeconds');
+
+  // Gifaataa is celebrated late September (e.g. September 24, 2026 09:00:00 UTC)
+  const targetDate = new Date('2026-09-24T09:00:00Z').getTime();
+
+  function update() {
+    const now = new Date().getTime();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+      if (cdDays) cdDays.textContent = '00';
+      if (cdHours) cdHours.textContent = '00';
+      if (cdMinutes) cdMinutes.textContent = '00';
+      if (cdSeconds) cdSeconds.textContent = '00';
+      return;
+    }
+
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+    if (cdDays) cdDays.textContent = String(d).padStart(2, '0');
+    if (cdHours) cdHours.textContent = String(h).padStart(2, '0');
+    if (cdMinutes) cdMinutes.textContent = String(m).padStart(2, '0');
+    if (cdSeconds) cdSeconds.textContent = String(s).padStart(2, '0');
+  }
+
+  update();
+  state.gifaataaInterval = setInterval(update, 1000);
+}
+
+function renderAgrarianCalendar() {
+  const container = document.querySelector('#agrarianGrid');
+  if (!container || !state.culturalCalendar || !state.culturalCalendar.agrarianSeasons) return;
+
+  container.innerHTML = state.culturalCalendar.agrarianSeasons.map(item => `
+    <div class="agrarian-card">
+      <span class="agrarian-icon">${item.icon}</span>
+      <div class="agrarian-body">
+        <strong>${item.month}</strong>
+        <h5>${item.title}</h5>
+        <p>${item.activity}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function initShemmaWeaver() {
+  const sliderRed = document.querySelector('#sliderRed');
+  const sliderYellow = document.querySelector('#sliderYellow');
+  const sliderBlack = document.querySelector('#sliderBlack');
+  const stripeRed = document.querySelector('#stripeRed');
+  const stripeYellow = document.querySelector('#stripeYellow');
+  const stripeBlack = document.querySelector('#stripeBlack');
+  const valRed = document.querySelector('#valRed');
+  const valYellow = document.querySelector('#valYellow');
+  const valBlack = document.querySelector('#valBlack');
+
+  function updateLoom() {
+    const r = sliderRed ? sliderRed.value : 2;
+    const y = sliderYellow ? sliderYellow.value : 2;
+    const b = sliderBlack ? sliderBlack.value : 2;
+
+    if (stripeRed) stripeRed.style.flex = r;
+    if (stripeYellow) stripeYellow.style.flex = y;
+    if (stripeBlack) stripeBlack.style.flex = b;
+
+    if (valRed) valRed.textContent = `${r} unit${r > 1 ? 's' : ''}`;
+    if (valYellow) valYellow.textContent = `${y} unit${y > 1 ? 's' : ''}`;
+    if (valBlack) valBlack.textContent = `${b} unit${b > 1 ? 's' : ''}`;
+  }
+
+  if (sliderRed) sliderRed.addEventListener('input', updateLoom);
+  if (sliderYellow) sliderYellow.addEventListener('input', updateLoom);
+  if (sliderBlack) sliderBlack.addEventListener('input', updateLoom);
+
+  updateLoom();
+}
+
 function showConfirmationModal(result) {
   if (!confirmationModal || !confirmationBody) return;
   const summary = result.journeySummary || {};
@@ -1290,3 +2123,4 @@ function showConfirmationModal(result) {
 
 // Start application
 init();
+
