@@ -828,12 +828,38 @@ function updateCalculator() {
 // Slide-out Journey Drawer & Basket Management
 // --------------------------------------------------------------------------
 
+function showToast(message, icon = '✦') {
+  let container = document.querySelector('.toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+  }
+
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `<span style="color:var(--ochre);">${icon}</span> <span>${message}</span>`;
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add('toast-out');
+    setTimeout(() => {
+      if (toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 300);
+  }, 2600);
+}
+
 window.toggleExperienceInJourney = function(id) {
+  const exp = state.experiences.find(e => e.id === id);
+  const name = exp ? exp.name : 'Experience';
+
   if (state.selectedExperienceIds.has(id)) {
     state.selectedExperienceIds.delete(id);
+    showToast(`Removed "${name}" from your journey`, '✕');
   } else {
     state.selectedExperienceIds.add(id);
     playHarmonicChime(640);
+    showToast(`Added "${name}" to your journey basket 🎒`, '✓');
   }
   updateBasketUI();
   updateDrawer();
@@ -843,13 +869,17 @@ window.toggleExperienceInJourney = function(id) {
 };
 
 window.removeBasketItem = function(id) {
+  const exp = state.experiences.find(e => e.id === id);
   state.selectedExperienceIds.delete(id);
+  showToast(`Removed "${exp ? exp.name : 'Item'}" from basket`, '✕');
   updateBasketUI();
   updateDrawer();
   updateCalculator();
   renderExperiences(state.experiences);
   saveJourneyState();
 };
+
+window.openJourneyDrawer = openDrawer;
 
 function updateBasketUI() {
   const count = state.selectedExperienceIds.size;
@@ -1206,6 +1236,18 @@ function setupEventListeners() {
   if (calcLodging) calcLodging.addEventListener('change', updateCalculator);
   if (calcTransport) calcTransport.addEventListener('change', updateCalculator);
 
+  // Sticky Header Scroll Shadow
+  const siteHeader = document.querySelector('#siteHeader');
+  if (siteHeader) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        siteHeader.classList.add('scrolled');
+      } else {
+        siteHeader.classList.remove('scrolled');
+      }
+    }, { passive: true });
+  }
+
   // Currency Switcher
   document.querySelectorAll('.curr-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1216,6 +1258,7 @@ function setupEventListeners() {
       updateCalculator();
       updateDrawer();
       updateBasketUI();
+      showToast(`Currency updated to ${state.currency}`, '💱');
     });
   });
 
@@ -1226,6 +1269,7 @@ function setupEventListeners() {
       btn.classList.add('active');
       const lang = btn.getAttribute('data-lang');
       switchLanguage(lang);
+      showToast(`Language switched to ${lang.toUpperCase()}`, '🌐');
     });
   });
 
@@ -1986,6 +2030,7 @@ function downloadActiveTrailGPX() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+  showToast(`GPS track for ${trail.name.split('&')[0].trim()} downloaded!`, '🗺️');
 }
 
 // --------------------------------------------------------------------------
