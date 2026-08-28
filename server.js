@@ -448,6 +448,317 @@ const travelInfo = {
   ]
 };
 
+// --------------------------------------------------------------------------
+// Smart Studio Data: Trails, 360 Panoramas, Cultural Calendar & Concierge Knowledge
+// --------------------------------------------------------------------------
+
+const trailGuides = [
+  {
+    id: 'damota-summit',
+    name: 'Mount Damota Summit & Afro-Alpine Ridge',
+    distance: '8.4 km round-trip',
+    elevationGain: '+800 m',
+    startElevation: 2100,
+    peakElevation: 2900,
+    duration: '4.5 – 5.5 hours',
+    difficulty: 'Challenging',
+    terrain: 'Volcanic singletrack, bamboo corridors, afro-alpine rocky crest',
+    waterPoints: ['Sodo Trailhead', 'Midway Spring (km 2.4)'],
+    highlights: ['Mochena Borago cave junction', 'Giant lobelia fields', '360° Great Rift Valley & Lake Abaya panorama'],
+    elevationProfile: [
+      { km: 0.0, alt: 2100, label: 'Sodo Trailhead' },
+      { km: 1.2, alt: 2280, label: 'Mochena Cave Fork' },
+      { km: 2.4, alt: 2450, label: 'Bamboo Forest Rest Halt' },
+      { km: 3.5, alt: 2680, label: 'Afro-Alpine Heath Boundary' },
+      { km: 4.2, alt: 2900, label: 'Mount Damota Summit Peak' },
+      { km: 5.5, alt: 2650, label: 'Eastern Ridge Descent' },
+      { km: 7.0, alt: 2320, label: 'Valley View Spring' },
+      { km: 8.4, alt: 2100, label: 'Sodo Hub Finish' }
+    ],
+    gpxData: {
+      trailName: 'Mount Damota Summit Ascent',
+      latMin: 6.8583,
+      latMax: 6.9142,
+      lngMin: 37.7611,
+      lngMax: 37.7889,
+      pointsCount: 8
+    }
+  },
+  {
+    id: 'ajora-canyon',
+    name: 'Ajora Twin Falls Rainforest Canyon Descent',
+    distance: '6.2 km circuit',
+    elevationGain: '±280 m',
+    startElevation: 1750,
+    peakElevation: 1750,
+    minElevation: 1470,
+    duration: '3.5 – 4.5 hours',
+    difficulty: 'Active Canyon',
+    terrain: 'Lush canyon steps, wet riverbed boulders, rainforest footpaths',
+    waterPoints: ['Boloso Bombe Eco-Post', 'Riverside Ranger Station'],
+    highlights: ['Twin 100m cascading waterfalls', 'Colobus monkey sightings', 'Natural basalt amphitheater & mist spray'],
+    elevationProfile: [
+      { km: 0.0, alt: 1750, label: 'Boloso Bombe Trailhead' },
+      { km: 1.0, alt: 1680, label: 'Upper Canyon Viewpoint' },
+      { km: 2.1, alt: 1540, label: 'Fern Forest Switchbacks' },
+      { km: 3.1, alt: 1470, label: 'Ajora Twin Basin & Mist Pool' },
+      { km: 4.2, alt: 1560, label: 'Soke River Crossing' },
+      { km: 5.2, alt: 1670, label: 'Hornbill Overhang' },
+      { km: 6.2, alt: 1750, label: 'Eco-Post Return' }
+    ],
+    gpxData: {
+      trailName: 'Ajora Twin Falls Canyon Expedition',
+      latMin: 7.0500,
+      latMax: 7.0833,
+      lngMin: 37.5000,
+      lngMax: 37.5167,
+      pointsCount: 7
+    }
+  },
+  {
+    id: 'tona-fortress',
+    name: 'Kawo Tona Ancient Fortress & Defensive Moats',
+    distance: '5.0 km heritage loop',
+    elevationGain: '+160 m',
+    startElevation: 2050,
+    peakElevation: 2210,
+    duration: '2.5 – 3 hours',
+    difficulty: 'Moderate Heritage',
+    terrain: 'Historical earthworks, ancient drystone trenches, village farm paths',
+    waterPoints: ['Fortress Entrance Gate', 'Elders Council Spring'],
+    highlights: ['500-year-old defensive moats', 'Royal lookout post', 'Panoramic views over southern farmlands'],
+    elevationProfile: [
+      { km: 0.0, alt: 2050, label: 'Outer Defensive Earthworks' },
+      { km: 1.2, alt: 2110, label: 'Drystone Rampart Gate' },
+      { km: 2.5, alt: 2210, label: 'Kawo Tona Command Crest' },
+      { km: 3.8, alt: 2140, label: 'Clan Assembly Grove' },
+      { km: 5.0, alt: 2050, label: 'Heritage Center Loop End' }
+    ],
+    gpxData: {
+      trailName: 'Kawo Tona Fortress Historic Circuit',
+      latMin: 6.8100,
+      latMax: 6.8350,
+      lngMin: 37.7000,
+      lngMax: 37.7200,
+      pointsCount: 5
+    }
+  }
+];
+
+const virtualPanoramas = [
+  {
+    id: 'damota-summit',
+    name: 'Mount Damota Summit (2,900 m)',
+    tagline: 'The Sacred Roof & Great Rift Valley Clouds',
+    category: 'Highland Peak',
+    image: 'walaita1.jpeg',
+    ambientSound: 'highland-wind',
+    elevation: '2,900 m',
+    lightingModes: ['Dawn Cloud Inversion', 'Golden Sun', 'Crisp Midday', 'Starlight Night'],
+    hotspots: [
+      { id: 'hs-1', x: 28, y: 44, title: 'Lake Abaya Copper Shimmer', desc: 'On clear mornings, gaze 45 km south to the shimmering reddish waters of Lake Abaya framing the Gamo highlands.' },
+      { id: 'hs-2', x: 64, y: 58, title: 'Afro-Alpine Giant Lobelia', desc: 'Endemic giant heather and afro-alpine herbs that thrive exclusively on the high-altitude volcanic soils of Damota.' },
+      { id: 'hs-3', x: 84, y: 32, title: 'Dawn Inversion Viewpoint', desc: 'The prime vantage point to watch clouds blanket the valley floor before morning sun rays pierce the mist.' }
+    ],
+    photoTips: 'Use a wide-angle lens (16-24mm) at 06:15 AM for dawn cloud blankets. A polarizing filter enhances deep blue highland skies.'
+  },
+  {
+    id: 'ajora-canyon',
+    name: 'Ajora Twin Falls Canyon',
+    tagline: '100-Meter Cascades & Prehistoric Rainforest',
+    category: 'Waterfalls & Gorge',
+    image: 'wolaita.jpeg',
+    ambientSound: 'waterfall-roar',
+    elevation: '1,750 m',
+    lightingModes: ['Morning Rainbow Mist', 'Tropical Midday', 'Forest Dusklight'],
+    hotspots: [
+      { id: 'hs-4', x: 32, y: 36, title: 'Soke Cascade (Left Waterfall)', desc: 'The western river branch plunging 100 meters down black volcanic basalt into the prehistoric gorge.' },
+      { id: 'hs-5', x: 59, y: 41, title: 'Ajancho Cascade (Right Waterfall)', desc: 'The roaring eastern sister fall whose constant mist feeds rare giant ferns and wild orchids.' },
+      { id: 'hs-6', x: 79, y: 24, title: 'Colobus & Hornbill Canopy', desc: 'Lush fig and podocarpus trees home to silvery-cheeked hornbills and mantled guereza monkeys.' }
+    ],
+    photoTips: 'Bring an ND filter (ND64/ND1000) for smooth long-exposure water textures. Keep a lens cloth handy for canyon spray.'
+  },
+  {
+    id: 'mochena-caves',
+    name: 'Mochena Borago Archaeological Rockshelter',
+    tagline: '50,000 Years of Middle Stone Age Human Innovation',
+    category: 'Archaeology & Heritage',
+    image: 'walaita1.jpeg',
+    ambientSound: 'cave-echoes',
+    elevation: '2,200 m',
+    lightingModes: ['Morning Amber Shafts', 'Sheltered Shadow', 'Hearthlight Night'],
+    hotspots: [
+      { id: 'hs-7', x: 38, y: 52, title: 'Obsidian Tool Stratigraphy', desc: 'World-renowned archaeological excavation layers uncovering obsidian bladelets from 50,000+ years ago.' },
+      { id: 'hs-8', x: 68, y: 30, title: 'Natural Basalt Overhang Dome', desc: 'Massive volcanic rock canopy that sheltered ancient hunter-gatherers during volcanic and glacial eras.' }
+    ],
+    photoTips: 'Bracket 3 exposures (+-2 EV) or use HDR mode to capture both the shadowed cave interior and bright valley backdrop.'
+  },
+  {
+    id: 'tukil-homestead',
+    name: 'Traditional Bamboo Tukil Compound',
+    tagline: 'The Sacred Architecture of Wolaita Living',
+    category: 'Culture & Living Heritage',
+    image: 'wolaita.jpeg',
+    ambientSound: 'village-evening',
+    elevation: '2,050 m',
+    lightingModes: ['Warm Morning Sun', 'Afternoon Enset Shade', 'Evening Campfire Glow'],
+    hotspots: [
+      { id: 'hs-9', x: 32, y: 46, title: 'Woven Bamboo Tukil Dome', desc: 'Constructed entirely from local bamboo with zero nails, featuring natural thermal insulation that stays warm on mountain nights.' },
+      { id: 'hs-10', x: 72, y: 64, title: 'Thriving Enset Micro-Farm', desc: 'The green sanctuary surrounding every homestead, providing food, building thatch, and shade.' }
+    ],
+    photoTips: 'Photograph between 4:30 PM and 5:30 PM for warm golden sidelight revealing the intricate woven bamboo patterns.'
+  }
+];
+
+const culturalCalendar = {
+  gifaataa: {
+    name: 'Gifaataa: Wolaita New Year & Reconciliation Festival',
+    status: 'UNESCO Intangible Cultural Heritage',
+    season: 'Late September (Annual)',
+    nextDates: 'September 24 – 27, 2026',
+    coreRituals: [
+      { name: 'Shukhiya (Communal Blessing)', desc: 'Families prepare special bulls, clean compound gates, and receive elder butter blessings.' },
+      { name: 'Gereessa (Dynamic Warrior Dance)', desc: 'Thousands gather in vibrant tricolor attire with rhythmic bamboo horns and drums.' },
+      { name: 'Gifaataa Feast of Peace', desc: 'Communal sharing of tender Kocho, spiced butter Bulla, and clan forgiveness covenants.' }
+    ]
+  },
+  agrarianSeasons: [
+    { month: 'September', title: 'Gifaataa New Year & Blooming Meadows', activity: 'UNESCO celebrations, Gereessa dances, greenest landscape photography', icon: '🎉' },
+    { month: 'October', title: 'Highland Coffee Harvest & Honey Gathering', activity: 'Single-origin coffee picking and traditional tree-hive forest honey extraction', icon: '☕' },
+    { month: 'November', title: 'Tricolor Shemma Textile Fairs', activity: 'Open-air artisan weaving markets in Sodo, Boditi, and Areka', icon: '🧵' },
+    { month: 'December – February', title: 'Peak Trekking & Paragliding Season', activity: 'Crisp clear skies on Mount Damota, sunrise expeditions, Bilbo hot springs retreats', icon: '⛰️' },
+    { month: 'March – May', title: 'Spring Soil Awakening & Enset Planting', activity: 'Traditional homestead Enset decortication, Bulla extracting workshops', icon: '🌱' },
+    { month: 'June – August', title: 'Waterfall Volume Surge & Roaring Canyons', activity: 'Ajora Falls at maximum roar, lush rainforest canyon photography', icon: '💧' }
+  ],
+  shemmaSymbolism: {
+    title: 'The Sacred Tricolor Palette of Wolaita',
+    colors: [
+      { name: 'Zo’o (Red)', meaning: 'Courage, vitality, the warm hearth fire, and sacrificial royal heritage.', hex: '#c85a32' },
+      { name: 'Karetta (Yellow)', meaning: 'Hope, sunbeams over Mount Damota, ripening grains, and communal prosperity.', hex: '#e0a93b' },
+      { name: 'Kareensa (Black)', meaning: 'Dignity, fertile volcanic dark loam soil, deep wisdom, and sovereign fortitude.', hex: '#14241d' }
+    ]
+  }
+};
+
+// AI Concierge Knowledge Engine & Persona Planner
+function handleConciergeQuery(payload) {
+  const { persona = 'trekker', query = '', days = 3, travelers = 2 } = payload || {};
+  const q = (query || '').toLowerCase().trim();
+
+  // Preset Personas
+  const personas = {
+    trekker: {
+      title: 'Highland Trekker & Summit Pioneer',
+      badge: 'Active & Adventure',
+      summary: 'Designed for hikers seeking mountain sunrises, dramatic canyon descents, and pure volcanic wilderness.',
+      expIds: ['damota-sunrise', 'ajora-canyon-trek', 'bilbo-spa'],
+      itinerary: [
+        { day: 1, title: 'Mount Damota Dawn Summit & Mochena Borago Caves', morning: 'Dawn ascent to 2,900m summit with mountain coffee', afternoon: 'Explore 50,000-year-old Paleolithic rockshelter' },
+        { day: 2, title: 'Ajora Twin Falls 100m Gorge Descent', morning: 'Trek through rainforest canyon to the foot of twin cascades', afternoon: 'Picnic beside mist pools and hornbill birdwatching' },
+        { day: 3, title: 'Bilbo Geothermal Hot Springs & Recovery', morning: 'Soak in mineral-rich volcanic thermal baths', afternoon: 'Traditional herbal tea and return to Sodo hub' }
+      ],
+      gear: ['Sturdy hiking boots with grip', 'Rain shell & lightweight fleece', 'Refillable water canteen', 'Sun hat & sunscreen'],
+      guideId: 'tariku'
+    },
+    heritage: {
+      title: 'Royal Kingdom & Living Lore Historian',
+      badge: 'Culture & Archaeology',
+      summary: 'Delve into 50+ sovereigns of the ancient Kingdom of Wolaita, defensive earthworks, and UNESCO traditions.',
+      expIds: ['gifataa-culture', 'shemma-weaving', 'homestay-tukil'],
+      itinerary: [
+        { day: 1, title: 'King Kawo Tona Ramparts & City of 7 Gates', morning: 'Trek the 500-year-old defensive moats and stone fortifications', afternoon: 'Oral history session with village elders' },
+        { day: 2, title: 'UNESCO Gifaataa Traditions & Gereessa Workshop', morning: 'Learn traditional Gereessa dance rhythms and dress in tricolor shemma', afternoon: 'Feast of reconciliation with local community' },
+        { day: 3, title: 'Cotton Loom Masterclass & Bamboo Tukil Homestay', morning: 'Hands-on weaving with master artisans in Sodo', afternoon: 'Evening campfire lore inside authentic bamboo dome cottage' }
+      ],
+      gear: ['Comfortable walking shoes', 'Modest clothing covering shoulders', 'Notebook or field journal', 'Camera with portrait lens'],
+      guideId: 'mathewos'
+    },
+    gastronomy: {
+      title: 'Enset Culinary & Agrarian Soul',
+      badge: 'Food & Farming',
+      summary: 'Experience the "Tree Against Hunger," farm-to-table Enset decortication, Bulla porridge, and single-origin coffee rituals.',
+      expIds: ['enset-masterclass', 'homestay-tukil', 'damota-sunrise'],
+      itinerary: [
+        { day: 1, title: 'The Enset Homestead: Decortication to Feast', morning: 'Hands-on leaf scraping with bamboo woshesha tool', afternoon: 'Bake crisp Kocho flatbread over clay griddle with spiced butter' },
+        { day: 2, title: 'Highland Coffee Roasting & Bamboo Homestay', morning: 'Harvest and roast organic single-origin coffee beans over charcoal', afternoon: 'Tasting silky Bulla porridge and overnight in family compound' },
+        { day: 3, title: 'Sodo Market & Traditional Gastronomy Tour', morning: 'Explore spices, Enset fermentations, and herbal teas at Sodo market', afternoon: 'Celebratory banquet with local matriarchs' }
+      ],
+      gear: ['Apron/comfortable cooking clothes', 'Appetite for rich spiced butter & sourdough aromas', 'Slip-on shoes for homestays'],
+      guideId: 'selamawit'
+    },
+    artisan: {
+      title: 'Tricolor Textile & Craft Collector',
+      badge: 'Crafts & Community',
+      summary: 'Meet master cotton spinners, foot-pedal loom weavers, and traditional bamboo architects.',
+      expIds: ['shemma-weaving', 'gifataa-culture', 'enset-masterclass'],
+      itinerary: [
+        { day: 1, title: 'Sodo Weaving Quarter & Cotton Spinning', morning: 'Discover how raw cotton is cleaned, carded, and hand-spun', afternoon: 'Learn the loom rhythm and create your own tricolor coaster' },
+        { day: 2, title: 'Bamboo Tukil Architecture Masterclass', morning: 'Observe master bamboo carpenters weave living dome cottages', afternoon: 'Traditional homestay tea & village music' },
+        { day: 3, title: 'Artisan Cooperative Market & Gifaataa Attire', morning: 'Direct purchase of authentic certified Natela shawls and Gabi blankets', afternoon: 'Farewell coffee ceremony with artisan cooperative' }
+      ],
+      gear: ['Extra luggage space for authentic textiles', 'Cash (ETB) for direct cooperative purchases', 'Camera for artisan portraits (always ask permission)'],
+      guideId: 'selamawit'
+    },
+    naturalist: {
+      title: 'Rift Valley Birding & Slow Naturalist',
+      badge: 'Wildlife & Lakes',
+      summary: 'Traverse shimmering copper lakes, volcanic hot springs, and high-altitude afro-alpine bird sanctuaries.',
+      expIds: ['damota-sunrise', 'bilbo-spa', 'ajora-canyon-trek'],
+      itinerary: [
+        { day: 1, title: 'Lake Abaya Wetlands & Canoe Excursion', morning: 'Morning boat ride among pelicans, fish eagles, and Nile monitors', afternoon: 'Fresh grilled tilapia by the reddish copper shoreline' },
+        { day: 2, title: 'Bilbo Geothermal Springs & Botanical Forest', morning: 'Soak in warm mineral pools beneath ancient wild fig trees', afternoon: 'Sunbird and weaver bird spotting in lush forest groves' },
+        { day: 3, title: 'Mount Damota High Ridge Birdwatching', morning: 'Spot rare Lammergeier bearded vultures soaring on morning thermals', afternoon: 'Panoramic sunset view across the Great Rift Valley' }
+      ],
+      gear: ['Binoculars (8x42 or 10x42)', 'Telephoto camera lens (200-400mm)', 'Birding field guide / app', 'Swimwear & towel for hot springs'],
+      guideId: 'mathewos'
+    }
+  };
+
+  const selectedPersona = personas[persona] || personas.trekker;
+
+  // Answer specific natural queries if asked
+  let answer = '';
+  if (q.includes('weather') || q.includes('rain') || q.includes('season') || q.includes('when to visit')) {
+    answer = 'The best time to visit Wolaita is between September and March. September brings the breathtaking green landscapes and the UNESCO Gifaataa Festival. December to February offers crystal-clear skies for Mount Damota summit treks.';
+  } else if (q.includes('get there') || q.includes('flight') || q.includes('bus') || q.includes('addis')) {
+    answer = 'You can reach Wolaita Sodo easily from Addis Ababa: either take a 1-hour Ethiopian Airlines flight to Arba Minch (AMH) or Hawassa (HWA) followed by a 1.5–2 hr scenic drive, or enjoy a direct 5.5-hour drive via the Butajira-Hossana scenic highway.';
+  } else if (q.includes('food') || q.includes('vegan') || q.includes('vegetarian') || q.includes('enset') || q.includes('kocho')) {
+    answer = 'Wolaita cuisine is exceptionally welcoming for all diets! Kocho (fermented Enset flatbread) and Bulla porridge are 100% plant-based superfoods. For vegetarians and vegans, Enset is prepared with spiced highland greens (gomen), lentils, and local herbs.';
+  } else if (q.includes('safe') || q.includes('safety') || q.includes('water')) {
+    answer = 'Wolaita is one of the most peaceful and hospitable zones in Southern Ethiopia. Local communities revere travelers as honored guests. For drinking, bottled water or filtered boiled highland teas are recommended.';
+  } else if (q.includes('wear') || q.includes('dress') || q.includes('clothes') || q.includes('etiquette')) {
+    answer = 'Modest, layered clothing is best. Mornings and evenings in Sodo and Mount Damota (2,100m–2,900m) can be crisp (12°C–15°C), while afternoons are pleasantly warm (22°C–25°C). For village ceremonies and homesteads, modest wear covering shoulders and knees is respectful.';
+  } else {
+    answer = `Based on your interest in ${selectedPersona.title}, I have curated a personalized ${days}-day expedition maximizing authentic local connections, certified community guides, and transparent pricing.`;
+  }
+
+  // Calculate pricing based on persona activities and duration
+  const matchedExperiences = experiences.filter(e => selectedPersona.expIds.includes(e.id));
+  const activitiesTotalUSD = matchedExperiences.reduce((sum, e) => sum + (e.priceUSD || 35), 0);
+  const lodgingTransportTotalUSD = (55 + 60) * Number(days);
+  const totalUSD = (lodgingTransportTotalUSD + activitiesTotalUSD) * Number(travelers);
+  const totalETB = totalUSD * 120;
+
+  return {
+    personaKey: persona,
+    personaTitle: selectedPersona.title,
+    badge: selectedPersona.badge,
+    summary: selectedPersona.summary,
+    conciergeAnswer: answer,
+    itineraryDays: selectedPersona.itinerary,
+    recommendedExperiences: matchedExperiences,
+    packingGear: selectedPersona.gear,
+    assignedGuide: guides.find(g => g.id === selectedPersona.guideId) || guides[0],
+    pricing: {
+      days: Number(days),
+      travelers: Number(travelers),
+      totalUSD,
+      totalETB,
+      perTravelerUSD: Math.round(totalUSD / Number(travelers))
+    }
+  };
+}
+
 // Middleware
 app.use(express.json());
 app.use(express.static(__dirname));
@@ -471,6 +782,15 @@ app.get('/api/enset-steps', (_req, res) => res.json(ensetSteps));
 app.get('/api/reviews', (_req, res) => res.json(reviews));
 app.get('/api/weather', (_req, res) => res.json(weatherData));
 app.get('/api/travel-info', (_req, res) => res.json(travelInfo));
+
+// Smart Studio Endpoints
+app.get('/api/trails', (_req, res) => res.json(trailGuides));
+app.get('/api/panoramas', (_req, res) => res.json(virtualPanoramas));
+app.get('/api/cultural-calendar', (_req, res) => res.json(culturalCalendar));
+app.post('/api/ai/concierge', (req, res) => {
+  const result = handleConciergeQuery(req.body);
+  res.json(result);
+});
 
 // Enquiry Handler with Custom Journey Builder
 app.post('/api/enquiries', (req, res) => {
@@ -548,6 +868,8 @@ app.get('/api/health', (_req, res) => {
     experiences: experiences.length,
     itineraries: itineraries.length,
     guides: guides.length,
+    trails: trailGuides.length,
+    panoramas: virtualPanoramas.length,
     enquiriesCount: enquiries.length,
     timestamp: new Date().toISOString()
   });
@@ -555,3 +877,4 @@ app.get('/api/health', (_req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Visit Wolaita is live at http://localhost:${PORT}`));
+
