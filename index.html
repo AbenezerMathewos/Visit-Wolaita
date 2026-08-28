@@ -57,6 +57,7 @@
 
     <!-- Navigation Menu Links -->
     <nav id="mainNav" class="nav-menu" aria-label="Main Navigation">
+      <a href="#smart-studio" class="nav-link nav-highlight"><span class="badge-sparkle">✦</span> Smart Studio</a>
       <a href="#map-section" class="nav-link">Live Real Map</a>
       <a href="#destinations" class="nav-link">Landmarks</a>
       <a href="#experiences" class="nav-link">Experiences</a>
@@ -234,6 +235,355 @@
             <button class="button primary" id="inspExploreBtn" style="font-size: 13px; width: 100%; justify-content: center;">
               View Full Landmark Insights <span>→</span>
             </button>
+          </div>
+        </div>
+    <!-- SECTION: SMART TRIP STUDIO & 360° TRAIL EXPLORER -->
+    <section class="section smart-studio-section" id="smart-studio">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow"><span class="badge-sparkle">✦</span> Flagship Interactive Suite</p>
+          <h2>Kawo Smart Trip Studio<br><i>& 360° Trail Explorer.</i></h2>
+        </div>
+        <p class="section-lead">
+          Your all-in-one digital expedition assistant: interact with our local concierge AI, immerse yourself in 360° panoramic landscapes with live audio, analyze trail elevation profiles with GPS downloads, and explore the living Gifaataa cultural calendar.
+        </p>
+      </div>
+
+      <!-- Studio Mode Switcher Tabs -->
+      <div class="studio-nav-bar" role="tablist" aria-label="Smart Studio Tabs">
+        <button class="studio-tab-btn active" data-tab="concierge">
+          <span class="tab-icon">🤖</span>
+          <span class="tab-label">AI Concierge & Custom Planner</span>
+        </button>
+        <button class="studio-tab-btn" data-tab="panoramas">
+          <span class="tab-icon">🌐</span>
+          <span class="tab-label">360° Virtual Panoramic Explorer</span>
+        </button>
+        <button class="studio-tab-btn" data-tab="trails">
+          <span class="tab-icon">⛰️</span>
+          <span class="tab-label">Trail Elevation & GPS Hub</span>
+        </button>
+        <button class="studio-tab-btn" data-tab="calendar">
+          <span class="tab-icon">📅</span>
+          <span class="tab-label">Gifaataa Calendar & Shemma Studio</span>
+        </button>
+      </div>
+
+      <!-- TAB 1: AI CONCIERGE & DYNAMIC ITINERARY BUILDER -->
+      <div class="studio-panel active" id="studioPanelConcierge" role="tabpanel">
+        <div class="concierge-layout">
+          <!-- Left: Persona Selector & Quick Prompt Chips -->
+          <div class="concierge-input-card">
+            <div class="concierge-header-pill">
+              <span class="pulse-icon"></span>
+              <span>Online · Kawo Travel Knowledge Engine</span>
+            </div>
+            <h3>Select Your Travel Persona</h3>
+            <p class="concierge-sub">Choose a travel archetype or ask any custom question about Wolaita trips, culture, and logistics:</p>
+
+            <div class="persona-chips-grid" id="personaChipsGrid">
+              <button class="persona-chip active" data-persona="trekker">
+                <span class="persona-emoji">🥾</span>
+                <div class="persona-meta">
+                  <strong>Highland Trekker</strong>
+                  <small>Damota summit & Ajora canyon</small>
+                </div>
+              </button>
+              <button class="persona-chip" data-persona="heritage">
+                <span class="persona-emoji">👑</span>
+                <div class="persona-meta">
+                  <strong>Royal Heritage & Lore</strong>
+                  <small>King Tona & Stone Age caves</small>
+                </div>
+              </button>
+              <button class="persona-chip" data-persona="gastronomy">
+                <span class="persona-emoji">🍌</span>
+                <div class="persona-meta">
+                  <strong>Enset & Agrarian Soul</strong>
+                  <small>Kocho, Bulla & coffee roasting</small>
+                </div>
+              </button>
+              <button class="persona-chip" data-persona="artisan">
+                <span class="persona-emoji">🧵</span>
+                <div class="persona-meta">
+                  <strong>Textile & Shemma Crafts</strong>
+                  <small>Looms, bamboo & artisan fairs</small>
+                </div>
+              </button>
+              <button class="persona-chip" data-persona="naturalist">
+                <span class="persona-emoji">🦅</span>
+                <div class="persona-meta">
+                  <strong>Rift Valley Naturalist</strong>
+                  <small>Lake Abaya birding & hot springs</small>
+                </div>
+              </button>
+            </div>
+
+            <!-- Quick Suggestions -->
+            <div class="quick-queries">
+              <span class="qq-label">Quick Inquiries:</span>
+              <div class="qq-chips">
+                <button class="qq-chip" data-q="What is the best month to visit Wolaita for hiking and festivals?">🌤️ Best Month & Weather?</button>
+                <button class="qq-chip" data-q="How do I get to Wolaita Sodo from Addis Ababa by flight or road?">✈️ Transport from Addis?</button>
+                <button class="qq-chip" data-q="Is Wolaita cuisine vegetarian and vegan friendly?">🌱 Vegetarian Enset food?</button>
+                <button class="qq-chip" data-q="What should I wear and what is cultural etiquette in villages?">👗 Village Dress Etiquette?</button>
+              </div>
+            </div>
+
+            <!-- Custom Query Form -->
+            <form id="conciergeForm" class="concierge-form">
+              <div class="concierge-input-wrap">
+                <input type="text" id="conciergeQueryInput" placeholder="Ask Kawo AI anything (e.g. 'Can I camp on Mount Damota?', 'Is water safe?')..." aria-label="Ask Kawo AI" />
+                <button type="submit" class="concierge-submit-btn" id="conciergeSubmitBtn" title="Ask Concierge AI">
+                  <span>Send</span> <span>⚡</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Right: Generated Response & Dynamic Itinerary Display -->
+          <div class="concierge-output-card" id="conciergeOutputCard">
+            <div class="concierge-loading" id="conciergeLoading" style="display: none;">
+              <span class="spinner-dot"></span>
+              <p>Consulting Wolaita heritage guides and formulating customized itinerary…</p>
+            </div>
+
+            <div class="concierge-result-content" id="conciergeResultContent">
+              <!-- Dynamically populated via app.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: 360° VIRTUAL PANORAMA EXPLORER -->
+      <div class="studio-panel" id="studioPanelPanoramas" role="tabpanel" style="display: none;">
+        <div class="panorama-layout">
+          <!-- Panorama Controls Bar -->
+          <div class="panorama-toolbar">
+            <div class="scene-selector-pills" id="panoramaScenePills">
+              <!-- Injected by JS -->
+            </div>
+
+            <div class="panorama-lighting-wrap">
+              <span class="toolbar-label">Lighting & Atmosphere:</span>
+              <div class="lighting-buttons" id="lightingButtons">
+                <!-- Injected by JS -->
+              </div>
+            </div>
+
+            <div class="panorama-sound-toggle">
+              <button class="button sound-ambiance-btn" id="panoAmbianceBtn" aria-pressed="false">
+                <span class="ambiance-icon">🔊</span>
+                <span id="panoAmbianceLabel">Ambient Highland Audio: Off</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Interactive 360 Viewport Container -->
+          <div class="panorama-viewport" id="panoramaViewport">
+            <div class="panorama-canvas-wrap" id="panoramaCanvasWrap">
+              <img src="walaita1.jpeg" alt="360 Panoramic View of Wolaita" id="panoramaImg" class="panorama-bg-img" />
+              <!-- Hotspot pins injected by JS -->
+              <div class="panorama-hotspots-layer" id="panoramaHotspotsLayer"></div>
+            </div>
+
+            <div class="panorama-overlay-hint">
+              <span>↔ Drag or use arrows to pan across 360° landscape · Click interactive pulse pins for discoveries</span>
+            </div>
+
+            <!-- Virtual Compass Heading -->
+            <div class="panorama-compass" id="panoramaCompass">
+              <span class="compass-needle" id="compassNeedle">▲</span>
+              <span class="compass-label" id="compassLabel">N 045° (NE)</span>
+            </div>
+
+            <!-- Pan Controls -->
+            <div class="panorama-nav-controls">
+              <button class="pano-ctrl-btn" id="panoLeftBtn" title="Pan Left">◀</button>
+              <button class="pano-ctrl-btn" id="panoResetBtn" title="Reset View">⊙</button>
+              <button class="pano-ctrl-btn" id="panoRightBtn" title="Pan Right">▶</button>
+            </div>
+          </div>
+
+          <!-- Hotspot Inspector & Photography Tips Footer -->
+          <div class="panorama-details-grid">
+            <div class="pano-hotspot-card" id="panoHotspotCard">
+              <div class="hotspot-badge" id="panoHotspotBadge">📍 Interactive Landmark Hotspot</div>
+              <h4 id="panoHotspotTitle">Lake Abaya Shimmer & Valley Inversion</h4>
+              <p id="panoHotspotDesc">Click any glowing discovery marker on the panorama above to explore historical archaeological layers, botanical species, or scenic viewpoints.</p>
+            </div>
+
+            <div class="pano-phototips-card">
+              <div class="hotspot-badge" style="background: var(--ochre-light); color: var(--ink);">📸 Photography Masterclass Tips</div>
+              <h4 id="panoPhotoLocation">Mount Damota Summit (2,900 m)</h4>
+              <p id="panoPhotoTips">Use a wide-angle lens (16-24mm) at 06:15 AM for dawn cloud blankets. A polarizing filter enhances deep blue highland skies.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: TRAIL ELEVATION PROFILE & GPS WAYPOINTS -->
+      <div class="studio-panel" id="studioPanelTrails" role="tabpanel" style="display: none;">
+        <div class="trails-layout">
+          <!-- Trail Selector -->
+          <div class="trail-selector-bar" id="trailSelectorBar">
+            <!-- Trail pills injected by JS -->
+          </div>
+
+          <!-- Trail Overview Header -->
+          <div class="trail-summary-banner" id="trailSummaryBanner">
+            <div>
+              <span class="trail-diff-badge" id="trailDiffBadge">Challenging</span>
+              <h3 id="trailNameDisplay">Mount Damota Summit & Afro-Alpine Ridge</h3>
+              <p id="trailTerrainDisplay">Volcanic singletrack, bamboo corridors, afro-alpine rocky crest</p>
+            </div>
+            <div class="trail-quick-metrics">
+              <div class="t-metric">
+                <span>Distance</span>
+                <strong id="trailDistDisplay">8.4 km</strong>
+              </div>
+              <div class="t-metric">
+                <span>Elevation Gain</span>
+                <strong id="trailGainDisplay">+800 m</strong>
+              </div>
+              <div class="t-metric">
+                <span>Peak Altitude</span>
+                <strong id="trailPeakDisplay">2,900 m</strong>
+              </div>
+              <div class="t-metric">
+                <span>Duration</span>
+                <strong id="trailTimeDisplay">4.5 – 5.5 hrs</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Elevation Profile SVG Graph -->
+          <div class="elevation-chart-container">
+            <div class="chart-header">
+              <h4>Elevation Profile & Terrain Scrub (Altitude vs. Distance)</h4>
+              <span class="scrubber-hint">Hover / scrub across chart to inspect waypoints & terrain</span>
+            </div>
+            <div class="elevation-svg-wrap" id="elevationSvgWrap">
+              <!-- Rendered via JS SVG -->
+            </div>
+            <!-- Scrubber Dynamic Tooltip -->
+            <div class="elevation-scrub-info" id="elevationScrubInfo">
+              <span id="scrubKm">Km 4.2</span> · <span id="scrubAlt">Altitude: 2,900 m</span> · <strong id="scrubLabel">Mount Damota Summit Peak</strong>
+            </div>
+          </div>
+
+          <!-- Trail Actions & Download GPX -->
+          <div class="trail-actions-footer">
+            <div class="trail-water-points">
+              <span>💧 Recommended Water Points:</span>
+              <strong id="trailWaterDisplay">Sodo Trailhead, Midway Spring (km 2.4)</strong>
+            </div>
+            <div class="trail-download-actions">
+              <button class="button primary" id="downloadGpxBtn">
+                <span>📥 Download GPX Track for GPS / AllTrails</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: LIVING CULTURAL CALENDAR & SHEMMA WEAVER -->
+      <div class="studio-panel" id="studioPanelCalendar" role="tabpanel" style="display: none;">
+        <div class="calendar-layout">
+          <!-- Live Countdown to UNESCO Gifaataa Festival -->
+          <div class="gifaataa-countdown-hero">
+            <div class="countdown-copy">
+              <span class="festival-pill">UNESCO Intangible Cultural Heritage</span>
+              <h3>Countdown to Gifaataa New Year 2026</h3>
+              <p>Celebrated every September across Wolaita, marking the arrival of the New Year, harvest blessings, clan reconciliation, and the dynamic Gereessa dances.</p>
+            </div>
+            <div class="countdown-timer-grid">
+              <div class="countdown-dial">
+                <span class="dial-val" id="cdDays">00</span>
+                <span class="dial-unit">Days</span>
+              </div>
+              <div class="countdown-dial">
+                <span class="dial-val" id="cdHours">00</span>
+                <span class="dial-unit">Hours</span>
+              </div>
+              <div class="countdown-dial">
+                <span class="dial-val" id="cdMinutes">00</span>
+                <span class="dial-unit">Minutes</span>
+              </div>
+              <div class="countdown-dial">
+                <span class="dial-val" id="cdSeconds">00</span>
+                <span class="dial-unit">Seconds</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 12-Month Agrarian & Cultural Guide -->
+          <div class="agrarian-cycle-section">
+            <div class="sub-header">
+              <h4>12-Month Living Agrarian & Cultural Calendar</h4>
+              <p>Every season in Wolaita holds a unique rhythm of planting, blooming, honey gathering, and festivals:</p>
+            </div>
+            <div class="agrarian-grid" id="agrarianGrid">
+              <!-- Dynamically populated via JS -->
+            </div>
+          </div>
+
+          <!-- Interactive Tricolor Shemma Textile Customizer -->
+          <div class="shemma-customizer-card">
+            <div class="shemma-customizer-header">
+              <div>
+                <span class="hotspot-badge" style="background: var(--earth-light); color: var(--earth);">Artisan Loom Simulator</span>
+                <h3>Tricolor Shemma Textile & Symbolism Studio</h3>
+                <p>Customize the proportion of the traditional Wolaita tricolor bands and learn the sacred royal meaning behind each hue:</p>
+              </div>
+            </div>
+
+            <div class="shemma-interactive-layout">
+              <!-- Loom Preview Canvas -->
+              <div class="loom-preview-box">
+                <div class="loom-textile-canvas" id="loomTextileCanvas">
+                  <div class="shemma-stripe stripe-red" id="stripeRed" style="flex: 2;">
+                    <span>Zo'o (Red)</span>
+                  </div>
+                  <div class="shemma-stripe stripe-yellow" id="stripeYellow" style="flex: 2;">
+                    <span>Karetta (Yellow)</span>
+                  </div>
+                  <div class="shemma-stripe stripe-black" id="stripeBlack" style="flex: 2;">
+                    <span>Kareensa (Black)</span>
+                  </div>
+                </div>
+                <div class="loom-fringe">
+                  <span>||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||</span>
+                </div>
+              </div>
+
+              <!-- Loom Controls & Color Lore -->
+              <div class="shemma-controls-panel">
+                <div class="loom-slider-group">
+                  <label for="sliderRed">🔴 Red Band (Zo'o): <b id="valRed">2 units</b></label>
+                  <input type="range" id="sliderRed" min="1" max="5" value="2" class="calc-slider" />
+                  <small>Symbolizes courage, warmth of the family hearth, and the royal lineage of Kawo Tona.</small>
+                </div>
+
+                <div class="loom-slider-group">
+                  <label for="sliderYellow">🟡 Yellow Band (Karetta): <b id="valYellow">2 units</b></label>
+                  <input type="range" id="sliderYellow" min="1" max="5" value="2" class="calc-slider" />
+                  <small>Symbolizes golden sunshine over Mount Damota, bountiful harvest, and enduring hope.</small>
+                </div>
+
+                <div class="loom-slider-group">
+                  <label for="sliderBlack">⚫ Black Band (Kareensa): <b id="valBlack">2 units</b></label>
+                  <input type="range" id="sliderBlack" min="1" max="5" value="2" class="calc-slider" />
+                  <small>Symbolizes fertile volcanic loam soil, ancient ancestral wisdom, and dignity.</small>
+                </div>
+
+                <div class="loom-action-row">
+                  <a href="#experiences" class="button primary" style="font-size: 13px;">
+                    Book Shemma Masterclass <span>→</span>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -762,6 +1112,7 @@
     <div class="footer-col">
       <h4>Platform Directory</h4>
       <ul class="footer-links">
+        <li><a href="#smart-studio">✦ Smart Trip Studio & 360°</a></li>
         <li><a href="#map-section">Real Geospatial Map & 3D</a></li>
         <li><a href="#destinations">Key Landmarks</a></li>
         <li><a href="#experiences">Experiential Activities</a></li>
