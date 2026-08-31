@@ -3938,3 +3938,17 @@ section[id], div[id] {
 @container card-container (max-width: 420px) {
   .card-container > * { flex: 0 0 100%; }
 }
+
+/* -- Loading Spinner -- */
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(36,81,59,0.2);
+  border-top-color: #24513b;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner--sm { width: 14px; height: 14px; border-width: 2px; }
+.spinner--lg { width: 32px; height: 32px; border-width: 4px; }
