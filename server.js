@@ -1,4 +1,13 @@
-﻿// -- Security Headers --
+﻿// -- CORS --
+app.use((_req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
+  if (_req.method === 'OPTIONS') return res.sendStatus(204);
+  next();
+});
+
+// -- Security Headers --
 app.use((_req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
