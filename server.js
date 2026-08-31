@@ -914,3 +914,8 @@ app.get('/api/health', (_req, res) => {
     uptime: Math.floor(process.uptime()) + 's'
   });
 });
+
+// -- 404 Not Found Handler --
+app.use(function(_req, res) {
+  res.status(404).json({ error: 'Not Found', message: 'Resource does not exist.', status: 404 });
+});
