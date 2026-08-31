@@ -1,8 +1,9 @@
-{
+﻿{
   "name": "visit-wolaita",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "scripts": { "start": "node server.js", "dev": "node --watch server.js" },
+  "scripts": { "start": "node server.js", "dev": "node --watch server.js",
+    "check": "node --check server.js app.js" },
   "dependencies": { "express": "^4.21.2" }
 }
