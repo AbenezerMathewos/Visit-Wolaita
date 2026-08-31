@@ -3798,3 +3798,25 @@ img {
   to { opacity: 0; transform: translateY(-10px) scale(0.95); }
 }
 
+
+/* -- Accessibility: Skip to Content -- */
+.skip-to-content {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  z-index: 9999;
+  padding: 10px 20px;
+  background: #c85a32;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 14px;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-to-content:focus {
+  top: 16px;
+  outline: 3px solid #d49b28;
+  outline-offset: 2px;
+}
