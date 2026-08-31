@@ -2169,3 +2169,13 @@ function showConfirmationModal(result) {
 // Start application
 init();
 
+
+// -- Back to Top --
+(function initBackToTop() {
+  var btn = document.getElementById('backToTop');
+  if (!btn) return;
+  var onScroll = function() { btn.classList.toggle('visible', window.scrollY > 400); };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  btn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  onScroll();
+})();
