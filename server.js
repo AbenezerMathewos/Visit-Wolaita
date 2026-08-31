@@ -919,3 +919,9 @@ app.get('/api/health', (_req, res) => {
 app.use(function(_req, res) {
   res.status(404).json({ error: 'Not Found', message: 'Resource does not exist.', status: 404 });
 });
+
+// -- Global Error Handler --
+app.use(function(err, _req, res, _next) {
+  console.error('[Error]', err.message);
+  res.status(err.status || 500).json({ error: err.message || 'Internal Server Error', status: err.status || 500 });
+});
