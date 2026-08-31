@@ -3840,3 +3840,10 @@ img {
   .hero { min-height: auto; padding: 20px 0; }
   section { page-break-inside: avoid; }
 }
+
+/* -- Global Focus-Visible Ring -- */
+:focus-visible {
+  outline: 3px solid #c85a32;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
