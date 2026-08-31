@@ -878,3 +878,14 @@ app.get('/api/health', (_req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Visit Wolaita is live at http://localhost:${PORT}`));
 
+
+// -- Health Check Endpoint --
+app.get('/api/health', (_req, res) => {
+  res.json({
+    status: 'ok',
+    service: 'Visit Wolaita API',
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+    uptime: Math.floor(process.uptime()) + 's'
+  });
+});
