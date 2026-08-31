@@ -1,4 +1,11 @@
-﻿// -- CORS --
+﻿// -- Input Sanitization Helper --
+function sanitize(str, maxLen) {
+  maxLen = maxLen || 500;
+  if (typeof str !== 'string') return '';
+  return str.trim().slice(0, maxLen).replace(/[<>]/g, '');
+}
+
+// -- CORS --
 app.use((_req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
