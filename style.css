@@ -3852,3 +3852,7 @@ img {
 section[id], div[id] {
   scroll-margin-top: 80px;
 }
+
+/* -- Text Selection Highlight -- */
+::selection { background-color: rgba(200,90,50,0.25); color: #0d1e17; }
+::-moz-selection { background-color: rgba(200,90,50,0.25); color: #0d1e17; }
