@@ -1,3 +1,9 @@
+﻿// -- Request Logger --
+app.use((req, _res, next) => {
+  console.log('[' + new Date().toISOString() + '] ' + req.method + ' ' + req.url);
+  next();
+});
+
 import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
