@@ -3820,3 +3820,14 @@ img {
   outline: 3px solid #d49b28;
   outline-offset: 2px;
 }
+
+/* -- Print Styles -- */
+@media print {
+  .announcement-bar, .site-header, .grain, .menu-toggle,
+  .sound-player-btn, .journey-cart-btn, .map-toolbar,
+  .studio-nav-bar { display: none !important; }
+  body { background: #fff; color: #000; font-size: 12pt; }
+  a { color: inherit; text-decoration: underline; }
+  .hero { min-height: auto; padding: 20px 0; }
+  section { page-break-inside: avoid; }
+}
