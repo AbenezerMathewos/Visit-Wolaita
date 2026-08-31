@@ -3856,3 +3856,33 @@ section[id], div[id] {
 /* -- Text Selection Highlight -- */
 ::selection { background-color: rgba(200,90,50,0.25); color: #0d1e17; }
 ::-moz-selection { background-color: rgba(200,90,50,0.25); color: #0d1e17; }
+
+/* -- Back to Top Button -- */
+.back-to-top {
+  position: fixed;
+  bottom: 32px;
+  right: 28px;
+  z-index: 600;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #24513b;
+  color: #fff;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 12px 32px rgba(13,30,23,0.08);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s;
+  pointer-events: none;
+}
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.back-to-top:hover {
+  background: #c85a32;
+  transform: translateY(-2px);
+}
