@@ -793,6 +793,8 @@ function handleConciergeQuery(payload) {
 
 // Middleware
 app.use(express.json());
+// NOTE: For production, serve static files via nginx or a CDN (Cloudflare/Bunny.net)
+// to enable gzip, caching headers, and HTTP/2. Do not use Express static in prod.
 app.use(express.static(__dirname));
 
 // REST API Endpoints
