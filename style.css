@@ -3959,3 +3959,6 @@ section[id], div[id] {
 .aspect-photo    { aspect-ratio: 4 / 3; }
 .aspect-portrait { aspect-ratio: 3 / 4; }
 .aspect-wide     { aspect-ratio: 21 / 9; }
+
+/* -- Smooth scroll: enabled on html (scroll-behavior: smooth in html selector) --
+   Overridden to auto via prefers-reduced-motion media query above. -- */
