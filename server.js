@@ -1,4 +1,14 @@
-﻿// -- Request Logger --
+﻿// -- Security Headers --
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(self)');
+  next();
+});
+
+// -- Request Logger --
 app.use((req, _res, next) => {
   console.log('[' + new Date().toISOString() + '] ' + req.method + ' ' + req.url);
   next();
