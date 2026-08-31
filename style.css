@@ -3929,3 +3929,12 @@ section[id], div[id] {
 .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* -- Container Query -- */
+.card-container {
+  container-type: inline-size;
+  container-name: card-container;
+}
+@container card-container (max-width: 420px) {
+  .card-container > * { flex: 0 0 100%; }
+}
