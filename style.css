@@ -4031,3 +4031,6 @@ section[id], div[id] {
 
 /* -- Gradients -- */
 .gradient-earth{background:linear-gradient(135deg,#c85a32,#d49b28)}.gradient-leaf{background:linear-gradient(135deg,#24513b,#12281d)}.gradient-sunset{background:linear-gradient(180deg,#fbeee8,#fdf5e2)}.gradient-highland{background:linear-gradient(180deg,#e6efe9,#faf7f2)}
+
+/* -- Testimonials -- */
+.testimonial-card{transition:transform .25s ease,box-shadow .25s}.testimonial-card:hover{transform:translateY(-4px);box-shadow:0 24px 56px rgba(13,30,23,.1)}
