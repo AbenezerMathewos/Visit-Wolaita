@@ -4055,3 +4055,6 @@ details summary::-webkit-details-marker{display:none}details summary{transition:
 
 /* -- Code -- */
 code{font-family:'Courier New',monospace;font-size:.875em;background:rgba(36,81,59,.08);padding:2px 6px;border-radius:4px;color:#24513b}pre{font-family:'Courier New',monospace;background:#12281d;color:#e6efe9;padding:20px 24px;border-radius:14px;overflow-x:auto;font-size:14px;line-height:1.6}
+
+/* -- Anchors -- */
+.link{color:#c85a32;text-decoration:underline;text-underline-offset:3px;transition:color .15s}.link:hover{color:#b04924}.link-plain{color:inherit;text-decoration:none}.link-plain:hover{text-decoration:underline}
