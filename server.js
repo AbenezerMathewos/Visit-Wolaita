@@ -956,3 +956,5 @@ app.get('/robots.txt', (_req, res) => { res.type('text/plain'); res.sendFile(pat
 app.get('/sitemap.xml', (_req, res) => { res.type('application/xml'); res.sendFile(path.join(__dirname, 'sitemap.xml')); });
 
 app.get('/api/stats', (_req, res) => { res.json({ destinations:8, experiences:12, guides:6, languages:3, mapLayers:3, trails:4, panoramas:4 }); });
+
+app.get('/api/enquiry/count', (_req, res) => { res.json({ count: enquiries.length, lastUpdated: new Date().toISOString() }); });
