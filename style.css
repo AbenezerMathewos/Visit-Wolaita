@@ -3965,3 +3965,6 @@ section[id], div[id] {
 
 /* -- Logical Properties -- */
 .ms-auto{margin-inline-start:auto}.me-auto{margin-inline-end:auto}.px-section{padding-inline:clamp(16px,5vw,80px)}
+
+/* -- Gap -- */
+.gap-1{gap:4px}.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}.gap-5{gap:24px}.gap-6{gap:32px}.gap-8{gap:48px}.gap-10{gap:64px}
