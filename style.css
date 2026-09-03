@@ -3968,3 +3968,6 @@ section[id], div[id] {
 
 /* -- Gap -- */
 .gap-1{gap:4px}.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}.gap-5{gap:24px}.gap-6{gap:32px}.gap-8{gap:48px}.gap-10{gap:64px}
+
+/* -- Display -- */
+.d-none{display:none!important}.d-block{display:block}.d-flex{display:flex}.d-grid{display:grid}.d-inline{display:inline}.d-inline-flex{display:inline-flex}.d-inline-block{display:inline-block}
