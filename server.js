@@ -1,4 +1,6 @@
 ﻿
+app.use((_req, res, next) => { const _t=Date.now(); res.on('finish', ()=> res.setHeader('X-Response-Time',(Date.now()-_t)+'ms')); next(); });
+
 const _rlMap = new Map();
 function rateLimit(windowMs, max) {
   return (req, res, next) => {
