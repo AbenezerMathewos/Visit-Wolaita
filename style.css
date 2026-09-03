@@ -3995,3 +3995,6 @@ section[id], div[id] {
 
 /* -- Text Align -- */
 .text-left{text-align:left}.text-center{text-align:center}.text-right{text-align:right}.text-balance{text-wrap:balance}.text-pretty{text-wrap:pretty}
+
+/* -- Font Size -- */
+.text-xs{font-size:11px}.text-sm{font-size:13px}.text-base{font-size:16px}.text-lg{font-size:18px}.text-xl{font-size:22px}.text-2xl{font-size:28px}.text-3xl{font-size:36px}
