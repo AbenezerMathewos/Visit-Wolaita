@@ -3962,3 +3962,6 @@ section[id], div[id] {
 
 /* -- Smooth scroll: enabled on html (scroll-behavior: smooth in html selector) --
    Overridden to auto via prefers-reduced-motion media query above. -- */
+
+/* -- Logical Properties -- */
+.ms-auto{margin-inline-start:auto}.me-auto{margin-inline-end:auto}.px-section{padding-inline:clamp(16px,5vw,80px)}
