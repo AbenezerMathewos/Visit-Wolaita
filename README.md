@@ -42,3 +42,11 @@ npm start     # production
 ## License
 
 2026 Visit Wolaita Tourism Initiative. All rights reserved.
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| PORT | 3000 | HTTP server port |
+| HOST | 0.0.0.0 | Server bind address |
+| NODE_ENV | development | Runtime environment mode |
