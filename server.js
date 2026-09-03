@@ -936,3 +936,5 @@ app.use(function(err, _req, res, _next) {
 });
 
 app.get('/robots.txt', (_req, res) => { res.type('text/plain'); res.sendFile(path.join(__dirname, 'robots.txt')); });
+
+app.get('/sitemap.xml', (_req, res) => { res.type('application/xml'); res.sendFile(path.join(__dirname, 'sitemap.xml')); });
