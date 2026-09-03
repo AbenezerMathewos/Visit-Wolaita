@@ -4010,3 +4010,6 @@ section[id], div[id] {
 
 /* -- Padding -- */
 .p-0{padding:0}.p-1{padding:4px}.p-2{padding:8px}.p-3{padding:12px}.p-4{padding:16px}.p-6{padding:24px}.px-4{padding-inline:16px}.py-4{padding-block:16px}.px-6{padding-inline:24px}.py-6{padding-block:24px}
+
+/* -- Margin -- */
+.m-0{margin:0}.m-auto{margin:auto}.mt-2{margin-top:8px}.mt-4{margin-top:16px}.mt-6{margin-top:24px}.mb-2{margin-bottom:8px}.mb-4{margin-bottom:16px}.mb-6{margin-bottom:24px}.mx-auto{margin-inline:auto}
