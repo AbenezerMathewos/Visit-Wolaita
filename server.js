@@ -958,3 +958,6 @@ app.get('/sitemap.xml', (_req, res) => { res.type('application/xml'); res.sendFi
 app.get('/api/stats', (_req, res) => { res.json({ destinations:8, experiences:12, guides:6, languages:3, mapLayers:3, trails:4, panoramas:4 }); });
 
 app.get('/api/enquiry/count', (_req, res) => { res.json({ count: enquiries.length, lastUpdated: new Date().toISOString() }); });
+
+const PORT = parseInt(process.env.PORT || '3000', 10);
+const HOST = process.env.HOST || '0.0.0.0';
