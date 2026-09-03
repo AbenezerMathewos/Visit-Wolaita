@@ -3986,3 +3986,6 @@ section[id], div[id] {
 
 /* -- Border -- */
 .border{border:1px solid rgba(13,30,23,.09)}.border-0{border:none}.border-top{border-top:1px solid rgba(13,30,23,.09)}.border-bottom{border-bottom:1px solid rgba(13,30,23,.09)}.border-earth{border-color:#c85a32}.border-leaf{border-color:#24513b}
+
+/* -- Background -- */
+.bg-cream{background:#faf7f2}.bg-sand{background:#f0e9df}.bg-leaf{background:#24513b}.bg-earth{background:#c85a32}.bg-ochre{background:#d49b28}.bg-white{background:#fff}.bg-transparent{background:transparent}
