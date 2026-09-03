@@ -3,6 +3,22 @@
 All notable changes to Visit Wolaita are documented here.
 
 ## [Unreleased]
+### Added (Batch 2)
+- PWA manifest, apple-touch-icon, DNS prefetch
+- noscript fallback, aria-live region
+- Testimonials, FAQ, Facts, Travel Essentials sections
+- Reviews/FAQ/Travel Info navigation links
+- robots.txt, sitemap.xml with Express routes
+- Rate limiter, response-time, API-version headers
+- Stats and enquiry-count API endpoints
+- Process error handlers and graceful shutdown
+- PORT, HOST, NODE_ENV environment variable support
+- 40+ CSS utilities: gap, display, flex, padding, margin, border, color, shadow, etc.
+- Custom scrollbar, hover-lift, gradient, ring utilities
+- SECURITY.md, CODE_OF_CONDUCT.md, LICENSE, SUPPORT.md
+- .prettierrc, .browserslistrc, lighthouse.json
+- package.json v1.1.0 with engines, keywords, homepage
+
 
 ### Added
 - Favicon emoji, theme-color and author meta tags
