@@ -4028,3 +4028,6 @@ section[id], div[id] {
 
 /* -- Ring -- */
 .ring{outline:2px solid rgba(200,90,50,.5);outline-offset:2px}.ring-earth{outline:2px solid #c85a32;outline-offset:2px}.ring-leaf{outline:2px solid #24513b;outline-offset:2px}
+
+/* -- Gradients -- */
+.gradient-earth{background:linear-gradient(135deg,#c85a32,#d49b28)}.gradient-leaf{background:linear-gradient(135deg,#24513b,#12281d)}.gradient-sunset{background:linear-gradient(180deg,#fbeee8,#fdf5e2)}.gradient-highland{background:linear-gradient(180deg,#e6efe9,#faf7f2)}
