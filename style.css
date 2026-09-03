@@ -4025,3 +4025,6 @@ section[id], div[id] {
 
 /* -- Hover Lift -- */
 .hover-lift{transition:transform .25s cubic-bezier(.4,0,.2,1),box-shadow .25s}.hover-lift:hover{transform:translateY(-4px);box-shadow:0 24px 56px rgba(13,30,23,.12)}
+
+/* -- Ring -- */
+.ring{outline:2px solid rgba(200,90,50,.5);outline-offset:2px}.ring-earth{outline:2px solid #c85a32;outline-offset:2px}.ring-leaf{outline:2px solid #24513b;outline-offset:2px}
