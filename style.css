@@ -3989,3 +3989,6 @@ section[id], div[id] {
 
 /* -- Background -- */
 .bg-cream{background:#faf7f2}.bg-sand{background:#f0e9df}.bg-leaf{background:#24513b}.bg-earth{background:#c85a32}.bg-ochre{background:#d49b28}.bg-white{background:#fff}.bg-transparent{background:transparent}
+
+/* -- Text Color -- */
+.text-ink{color:#0d1e17}.text-muted{color:#57655e}.text-earth{color:#c85a32}.text-leaf{color:#24513b}.text-ochre{color:#d49b28}.text-white{color:#fff}
