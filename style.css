@@ -4001,3 +4001,6 @@ section[id], div[id] {
 
 /* -- Font Weight -- */
 .font-normal{font-weight:400}.font-medium{font-weight:500}.font-semibold{font-weight:600}.font-bold{font-weight:700}.font-serif{font-family:'Fraunces',Georgia,serif}.font-sans{font-family:'DM Sans',sans-serif}
+
+/* -- Flex -- */
+.flex-col{flex-direction:column}.flex-row{flex-direction:row}.flex-wrap{flex-wrap:wrap}.flex-nowrap{flex-wrap:nowrap}.flex-1{flex:1}.flex-none{flex:none}.items-center{align-items:center}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.justify-end{justify-content:flex-end}
