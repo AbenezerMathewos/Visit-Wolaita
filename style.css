@@ -3992,3 +3992,6 @@ section[id], div[id] {
 
 /* -- Text Color -- */
 .text-ink{color:#0d1e17}.text-muted{color:#57655e}.text-earth{color:#c85a32}.text-leaf{color:#24513b}.text-ochre{color:#d49b28}.text-white{color:#fff}
+
+/* -- Text Align -- */
+.text-left{text-align:left}.text-center{text-align:center}.text-right{text-align:right}.text-balance{text-wrap:balance}.text-pretty{text-wrap:pretty}
