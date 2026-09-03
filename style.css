@@ -4037,3 +4037,6 @@ section[id], div[id] {
 
 /* -- FAQ -- */
 details summary::-webkit-details-marker{display:none}details summary{transition:color .2s}details summary:hover{color:#c85a32}details p{line-height:1.7}details[open]{border-color:#c85a32!important}
+
+/* -- Scrollbar -- */
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:#f0e9df}::-webkit-scrollbar-thumb{background:#c8b099;border-radius:4px}::-webkit-scrollbar-thumb:hover{background:#24513b}
