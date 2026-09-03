@@ -4034,3 +4034,6 @@ section[id], div[id] {
 
 /* -- Testimonials -- */
 .testimonial-card{transition:transform .25s ease,box-shadow .25s}.testimonial-card:hover{transform:translateY(-4px);box-shadow:0 24px 56px rgba(13,30,23,.1)}
+
+/* -- FAQ -- */
+details summary::-webkit-details-marker{display:none}details summary{transition:color .2s}details summary:hover{color:#c85a32}details p{line-height:1.7}details[open]{border-color:#c85a32!important}
