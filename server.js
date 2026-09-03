@@ -964,3 +964,6 @@ const HOST = process.env.HOST || '0.0.0.0';
 
 const isDev = process.env.NODE_ENV !== 'production';
 if (isDev) console.log('[Visit Wolaita] Running in development mode');
+
+process.on('unhandledRejection', (r) => console.error('[Unhandled Rejection]', r));
+process.on('uncaughtException', (e) => { console.error('[Uncaught Exception]', e.message); process.exit(1); });
