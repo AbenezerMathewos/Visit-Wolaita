@@ -3980,3 +3980,6 @@ section[id], div[id] {
 
 /* -- Opacity -- */
 .opacity-0{opacity:0}.opacity-25{opacity:.25}.opacity-50{opacity:.5}.opacity-75{opacity:.75}.opacity-100{opacity:1}
+
+/* -- Pointer/Cursor -- */
+.pointer-none{pointer-events:none}.pointer-auto{pointer-events:auto}.cursor-pointer{cursor:pointer}.cursor-default{cursor:default}.cursor-not-allowed{cursor:not-allowed}.select-none{user-select:none}
