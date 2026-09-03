@@ -967,3 +967,6 @@ if (isDev) console.log('[Visit Wolaita] Running in development mode');
 
 process.on('unhandledRejection', (r) => console.error('[Unhandled Rejection]', r));
 process.on('uncaughtException', (e) => { console.error('[Uncaught Exception]', e.message); process.exit(1); });
+
+process.on('SIGTERM', () => { console.log('SIGTERM: shutting down'); process.exit(0); });
+process.on('SIGINT',  () => { console.log('SIGINT: shutting down');  process.exit(0); });
