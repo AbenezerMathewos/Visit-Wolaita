@@ -934,3 +934,5 @@ app.use(function(err, _req, res, _next) {
   console.error('[Error]', err.message);
   res.status(err.status || 500).json({ error: err.message || 'Internal Server Error', status: err.status || 500 });
 });
+
+app.get('/robots.txt', (_req, res) => { res.type('text/plain'); res.sendFile(path.join(__dirname, 'robots.txt')); });
