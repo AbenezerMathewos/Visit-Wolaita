@@ -1,4 +1,5 @@
-﻿
+﻿// TODO: production -- add: import compression from 'compression'; then app.use(compression());
+
 app.use((_req, res, next) => { res.setHeader('X-API-Version','1.0.0'); res.setHeader('X-Powered-By','Visit Wolaita API'); next(); });
 
 app.use((_req, res, next) => { const _t=Date.now(); res.on('finish', ()=> res.setHeader('X-Response-Time',(Date.now()-_t)+'ms')); next(); });
