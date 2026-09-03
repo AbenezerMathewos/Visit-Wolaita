@@ -4019,3 +4019,6 @@ section[id], div[id] {
 
 /* -- Shadow -- */
 .shadow-none{box-shadow:none}.shadow-sm{box-shadow:0 4px 14px rgba(13,30,23,.06)}.shadow{box-shadow:0 12px 32px rgba(13,30,23,.08)}.shadow-lg{box-shadow:0 24px 56px rgba(13,30,23,.12)}.shadow-glow{box-shadow:0 0 24px rgba(200,90,50,.25)}
+
+/* -- Transition -- */
+.transition-none{transition:none}.transition-all{transition:all .25s cubic-bezier(.4,0,.2,1)}.transition-colors{transition:background-color .2s,color .2s,border-color .2s}.transition-transform{transition:transform .25s cubic-bezier(.4,0,.2,1)}.transition-opacity{transition:opacity .2s ease}
