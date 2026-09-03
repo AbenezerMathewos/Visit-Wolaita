@@ -4007,3 +4007,6 @@ section[id], div[id] {
 
 /* -- Size -- */
 .w-full{width:100%}.w-auto{width:auto}.h-full{height:100%}.h-auto{height:auto}.w-screen{width:100vw}.h-screen{height:100vh}.min-w-0{min-width:0}.max-w-prose{max-width:65ch}
+
+/* -- Padding -- */
+.p-0{padding:0}.p-1{padding:4px}.p-2{padding:8px}.p-3{padding:12px}.p-4{padding:16px}.p-6{padding:24px}.px-4{padding-inline:16px}.py-4{padding-block:16px}.px-6{padding-inline:24px}.py-6{padding-block:24px}
