@@ -1,4 +1,16 @@
-﻿// -- Input Sanitization Helper --
+﻿
+const _rlMap = new Map();
+function rateLimit(windowMs, max) {
+  return (req, res, next) => {
+    const key = req.ip || 'x'; const now = Date.now();
+    const e = _rlMap.get(key) || { count:0, start:now };
+    if (now - e.start > windowMs) { e.count=0; e.start=now; }
+    e.count++; _rlMap.set(key, e);
+    if (e.count > max) return res.status(429).json({ error:'Too many requests', status:429 });
+    next();
+  };
+}
+// -- Input Sanitization Helper --
 function sanitize(str, maxLen) {
   maxLen = maxLen || 500;
   if (typeof str !== 'string') return '';
