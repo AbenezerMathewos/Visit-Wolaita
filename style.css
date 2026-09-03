@@ -3998,3 +3998,6 @@ section[id], div[id] {
 
 /* -- Font Size -- */
 .text-xs{font-size:11px}.text-sm{font-size:13px}.text-base{font-size:16px}.text-lg{font-size:18px}.text-xl{font-size:22px}.text-2xl{font-size:28px}.text-3xl{font-size:36px}
+
+/* -- Font Weight -- */
+.font-normal{font-weight:400}.font-medium{font-weight:500}.font-semibold{font-weight:600}.font-bold{font-weight:700}.font-serif{font-family:'Fraunces',Georgia,serif}.font-sans{font-family:'DM Sans',sans-serif}
