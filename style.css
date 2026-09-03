@@ -4004,3 +4004,6 @@ section[id], div[id] {
 
 /* -- Flex -- */
 .flex-col{flex-direction:column}.flex-row{flex-direction:row}.flex-wrap{flex-wrap:wrap}.flex-nowrap{flex-wrap:nowrap}.flex-1{flex:1}.flex-none{flex:none}.items-center{align-items:center}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.justify-end{justify-content:flex-end}
+
+/* -- Size -- */
+.w-full{width:100%}.w-auto{width:auto}.h-full{height:100%}.h-auto{height:auto}.w-screen{width:100vw}.h-screen{height:100vh}.min-w-0{min-width:0}.max-w-prose{max-width:65ch}
