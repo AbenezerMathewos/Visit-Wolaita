@@ -4022,3 +4022,6 @@ section[id], div[id] {
 
 /* -- Transition -- */
 .transition-none{transition:none}.transition-all{transition:all .25s cubic-bezier(.4,0,.2,1)}.transition-colors{transition:background-color .2s,color .2s,border-color .2s}.transition-transform{transition:transform .25s cubic-bezier(.4,0,.2,1)}.transition-opacity{transition:opacity .2s ease}
+
+/* -- Hover Lift -- */
+.hover-lift{transition:transform .25s cubic-bezier(.4,0,.2,1),box-shadow .25s}.hover-lift:hover{transform:translateY(-4px);box-shadow:0 24px 56px rgba(13,30,23,.12)}
