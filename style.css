@@ -4061,3 +4061,6 @@ code{font-family:'Courier New',monospace;font-size:.875em;background:rgba(36,81,
 
 /* -- Word Break -- */
 .break-words{overflow-wrap:break-word;word-break:break-word}.break-all{word-break:break-all}.no-wrap{white-space:nowrap}.pre-wrap{white-space:pre-wrap}
+
+/* -- Outline -- */
+.outline-none{outline:none}.outline-offset-1{outline-offset:1px}.outline-offset-4{outline-offset:4px}
