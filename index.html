@@ -1,11 +1,11 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <!-- viewport-fit=cover supports iPhone notch and Dynamic Island -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <link rel="manifest" href="/manifest.json" />
-  <link rel="apple-touch-icon" sizes="180x180" href="walaita1.jpeg" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/icon-192.png" />
   <meta name="color-scheme" content="light" />
   <meta name="theme-color" content="#24513b" />
   <meta name="author" content="Visit Wolaita Tourism Initiative" />
@@ -27,6 +27,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Visit Wolaita - Southern Ethiopia" />
   <meta name="twitter:description" content="Highlands, waterfalls, UNESCO heritage and authentic Enset cuisine await." />
+  <meta name="twitter:image" content="https://visitwolaita.et/walaita1.jpeg" />
   <!-- Preconnect & Fonts -->
   <link rel="dns-prefetch" href="https://unpkg.com" />
   <link rel="dns-prefetch" href="https://api.openweathermap.org" />
@@ -1320,5 +1321,16 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="app.js"></script>
+
+  <!-- Service Worker Registration — enables offline & PWA install -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('[SW] Registered, scope:', reg.scope))
+          .catch(err => console.warn('[SW] Registration failed:', err));
+      });
+    }
+  </script>
 </body>
 </html>

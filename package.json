@@ -1,13 +1,28 @@
-﻿{
+{
   "name": "visit-wolaita",
   "homepage": "https://visitwolaita.et",
   "version": "1.1.0",
-  "engines": { "node": ">=20.0.0" },
-  "keywords": ["travel","tourism","ethiopia","wolaita","africa"],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "keywords": [
+    "travel",
+    "tourism",
+    "ethiopia",
+    "wolaita",
+    "africa"
+  ],
   "private": true,
   "type": "module",
-  "scripts": { "start": "node server.js", "dev": "node --watch server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
     "check": "node --check server.js app.js",
-    "start:prod": "NODE_ENV=production node server.js" },
-  "dependencies": { "express": "^4.21.2" }
+    "start:prod": "NODE_ENV=production node server.js"
+  },
+  "dependencies": {
+    "compression": "^1.8.2",
+    "express": "^4.21.2",
+    "express-rate-limit": "^8.7.0"
+  }
 }

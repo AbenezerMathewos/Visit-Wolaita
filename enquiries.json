@@ -1,0 +1,22 @@
+[
+  {
+    "id": "VW-0001",
+    "name": "Elena Rostova",
+    "email": "elena@example.com",
+    "phone": null,
+    "arrivalDate": null,
+    "durationDays": 3,
+    "travelers": 2,
+    "stayStyle": "Eco-Lodge & Homestay",
+    "transportStyle": "Private 4x4",
+    "guidePreference": "Any Certified Host",
+    "selectedExperiences": [],
+    "estimatedCost": {
+      "usd": 690,
+      "etb": 82800
+    },
+    "specialRequests": "",
+    "status": "Confirmed & Assigned to Host",
+    "createdAt": "2026-09-11T21:33:56.705Z"
+  }
+]

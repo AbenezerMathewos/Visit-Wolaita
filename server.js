@@ -1,61 +1,46 @@
-﻿// TODO: production -- add: import compression from 'compression'; then app.use(compression());
-
-app.use((_req, res, next) => { res.setHeader('X-API-Version','1.0.0'); res.setHeader('X-Powered-By','Visit Wolaita API'); next(); });
-
-app.use((_req, res, next) => { const _t=Date.now(); res.on('finish', ()=> res.setHeader('X-Response-Time',(Date.now()-_t)+'ms')); next(); });
-
-const _rlMap = new Map();
-function rateLimit(windowMs, max) {
-  return (req, res, next) => {
-    const key = req.ip || 'x'; const now = Date.now();
-    const e = _rlMap.get(key) || { count:0, start:now };
-    if (now - e.start > windowMs) { e.count=0; e.start=now; }
-    e.count++; _rlMap.set(key, e);
-    if (e.count > max) return res.status(429).json({ error:'Too many requests', status:429 });
-    next();
-  };
-}
-// -- Input Sanitization Helper --
-function sanitize(str, maxLen) {
-  maxLen = maxLen || 500;
-  if (typeof str !== 'string') return '';
-  return str.trim().slice(0, maxLen).replace(/[<>]/g, '');
-}
-
-// -- CORS --
-app.use((_req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
-  if (_req.method === 'OPTIONS') return res.sendStatus(204);
-  next();
-});
-
-// -- Security Headers --
-app.use((_req, res, next) => {
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
-  res.setHeader('X-XSS-Protection', '1; mode=block');
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(self)');
-  next();
-});
-
-// -- Request Logger --
-app.use((req, _res, next) => {
-  console.log('[' + new Date().toISOString() + '] ' + req.method + ' ' + req.url);
-  next();
-});
+// ============================================================
+//  Visit Wolaita — Express API Server
+//  FIX: imports are now at the top (was: after middleware)
+//  FIX: removed duplicate PORT declaration
+//  FIX: removed duplicate /api/health route
+//  NEW: gzip compression, proper rate-limiting, CSP header,
+//       enquiry persistence to enquiries.json, real validation
+// ============================================================
 
 import express from 'express';
 import path from 'node:path';
+import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import compression from 'compression';
+import rateLimit from 'express-rate-limit';
 
 const app = express();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// In-memory persistent stores
-const enquiries = [];
+// --------------------------------------------------------------------------
+// Enquiry Persistence — load from disk, save on each new submission
+// --------------------------------------------------------------------------
+const ENQUIRIES_FILE = path.join(__dirname, 'enquiries.json');
+let enquiries = [];
+try {
+  if (fs.existsSync(ENQUIRIES_FILE)) {
+    enquiries = JSON.parse(fs.readFileSync(ENQUIRIES_FILE, 'utf8'));
+  }
+} catch (e) {
+  console.warn('[Enquiries] Could not load enquiries.json — starting fresh.');
+}
+
+function saveEnquiries() {
+  try {
+    fs.writeFileSync(ENQUIRIES_FILE, JSON.stringify(enquiries, null, 2), 'utf8');
+  } catch (e) {
+    console.error('[Enquiries] Failed to save enquiries.json:', e.message);
+  }
+}
+
+// --------------------------------------------------------------------------
+// Static data
+// --------------------------------------------------------------------------
 
 const destinations = [
   {
@@ -106,7 +91,7 @@ const destinations = [
     mapCoords: { x: 74, y: 78 },
     googleEarthUrl: 'https://earth.google.com/web/@6.6500,37.9500,1285a,6000d,35y,0h,45t,0r',
     image: 'walaita1.jpeg',
-    summary: 'Ethiopia’s second-largest lake with distinctive reddish-copper waters, framed by dramatic escarpments. A sanctuary for hundreds of bird species, Nile crocodiles, and freshwater fish.',
+    summary: 'Ethiopia\'s second-largest lake with distinctive reddish-copper waters, framed by dramatic escarpments. A sanctuary for hundreds of bird species, Nile crocodiles, and freshwater fish.',
     highlights: ['Canoe excursions with local fishermen', 'Pelican and fish eagle birdwatching', 'Sunset views against the Gamo-Wolaita ridges', 'Fresh grilled tilapia by the shore'],
     bestTime: 'Year-round (Best sunsets Nov–March)',
     difficulty: 'Gentle & Relaxed',
@@ -161,7 +146,7 @@ const destinations = [
     googleEarthUrl: 'https://earth.google.com/web/@6.8200,37.7100,2050a,2000d,35y,200h,50t,0r',
     image: 'wolaita.jpeg',
     summary: 'Massive defensive earthworks, trenches, and stone fortifications constructed under King Kawo Tona, the legendary 19th-century warrior king of the Kingdom of Wolaita.',
-    highlights: ['Ancient defensive moats and stone masonry', 'Oral history sessions with village elders', 'Panoramic viewpoint across historical battlegrounds', 'Trek along the King’s ceremonial trails'],
+    highlights: ['Ancient defensive moats and stone masonry', 'Oral history sessions with village elders', 'Panoramic viewpoint across historical battlegrounds', 'Trek along the King\'s ceremonial trails'],
     bestTime: 'October to April',
     difficulty: 'Moderate exploration',
     wildlife: 'Highland falcons, wild sage vegetation'
@@ -329,7 +314,7 @@ const guides = [
     experience: '9 years experience',
     languages: ['English', 'Wolayttatto', 'Amharic'],
     specialties: ['Mount Damota summit trails', 'Afro-alpine botany', 'Paragliding logistics'],
-    bio: 'Born at the base of Mount Damota, Tariku has guided over 400 travelers across Southern Ethiopia’s ridges and hidden waterfalls.',
+    bio: 'Born at the base of Mount Damota, Tariku has guided over 400 travelers across Southern Ethiopia\'s ridges and hidden waterfalls.',
     phone: '+251 91 234 5678'
   },
   {
@@ -339,7 +324,7 @@ const guides = [
     experience: '6 years experience',
     languages: ['English', 'Wolayttatto', 'Amharic'],
     specialties: ['Enset traditions', 'Gifaataa festival lore', 'Artisan weaving trails'],
-    bio: 'Selamawit is passionate about preserving Wolaita’s intangible heritage, empowering female agricultural cooperatives and homestay families.',
+    bio: 'Selamawit is passionate about preserving Wolaita\'s intangible heritage, empowering female agricultural cooperatives and homestay families.',
     phone: '+251 92 876 5432'
   },
   {
@@ -387,13 +372,13 @@ const stories = [
 
 const phrases = [
   { wol: 'Saro ditte!', amh: 'እንኳን ደህና መጣችሁ!', eng: 'Welcome! / Peace to you!', phonetic: 'Sah-roh dit-teh' },
-  { wol: 'Saro de’ayti?', amh: 'እንደምን አላችሁ?', eng: 'How are you?', phonetic: 'Sah-roh deh-eye-tee' },
+  { wol: 'Saro de\'ayti?', amh: 'እንደምን አላችሁ?', eng: 'How are you?', phonetic: 'Sah-roh deh-eye-tee' },
   { wol: 'Wodaasi / Wodasso', amh: 'አመሰግናለሁ', eng: 'Thank you very much', phonetic: 'Woh-dah-see' },
   { wol: 'Ne suntsay oone?', amh: 'ስምህ/ሽ ማነው?', eng: 'What is your name?', phonetic: 'Neh soon-tsye oh-neh' },
   { wol: 'Ta suntsay...', amh: 'ስሜ ... ነው', eng: 'My name is...', phonetic: 'Tah soon-tsye...' },
   { wol: 'Aykeettaa', amh: 'ችግር የለም / ይቅርታ', eng: 'No problem / Excuse me', phonetic: 'Eye-kayt-tah' },
   { wol: 'Aybadaa?', amh: 'ስንት ነው?', eng: 'How much is it?', phonetic: 'Eye-bah-dah' },
-  { wol: 'Lo’o galla!', amh: 'መልካም ቀን!', eng: 'Have a great day!', phonetic: 'Loh-oh gahl-lah' }
+  { wol: 'Lo\'o galla!', amh: 'መልካም ቀን!', eng: 'Have a great day!', phonetic: 'Loh-oh gahl-lah' }
 ];
 
 const ensetSteps = [
@@ -457,6 +442,7 @@ const reviews = [
   }
 ];
 
+// Weather: static fallback — replace with real OpenWeatherMap data when API key is set
 const weatherData = {
   sodo: {
     location: 'Wolaita Sodo Town',
@@ -498,7 +484,7 @@ const travelInfo = {
 };
 
 // --------------------------------------------------------------------------
-// Smart Studio Data: Trails, 360 Panoramas, Cultural Calendar & Concierge Knowledge
+// Smart Studio: Trails, Panoramas, Cultural Calendar
 // --------------------------------------------------------------------------
 
 const trailGuides = [
@@ -526,10 +512,8 @@ const trailGuides = [
     ],
     gpxData: {
       trailName: 'Mount Damota Summit Ascent',
-      latMin: 6.8583,
-      latMax: 6.9142,
-      lngMin: 37.7611,
-      lngMax: 37.7889,
+      latMin: 6.8583, latMax: 6.9142,
+      lngMin: 37.7611, lngMax: 37.7889,
       pointsCount: 8
     }
   },
@@ -557,10 +541,8 @@ const trailGuides = [
     ],
     gpxData: {
       trailName: 'Ajora Twin Falls Canyon Expedition',
-      latMin: 7.0500,
-      latMax: 7.0833,
-      lngMin: 37.5000,
-      lngMax: 37.5167,
+      latMin: 7.0500, latMax: 7.0833,
+      lngMin: 37.5000, lngMax: 37.5167,
       pointsCount: 7
     }
   },
@@ -585,10 +567,8 @@ const trailGuides = [
     ],
     gpxData: {
       trailName: 'Kawo Tona Fortress Historic Circuit',
-      latMin: 6.8100,
-      latMax: 6.8350,
-      lngMin: 37.7000,
-      lngMax: 37.7200,
+      latMin: 6.8100, latMax: 6.8350,
+      lngMin: 37.7000, lngMax: 37.7200,
       pointsCount: 5
     }
   }
@@ -682,19 +662,20 @@ const culturalCalendar = {
   shemmaSymbolism: {
     title: 'The Sacred Tricolor Palette of Wolaita',
     colors: [
-      { name: 'Zo’o (Red)', meaning: 'Courage, vitality, the warm hearth fire, and sacrificial royal heritage.', hex: '#c85a32' },
+      { name: 'Zo\'o (Red)', meaning: 'Courage, vitality, the warm hearth fire, and sacrificial royal heritage.', hex: '#c85a32' },
       { name: 'Karetta (Yellow)', meaning: 'Hope, sunbeams over Mount Damota, ripening grains, and communal prosperity.', hex: '#e0a93b' },
       { name: 'Kareensa (Black)', meaning: 'Dignity, fertile volcanic dark loam soil, deep wisdom, and sovereign fortitude.', hex: '#14241d' }
     ]
   }
 };
 
+// --------------------------------------------------------------------------
 // AI Concierge Knowledge Engine & Persona Planner
+// --------------------------------------------------------------------------
 function handleConciergeQuery(payload) {
   const { persona = 'trekker', query = '', days = 3, travelers = 2 } = payload || {};
   const q = (query || '').toLowerCase().trim();
 
-  // Preset Personas
   const personas = {
     trekker: {
       title: 'Highland Trekker & Summit Pioneer',
@@ -765,7 +746,6 @@ function handleConciergeQuery(payload) {
 
   const selectedPersona = personas[persona] || personas.trekker;
 
-  // Answer specific natural queries if asked
   let answer = '';
   if (q.includes('weather') || q.includes('rain') || q.includes('season') || q.includes('when to visit')) {
     answer = 'The best time to visit Wolaita is between September and March. September brings the breathtaking green landscapes and the UNESCO Gifaataa Festival. December to February offers crystal-clear skies for Mount Damota summit treks.';
@@ -781,7 +761,6 @@ function handleConciergeQuery(payload) {
     answer = `Based on your interest in ${selectedPersona.title}, I have curated a personalized ${days}-day expedition maximizing authentic local connections, certified community guides, and transparent pricing.`;
   }
 
-  // Calculate pricing based on persona activities and duration
   const matchedExperiences = experiences.filter(e => selectedPersona.expIds.includes(e.id));
   const activitiesTotalUSD = matchedExperiences.reduce((sum, e) => sum + (e.priceUSD || 35), 0);
   const lodgingTransportTotalUSD = (55 + 60) * Number(days);
@@ -808,14 +787,115 @@ function handleConciergeQuery(payload) {
   };
 }
 
-// Middleware
-app.use(express.json());
-// NOTE: For production, serve static files via nginx or a CDN (Cloudflare/Bunny.net)
-// to enable gzip, caching headers, and HTTP/2. Do not use Express static in prod.
-app.use(express.static(__dirname));
+// --------------------------------------------------------------------------
+// Input helpers
+// --------------------------------------------------------------------------
+function sanitize(str, maxLen = 500) {
+  if (typeof str !== 'string') return '';
+  return str.trim().slice(0, maxLen).replace(/[<>]/g, '');
+}
 
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email));
+}
+
+// --------------------------------------------------------------------------
+// Middleware — order matters!
+// --------------------------------------------------------------------------
+
+// 1. Gzip compression
+app.use(compression());
+
+// 2. Parse JSON bodies
+app.use(express.json());
+
+// 3. CORS — restrict to your domain in production via ALLOWED_ORIGIN env var
+app.use((_req, res, next) => {
+  const origin = process.env.ALLOWED_ORIGIN || '*';
+  res.setHeader('Access-Control-Allow-Origin', origin);
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
+  if (_req.method === 'OPTIONS') return res.sendStatus(204);
+  next();
+});
+
+// 4. Security headers (including CSP)
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(self)');
+  res.setHeader(
+    'Content-Security-Policy',
+    [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' https://unpkg.com",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      "img-src 'self' data: https://*.tile.openstreetmap.org https://*.google.com https://*.googleapis.com",
+      "connect-src 'self' https://api.openweathermap.org",
+      "frame-src https://earth.google.com"
+    ].join('; ')
+  );
+  next();
+});
+
+// 5. Custom API version & response-time headers
+app.use((_req, res, next) => {
+  res.setHeader('X-API-Version', '1.1.0');
+  res.setHeader('X-Powered-By', 'Visit Wolaita API');
+  const _t = Date.now();
+  // Use 'finish' only for console logging — not for setting headers (headers already sent by then)
+  res.on('finish', () => {
+    console.debug('[RT]', Date.now() - _t, 'ms', _req.method, _req.url);
+  });
+  next();
+});
+
+// 6. Request logger
+app.use((req, _res, next) => {
+  console.log('[' + new Date().toISOString() + '] ' + req.method + ' ' + req.url);
+  next();
+});
+
+// 7. Rate limiting (express-rate-limit — no memory leak)
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests', status: 429 }
+});
+const enquiryLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10,
+  message: { error: 'Too many enquiry submissions', status: 429 }
+});
+app.use('/api/', apiLimiter);
+
+// 8. Static files — NOTE: use nginx/CDN in production
+app.use(express.static(__dirname, {
+  maxAge: '1d',
+  etag: true,
+  setHeaders(res, filePath) {
+    // Long cache for versioned assets
+    if (/\.(jpeg|jpg|png|webp|css|js|ico)$/.test(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+    }
+  }
+}));
+
+// --------------------------------------------------------------------------
 // REST API Endpoints
+// --------------------------------------------------------------------------
+
 app.get('/api/destinations', (_req, res) => res.json(destinations));
+app.get('/api/destinations/:id', (req, res) => {
+  const dest = destinations.find(d => d.id === req.params.id);
+  if (!dest) return res.status(404).json({ error: 'Destination not found' });
+  res.json(dest);
+});
 app.get('/api/hub', (_req, res) => res.json(hubLocation));
 app.get('/api/experiences', (req, res) => {
   const { category } = req.query;
@@ -834,17 +914,35 @@ app.get('/api/reviews', (_req, res) => res.json(reviews));
 app.get('/api/weather', (_req, res) => res.json(weatherData));
 app.get('/api/travel-info', (_req, res) => res.json(travelInfo));
 
-// Smart Studio Endpoints
+// Smart Studio
 app.get('/api/trails', (_req, res) => res.json(trailGuides));
 app.get('/api/panoramas', (_req, res) => res.json(virtualPanoramas));
 app.get('/api/cultural-calendar', (_req, res) => res.json(culturalCalendar));
+
+// AI Concierge
 app.post('/api/ai/concierge', (req, res) => {
   const result = handleConciergeQuery(req.body);
   res.json(result);
 });
 
-// Enquiry Handler with Custom Journey Builder
-app.post('/api/enquiries', (req, res) => {
+// Stats
+app.get('/api/stats', (_req, res) => res.json({
+  destinations: destinations.length,
+  experiences: experiences.length,
+  guides: guides.length,
+  languages: 3,
+  mapLayers: 3,
+  trails: trailGuides.length,
+  panoramas: virtualPanoramas.length
+}));
+
+// Enquiry count
+app.get('/api/enquiry/count', (_req, res) => res.json({ count: enquiries.length, lastUpdated: new Date().toISOString() }));
+
+// --------------------------------------------------------------------------
+// Enquiry Submission — with validation + disk persistence
+// --------------------------------------------------------------------------
+app.post('/api/enquiries', enquiryLimiter, (req, res) => {
   const {
     name,
     email,
@@ -859,44 +957,53 @@ app.post('/api/enquiries', (req, res) => {
     specialRequests = ''
   } = req.body || {};
 
-  if (!name || !email) {
-    return res.status(400).json({ message: 'Name and email are required to prepare your journey.' });
+  // Validation
+  if (!name || typeof name !== 'string' || name.trim().length < 2) {
+    return res.status(400).json({ message: 'A valid name is required.' });
+  }
+  if (!email || !isValidEmail(email)) {
+    return res.status(400).json({ message: 'A valid email address is required.' });
+  }
+  const numDays = Number(durationDays);
+  const numTravelers = Number(travelers);
+  if (!Number.isInteger(numDays) || numDays < 1 || numDays > 30) {
+    return res.status(400).json({ message: 'Duration must be between 1 and 30 days.' });
+  }
+  if (!Number.isInteger(numTravelers) || numTravelers < 1 || numTravelers > 50) {
+    return res.status(400).json({ message: 'Travelers must be between 1 and 50.' });
   }
 
   const selectedExpList = experiences.filter(exp => (selectedExperienceIds || []).includes(exp.id));
 
-  // Compute estimate
   const baseDayCostUSD = stayStyle === '100% Rural Homestay' ? 35 : stayStyle === 'Eco-Lodge & Homestay' ? 55 : 75;
   const transportDayUSD = transportStyle === 'Private 4x4' ? 60 : transportStyle === 'Local Minibus & TukTuk' ? 15 : 40;
   const activitiesTotalUSD = selectedExpList.reduce((acc, curr) => acc + (curr.priceUSD || 30), 0);
-  const totalEstUSD = ((baseDayCostUSD + transportDayUSD) * Number(durationDays) * Number(travelers)) + (activitiesTotalUSD * Number(travelers));
+  const totalEstUSD = ((baseDayCostUSD + transportDayUSD) * numDays * numTravelers) + (activitiesTotalUSD * numTravelers);
   const totalEstETB = totalEstUSD * 120;
 
   const enquiry = {
     id: `VW-${String(enquiries.length + 1).padStart(4, '0')}`,
-    name: name.trim(),
-    email: email.trim(),
-    phone: phone ? phone.trim() : null,
+    name: sanitize(name),
+    email: email.trim().toLowerCase(),
+    phone: phone ? sanitize(phone, 30) : null,
     arrivalDate: arrivalDate || null,
-    durationDays: Number(durationDays),
-    travelers: Number(travelers),
+    durationDays: numDays,
+    travelers: numTravelers,
     stayStyle,
     transportStyle,
     guidePreference,
     selectedExperiences: selectedExpList.map(e => ({ id: e.id, name: e.name, price: e.price, priceUSD: e.priceUSD, priceETB: e.priceETB })),
-    estimatedCost: {
-      usd: totalEstUSD,
-      etb: totalEstETB
-    },
-    specialRequests: specialRequests.trim(),
+    estimatedCost: { usd: totalEstUSD, etb: totalEstETB },
+    specialRequests: sanitize(specialRequests, 1000),
     status: 'Confirmed & Assigned to Host',
     createdAt: new Date().toISOString()
   };
 
   enquiries.push(enquiry);
+  saveEnquiries(); // Persist to disk
 
   res.status(201).json({
-    message: `Ameseginalehu / Wodaasi! Your custom journey plan has been registered.`,
+    message: 'Ameseginalehu / Wodaasi! Your custom journey plan has been registered.',
     reference: enquiry.id,
     journeySummary: {
       travelerName: enquiry.name,
@@ -911,10 +1018,15 @@ app.post('/api/enquiries', (req, res) => {
   });
 });
 
+// --------------------------------------------------------------------------
+// Health Check (single, rich version)
+// --------------------------------------------------------------------------
 app.get('/api/health', (_req, res) => {
   res.json({
-    status: 'ready',
+    status: 'ok',
     platform: 'Visit Wolaita Core Engine',
+    version: '1.1.0',
+    uptime: Math.floor(process.uptime()) + 's',
     destinations: destinations.length,
     experiences: experiences.length,
     itineraries: itineraries.length,
@@ -926,48 +1038,36 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Visit Wolaita is live at http://localhost:${PORT}`));
+// robots.txt & sitemap.xml
+app.get('/robots.txt', (_req, res) => { res.type('text/plain'); res.sendFile(path.join(__dirname, 'robots.txt')); });
+app.get('/sitemap.xml', (_req, res) => { res.type('application/xml'); res.sendFile(path.join(__dirname, 'sitemap.xml')); });
 
-
-// -- Health Check Endpoint --
-app.get('/api/health', (_req, res) => {
-  res.json({
-    status: 'ok',
-    service: 'Visit Wolaita API',
-    version: '1.0.0',
-    timestamp: new Date().toISOString(),
-    uptime: Math.floor(process.uptime()) + 's'
-  });
-});
-
-// -- 404 Not Found Handler --
-app.use(function(_req, res) {
+// --------------------------------------------------------------------------
+// 404 & Global Error Handlers (must be last)
+// --------------------------------------------------------------------------
+app.use((_req, res) => {
   res.status(404).json({ error: 'Not Found', message: 'Resource does not exist.', status: 404 });
 });
 
-// -- Global Error Handler --
-app.use(function(err, _req, res, _next) {
+app.use((err, _req, res, _next) => {
   console.error('[Error]', err.message);
   res.status(err.status || 500).json({ error: err.message || 'Internal Server Error', status: err.status || 500 });
 });
 
-app.get('/robots.txt', (_req, res) => { res.type('text/plain'); res.sendFile(path.join(__dirname, 'robots.txt')); });
-
-app.get('/sitemap.xml', (_req, res) => { res.type('application/xml'); res.sendFile(path.join(__dirname, 'sitemap.xml')); });
-
-app.get('/api/stats', (_req, res) => { res.json({ destinations:8, experiences:12, guides:6, languages:3, mapLayers:3, trails:4, panoramas:4 }); });
-
-app.get('/api/enquiry/count', (_req, res) => { res.json({ count: enquiries.length, lastUpdated: new Date().toISOString() }); });
-
+// --------------------------------------------------------------------------
+// Start Server
+// --------------------------------------------------------------------------
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const HOST = process.env.HOST || '0.0.0.0';
-
 const isDev = process.env.NODE_ENV !== 'production';
-if (isDev) console.log('[Visit Wolaita] Running in development mode');
+
+app.listen(PORT, HOST, () => {
+  console.log(`✦ Visit Wolaita is live at http://localhost:${PORT}`);
+  if (isDev) console.log('[Visit Wolaita] Running in development mode');
+  console.log(`[Enquiries] ${enquiries.length} enquiry/ies loaded from disk.`);
+});
 
 process.on('unhandledRejection', (r) => console.error('[Unhandled Rejection]', r));
 process.on('uncaughtException', (e) => { console.error('[Uncaught Exception]', e.message); process.exit(1); });
-
-process.on('SIGTERM', () => { console.log('SIGTERM: shutting down'); process.exit(0); });
-process.on('SIGINT',  () => { console.log('SIGINT: shutting down');  process.exit(0); });
+process.on('SIGTERM', () => { console.log('SIGTERM: shutting down gracefully'); process.exit(0); });
+process.on('SIGINT',  () => { console.log('SIGINT: shutting down gracefully');  process.exit(0); });

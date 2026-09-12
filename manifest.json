@@ -1,1 +1,38 @@
-﻿{"name":"Visit Wolaita","short_name":"Wolaita","description":"Interactive tourism guide to Wolaita Zone, Southern Ethiopia","start_url":"/","display":"standalone","background_color":"#faf7f2","theme_color":"#24513b","icons":[{"src":"walaita1.jpeg","sizes":"512x512","type":"image/jpeg"}]}
+{
+  "name": "Visit Wolaita",
+  "short_name": "Wolaita",
+  "description": "Interactive tourism guide to Wolaita Zone, Southern Ethiopia",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf7f2",
+  "theme_color": "#24513b",
+  "orientation": "any",
+  "lang": "en",
+  "categories": ["travel", "lifestyle"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Explore Destinations",
+      "url": "/#destinations",
+      "description": "Browse all Wolaita landmarks"
+    },
+    {
+      "name": "Plan My Trip",
+      "url": "/#smart-studio",
+      "description": "Open the AI trip planner"
+    }
+  ]
+}
