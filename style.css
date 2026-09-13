@@ -4123,3 +4123,31 @@ code{font-family:'Courier New',monospace;font-size:.875em;background:rgba(36,81,
 .avatar-group .avatar { margin-left: -10px; transition: transform 0.2s; }
 .avatar-group .avatar:first-child { margin-left: 0; }
 .avatar-group .avatar:hover { transform: translateY(-3px) scale(1.05); z-index: 5; }
+
+/* -- Badge Pill & Live Indicator Dot -- */
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c85a32;
+  display: inline-block;
+}
+.status-dot--online {
+  background: #2ca060;
+  box-shadow: 0 0 0 2px rgba(44, 160, 96, 0.25);
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.9); }
+}
