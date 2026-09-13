@@ -1051,6 +1051,20 @@ app.get('/api/emergency', (_req, res) => {
   });
 });
 
+// --------------------------------------------------------------------------
+// Currency Reference Rates (Indicative ETB conversions)
+// --------------------------------------------------------------------------
+app.get('/api/currencies', (_req, res) => {
+  res.json({
+    base: 'ETB',
+    indicativeUSDToETB: 125.0,
+    indicativeEURToETB: 135.0,
+    indicativeGBPToETB: 160.0,
+    rates: { USD: 0.008, EUR: 0.0074, GBP: 0.00625 },
+    note: 'Indicative bank reference rates for Wolaita Sodo travelers'
+  });
+});
+
 app.get('/api/health', (_req, res) => {
   res.json({
     status: 'ok',
