@@ -56,6 +56,11 @@ Run the built-in smoke tests to verify server routes, landmark data integrity, a
 npm test
 ```
 
+
+## Offline & PWA Support
+
+Visit Wolaita includes full Progressive Web App (PWA) support with service worker caching. Key landmark guides, trail elevation profiles, and cultural calendars remain accessible even with intermittent or absent cellular connectivity in remote highlands.
+
 ## License
 
 2026 Visit Wolaita Tourism Initiative. All rights reserved.
