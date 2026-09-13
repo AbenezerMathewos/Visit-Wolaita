@@ -4106,3 +4106,20 @@ code{font-family:'Courier New',monospace;font-size:.875em;background:rgba(36,81,
 .skeleton-text { height: 16px; margin-bottom: 8px; width: 100%; }
 .skeleton-title { height: 28px; margin-bottom: 14px; width: 60%; }
 .skeleton-avatar { width: 48px; height: 48px; border-radius: 50%; }
+
+/* -- Avatar Component Utilities -- */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: inline-block;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(13, 30, 23, 0.1);
+}
+.avatar-sm { width: 28px; height: 28px; }
+.avatar-lg { width: 56px; height: 56px; }
+.avatar-group { display: flex; align-items: center; }
+.avatar-group .avatar { margin-left: -10px; transition: transform 0.2s; }
+.avatar-group .avatar:first-child { margin-left: 0; }
+.avatar-group .avatar:hover { transform: translateY(-3px) scale(1.05); z-index: 5; }
