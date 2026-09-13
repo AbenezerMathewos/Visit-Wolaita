@@ -17,6 +17,14 @@ Visit Wolaita is a full-stack interactive tourism platform built with Node.js/Ex
 - Enset Food Lab
 - Local Guides section
 
+
+## Architecture & Technology Stack
+
+- **Backend**: Node.js v20+ with Express, compression, rate-limiting, and JSON persistence
+- **Frontend**: Vanilla ES6+ JavaScript, custom CSS design system with CSS custom properties
+- **Maps & GIS**: Leaflet.js with OpenStreetMap/CartoDB tiles and Google Earth 3D flyover integration
+- **PWA**: Service Worker caching, offline fallback mode, Web App Manifest
+
 ## Getting Started
 
 `ash
