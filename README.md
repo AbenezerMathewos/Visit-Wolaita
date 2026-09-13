@@ -47,6 +47,15 @@ npm start     # production
 | GET | /api/weather | Sodo microclimate |
 | GET | /api/health | Server health |
 
+
+## Automated Testing
+
+Run the built-in smoke tests to verify server routes, landmark data integrity, and package manifest:
+
+```bash
+npm test
+```
+
 ## License
 
 2026 Visit Wolaita Tourism Initiative. All rights reserved.
