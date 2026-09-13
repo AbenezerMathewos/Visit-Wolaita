@@ -4157,3 +4157,18 @@ code{font-family:'Courier New',monospace;font-size:.875em;background:rgba(36,81,
 .btn-sm { padding: 6px 14px; font-size: 13px; border-radius: 8px; }
 .btn-lg { padding: 14px 28px; font-size: 17px; border-radius: 14px; }
 .btn-xl { padding: 18px 36px; font-size: 19px; border-radius: 18px; }
+
+/* -- Alert Notification Banners -- */
+.alert {
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.alert-info { background: #e6efe9; color: #24513b; border: 1px solid rgba(36, 81, 59, 0.2); }
+.alert-success { background: #e8f5e9; color: #1b5e20; border: 1px solid rgba(27, 94, 32, 0.2); }
+.alert-warning { background: #fff8e1; color: #f57f17; border: 1px solid rgba(245, 127, 23, 0.2); }
