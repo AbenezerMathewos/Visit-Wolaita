@@ -4200,3 +4200,32 @@ kbd {
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), inset 0 0 0 1px #fff;
 }
 .kbd-badge { display: inline-flex; align-items: center; gap: 4px; }
+
+/* -- Tooltip Utilities -- */
+[data-tooltip] {
+  position: relative;
+  cursor: help;
+}
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #12281d;
+  color: #fff;
+  font-size: 11px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+  z-index: 700;
+}
+[data-tooltip]:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
