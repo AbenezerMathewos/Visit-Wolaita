@@ -4085,3 +4085,9 @@ code{font-family:'Courier New',monospace;font-size:.875em;background:rgba(36,81,
 }
 .backdrop-blur-sm { backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
 .backdrop-blur-md { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+
+/* -- Glow Shadows -- */
+.glow-sm { box-shadow: 0 0 12px rgba(200, 90, 50, 0.25); }
+.glow-earth { box-shadow: 0 0 28px rgba(200, 90, 50, 0.4); }
+.glow-leaf { box-shadow: 0 0 28px rgba(36, 81, 59, 0.35); }
+.glow-gold { box-shadow: 0 0 28px rgba(212, 155, 40, 0.35); }
