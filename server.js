@@ -1021,6 +1021,21 @@ app.post('/api/enquiries', enquiryLimiter, (req, res) => {
 // --------------------------------------------------------------------------
 // Health Check (single, rich version)
 // --------------------------------------------------------------------------
+// --------------------------------------------------------------------------
+// Platform Information & Region Metadata
+// --------------------------------------------------------------------------
+app.get('/api/info', (_req, res) => {
+  res.json({
+    platform: 'Visit Wolaita Core Engine',
+    version: '1.2.0',
+    description: 'Official interactive travel and culture platform for Wolaita Zone',
+    region: 'Wolaita Zone, Southern Ethiopia',
+    capital: 'Wolaita Sodo',
+    coordinates: { lat: 6.8583, lng: 37.7611 },
+    supportedLanguages: ['Wolayttattuwa', 'Amharic', 'English']
+  });
+});
+
 app.get('/api/health', (_req, res) => {
   res.json({
     status: 'ok',
