@@ -4185,3 +4185,18 @@ code{font-family:'Courier New',monospace;font-size:.875em;background:rgba(36,81,
   transition: width 0.1s ease-out;
   pointer-events: none;
 }
+
+/* -- Keyboard Shortcuts & KBD Tag -- */
+kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  font-family: monospace;
+  font-size: 11px;
+  line-height: 1.2;
+  color: #0d1e17;
+  background-color: #f0e9df;
+  border: 1px solid #c8b099;
+  border-radius: 4px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), inset 0 0 0 1px #fff;
+}
+.kbd-badge { display: inline-flex; align-items: center; gap: 4px; }
