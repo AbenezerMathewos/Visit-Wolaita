@@ -61,6 +61,12 @@ npm test
 
 Visit Wolaita includes full Progressive Web App (PWA) support with service worker caching. Key landmark guides, trail elevation profiles, and cultural calendars remain accessible even with intermittent or absent cellular connectivity in remote highlands.
 
+
+## Troubleshooting
+
+- **Port already in use**: By default, the server runs on port 3000. Specify an alternate port via `PORT=8080 npm start`.
+- **Node version**: Requires Node.js >= 20.0.0. Check your installed version with `node -v`.
+
 ## License
 
 2026 Visit Wolaita Tourism Initiative. All rights reserved.
