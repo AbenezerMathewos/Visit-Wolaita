@@ -1036,6 +1036,21 @@ app.get('/api/info', (_req, res) => {
   });
 });
 
+// --------------------------------------------------------------------------
+// Tourist Emergency & Assistance Hotline Directory
+// --------------------------------------------------------------------------
+app.get('/api/emergency', (_req, res) => {
+  res.json({
+    touristPolice: '+251 46 551 2020',
+    nationalEmergency: '991',
+    ambulance: '907',
+    fireEmergency: '939',
+    sodoHospital: '+251 46 551 2222',
+    otonaReferralHospital: '+251 46 551 4111',
+    touristDesk: 'Wolaita Sodo Central Tourism Office'
+  });
+});
+
 app.get('/api/health', (_req, res) => {
   res.json({
     status: 'ok',
