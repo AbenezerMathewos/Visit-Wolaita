@@ -3,6 +3,21 @@
 All notable changes to Visit Wolaita are documented here.
 
 ## [Unreleased]
+
+## [1.2.0] - 2026-09
+
+### Added (Batch 3)
+- Automated test suite `test/server.test.js` and `npm test` script
+- New API endpoints: `/api/info`, `/api/emergency`, and `/api/currencies`
+- UI utilities: Frosted glass, glow shadows, shimmer skeletons, and avatar groups
+- Badge-pill, live pulsing status dot, and button size variants
+- CSS-only accessible tooltip system and kbd tag styles
+- DNS prefetch resource hints for map tile providers
+- Reading progress bar and offline connectivity warning banner
+- Tourist emergency assistance hotline and live ETB currency widgets
+- Architectural overview, PWA caching, and troubleshooting sections in README.md
+
+
 ### Added (Batch 2)
 - PWA manifest, apple-touch-icon, DNS prefetch
 - noscript fallback, aria-live region

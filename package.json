@@ -1,7 +1,7 @@
 {
   "name": "visit-wolaita",
   "homepage": "https://visitwolaita.et",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "engines": {
     "node": ">=20.0.0"
   },
