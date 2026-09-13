@@ -4172,3 +4172,16 @@ code{font-family:'Courier New',monospace;font-size:.875em;background:rgba(36,81,
 .alert-info { background: #e6efe9; color: #24513b; border: 1px solid rgba(36, 81, 59, 0.2); }
 .alert-success { background: #e8f5e9; color: #1b5e20; border: 1px solid rgba(27, 94, 32, 0.2); }
 .alert-warning { background: #fff8e1; color: #f57f17; border: 1px solid rgba(245, 127, 23, 0.2); }
+
+/* -- Reading Progress Bar -- */
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, #c85a32, #d49b28);
+  z-index: 1001;
+  transition: width 0.1s ease-out;
+  pointer-events: none;
+}
